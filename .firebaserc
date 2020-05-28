@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "rafael-zasas": {
+      "hosting": {
+        "raf-website": [
+          "rafael-zasas"
+        ]
+      }
+    }
+  }
+}
