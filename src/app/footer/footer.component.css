@@ -10,3 +10,8 @@
 .phone-pad{
   padding-top: 5px;
 }
+
+a{
+  font-weight: bold;
+  color: #FFFFFF;
+}

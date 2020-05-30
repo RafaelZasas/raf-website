@@ -1,15 +1,7 @@
-.github-logo-pad{
+.logo-pad-top{
   padding-top: 10px;
+}
+.logo-pad-bot{
+  padding-bottom: 10px;
 }
 
-.linkedin-logo-pad{
-  padding-top: 10px;
-}
-
-.stack-overflow-logo-pad{
-  padding-top: 10px;
-}
-
-.triplebyte-logo-pad{
-  padding-top: 10px;
-}
