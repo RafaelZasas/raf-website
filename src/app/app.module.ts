@@ -1,26 +1,29 @@
 // MODULE IMPORTS
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { AppRoutingModule } from './app-routing.module';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {AppRoutingModule} from './app-routing.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 // COMPONENT IMPORTS
-import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-import { HeaderComponent } from './header/header.component';
-import { FooterComponent } from './footer/footer.component';
-import { ProjectsComponent } from './projects/projects.component';
+import {AppComponent} from './app.component';
+import {HomeComponent} from './home/home.component';
+import {HeaderComponent} from './header/header.component';
+import {FooterComponent} from './footer/footer.component';
+import {ProjectsComponent} from './projects/projects.component';
+import {ResumeComponent} from './resume/resume.component';
+import {AboutMeComponent} from './about-me/about-me.component';
+import {FeedbackComponent} from './feedback/feedback.component';
 
 
 // FIREBASE IMPORTS
 import * as firebase from 'firebase/app';
 import {AngularFireModule} from '@angular/fire';
 import {AngularFirePerformanceModule} from '@angular/fire/performance';
-import {AngularFireAnalyticsModule} from '@angular/fire/analytics';
+import {AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService} from '@angular/fire/analytics';
 
 import {environment} from '../environments/environment';
-import { ResumeComponent } from './resume/resume.component';
-import { AboutMeComponent } from './about-me/about-me.component';
-import { FeedbackComponent } from './feedback/feedback.component';
+
+
 
 @NgModule({
   declarations: [
@@ -38,9 +41,14 @@ import { FeedbackComponent } from './feedback/feedback.component';
     AppRoutingModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAnalyticsModule,
-    AngularFirePerformanceModule
+    AngularFirePerformanceModule,
+    FontAwesomeModule
   ],
-  providers: [],
+  providers: [
+    ScreenTrackingService,
+    UserTrackingService
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
