@@ -24,7 +24,7 @@ export class FeedbackComponent implements OnInit {
   feedbackForm: FormGroup;
   options = {};
   elems: any;
-  btnSubmit = false;
+
 
   constructor(private afs: AngularFirestore) {
   }
@@ -46,7 +46,8 @@ export class FeedbackComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.feedbackForm.valid) {
+
+    if (this.feedbackForm.valid) { // check if the form is valid
       const formData = {
         feedbackType: this.feedbackForm.value.feedbackType,
         feedbackMessage: this.feedbackForm.value.feedbackMessage
@@ -54,9 +55,14 @@ export class FeedbackComponent implements OnInit {
       // @ts-ignore
       this.feedbackCollection.add(formData).then(r => console.log('stored feedback successfully'),
         M.toast({html: 'Thank you !', classes: 'rounded blue'}));
+
+      // clear the form once submitted
+      this.feedbackForm.reset();
+
+      // if the user tries entering nothing
     } else {
       M.toast({html: 'Please enter a message before submitting.', classes: 'rounded red'});
     }
-    }
+  }
 
 }
