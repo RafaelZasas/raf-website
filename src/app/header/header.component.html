@@ -3,9 +3,25 @@
     <span class="brand-logo">
       <a routerLink="" class="name-pad">Rafael Zasas</a>
     </span>
-    <ul class="right">
+    <a data-target="mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    <ul class="right hide-on-med-and-down">
       <li><a routerLink="/aboutme"><i class="material-icons">info_outline</i>About Me</a></li>
-      <li class="hide-on-med-and-down"><a routerLink="/feedback"><i class="material-icons">thumbs_up_down</i>Feedback</a></li>
+      <li><a routerLink="/feedback"><i class="material-icons">thumbs_up_down</i>Feedback</a></li>
     </ul>
   </div>
 </nav>
+
+<ul class="sidenav" id="mobile">
+
+  <li><div class="user-view">
+    <div class="background">
+      <img src="../../assets/background.jpg">
+    </div>
+    <a routerLink="/"><img class="circle" src="../../assets/profile-photo.jpg"></a>
+    <a routerLink="/"><span class="helper-text name">Rafael Zasas</span></a>
+    <a href="mailto:zasas.rafi@gmail.com"><span class="helper-text email">zasas.rafi@gmail.com</span></a>
+  </div></li>
+
+  <li><a routerLink="/aboutme"><i class="material-icons">info_outline</i>About Me</a></li>
+  <li><a routerLink="/feedback"><i class="material-icons">thumbs_up_down</i>Feedback</a></li>
+</ul>
