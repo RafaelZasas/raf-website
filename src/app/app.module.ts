@@ -27,6 +27,10 @@ import {environment} from '../environments/environment';
 import { PeerAdvisingComponent } from './peer-advising/peer-advising.component';
 import { AddStudentInfoComponent } from './peer-advising/add-student-info/add-student-info.component';
 import { StudentCardListComponent } from './peer-advising/student-card-list/student-card-list.component';
+import {AngularFireAuthModule} from '@angular/fire/auth';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { LoginComponent } from './services/Auth/login/login.component';
+
 
 
 @NgModule({
@@ -41,7 +45,9 @@ import { StudentCardListComponent } from './peer-advising/student-card-list/stud
     FeedbackComponent,
     PeerAdvisingComponent,
     AddStudentInfoComponent,
-    StudentCardListComponent
+    StudentCardListComponent,
+    UserProfileComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,6 +56,7 @@ import { StudentCardListComponent } from './peer-advising/student-card-list/stud
     AngularFireAnalyticsModule,
     AngularFirePerformanceModule,
     AngularFirestoreModule,
+    AngularFireAuthModule,
     FontAwesomeModule,
     ReactiveFormsModule
   ],
