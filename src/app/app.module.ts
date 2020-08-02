@@ -24,6 +24,9 @@ import {AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService} 
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 
 import {environment} from '../environments/environment';
+import { PeerAdvisingComponent } from './peer-advising/peer-advising.component';
+import { AddStudentInfoComponent } from './peer-advising/add-student-info/add-student-info.component';
+import { StudentCardListComponent } from './peer-advising/student-card-list/student-card-list.component';
 
 
 @NgModule({
@@ -35,7 +38,10 @@ import {environment} from '../environments/environment';
     ProjectsComponent,
     ResumeComponent,
     AboutMeComponent,
-    FeedbackComponent
+    FeedbackComponent,
+    PeerAdvisingComponent,
+    AddStudentInfoComponent,
+    StudentCardListComponent
   ],
   imports: [
     BrowserModule,

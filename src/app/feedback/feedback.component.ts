@@ -3,9 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import M from 'materialize-css';
 import {AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {Observable, observable} from 'rxjs';
-import {AngularFireStorage} from '@angular/fire/storage';
-import {JsonpInterceptor} from '@angular/common/http';
-import {ajaxGetJSON} from 'rxjs/internal-compatibility';
+
 
 interface Feedback {
   message: string;

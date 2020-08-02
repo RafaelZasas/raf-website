@@ -6,6 +6,7 @@ import {ProjectsComponent} from './projects/projects.component';
 import {ResumeComponent} from './resume/resume.component';
 import {AboutMeComponent} from './about-me/about-me.component';
 import {FeedbackComponent} from './feedback/feedback.component';
+import {PeerAdvisingComponent} from './peer-advising/peer-advising.component';
 
 
 const routes: Routes = [
@@ -14,6 +15,7 @@ const routes: Routes = [
   {path: 'resume', component: ResumeComponent},
   {path: 'aboutme', component: AboutMeComponent},
   {path: 'feedback', component: FeedbackComponent},
+  {path: 'fys2020', component: PeerAdvisingComponent}
 ];
 
 
