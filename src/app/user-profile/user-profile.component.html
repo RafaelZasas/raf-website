@@ -4,13 +4,13 @@
 
 <!-- User NOT logged in -->
 <ng-template #guest>
-  <h3 class="center blue-grey-text">Profile</h3>
-  <p class="center blue-grey-text">Please Login to view your profile.</p>
-
-  <button (click)="auth.googleSignin()">
-    <i class="fa fa-google"></i> Connect Google
-  </button>
-
+  <div class="center">
+    <h3 class=" blue-grey-text">Login</h3>
+    <p class=" blue-grey-text">If you dont have an account one will be created for you!</p>
+    <button class="center btn-small light-blue" (click)="auth.googleSignin()">
+      <fa-icon [icon]="google"></fa-icon> Connect Google
+    </button>
+  </div>
 </ng-template>
 
 

@@ -48,7 +48,8 @@ export class AuthService {
     // pass provider to sign in with popup functionality
     const credential = await this.afAuth.signInWithPopup(provider);  // auth.signInWithPopup(provider);
 
-    return this.updateUserData(credential.user);
+    await this.updateUserData(credential.user).then(r =>
+      this.router.navigate(['/user-profile'])).catch(r => console.log('Login Error'));
   }
 
   private updateUserData(user) {
@@ -68,7 +69,7 @@ export class AuthService {
 
   async signOut() {
     await this.afAuth.signOut();  // auth.signOut();
-    this.router.navigate(['/login']);
+    await this.router.navigate(['/login']);
   }
 
 }
