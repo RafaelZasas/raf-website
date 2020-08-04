@@ -27,15 +27,19 @@ export class FeedbackComponent implements OnInit {
   constructor(private afs: AngularFirestore) {
   }
 
+
   ngOnInit(): void {
+
+    // DROPDOWN FUNCTIONALITY FOR MATERIALIZE
+    this.elems = document.querySelectorAll('select');
+    M.FormSelect.init(this.elems, this.options); // for the dropdown menu
+
+
     this.feedbackForm = new FormGroup({
       feedbackMessage: new FormControl('', [Validators.required,
         Validators.minLength(3)]),
       feedbackType: new FormControl('General Feedback', Validators.required)
     }); // init the form
-
-    this.elems = document.querySelectorAll('select');
-    M.FormSelect.init(this.elems, this.options); // for the dropdown menu
 
     this.feedbackCollection = this.afs.collection('Feedback', ref => { // collection to store firestore data
       return ref.limit(3);

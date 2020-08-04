@@ -1,0 +1,30 @@
+<div class="container center">
+  <h3>Random Password generator</h3>
+</div>
+
+<div class="row">
+  <div class="input-field col s6">
+    <input value="10" id="pLength" type="text" class="validate">
+    <label class="active" for="pLength">Password Length</label>
+  </div>
+
+  <div class="input-field col s6">
+    <select>
+      <option value="true" disabled selected>Choose an option</option>
+      <option value="true">True</option>
+      <option value="false">False</option>
+    </select>
+    <label>Use Symbols?</label>
+  </div>
+
+  <div class="row center">
+    <button class="btn waves-effect light-blue" type="submit" (click)="getPassword()" >Submit
+      <i class="material-icons right">send</i>
+    </button>
+  </div>
+
+</div>
+
+<div #output >
+  {{passwords |async}}
+</div>

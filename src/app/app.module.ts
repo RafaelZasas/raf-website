@@ -30,7 +30,8 @@ import { StudentCardListComponent } from './peer-advising/student-card-list/stud
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { LoginComponent } from './services/Auth/login/login.component';
-
+import { PythonProjectsComponent } from './projects/python-projects/python-projects.component';
+import { HttpClientModule} from '@angular/common/http';
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import { LoginComponent } from './services/Auth/login/login.component';
     StudentCardListComponent,
     UserProfileComponent,
     LoginComponent,
+    PythonProjectsComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,7 +60,8 @@ import { LoginComponent } from './services/Auth/login/login.component';
     AngularFirestoreModule,
     AngularFireAuthModule,
     FontAwesomeModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule,
   ],
   providers: [
     ScreenTrackingService,
