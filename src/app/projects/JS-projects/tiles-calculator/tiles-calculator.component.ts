@@ -3,20 +3,16 @@ import M from 'materialize-css';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {tokenReference} from '@angular/compiler';
 
-interface Tiles {
-  surfaceAreaTotal: number;
-  selectedBox: number;
-}
 
 @Component({
   selector: 'app-tiles-calculator',
   templateUrl: './tiles-calculator.component.html',
   styleUrls: ['./tiles-calculator.component.css']
 })
-export class TilesCalculatorComponent implements OnInit, AfterViewInit {
+export class TilesCalculatorComponent implements OnInit {
 
 
-  boxSize: number[] = [1.4, 1.6, 1.9, 2.2];
+  boxSize = [1.4, 1.6, 1.9, 2.2];
   options = {dropdownOptions: this.boxSize};
   elems: any;
   private instance: any;
@@ -30,18 +26,13 @@ export class TilesCalculatorComponent implements OnInit, AfterViewInit {
   constructor() {
   }
 
-  ngAfterViewInit(): void {
-    this.setBoxes();
-  }
-
 
   ngOnInit(): void {
 
-    // INITIALIZE THE FORM
+    // INITIALIZE THE FORM GROUP
     this.tilesForm = new FormGroup({
-      surfaceAreaTotal: new FormControl('', [Validators.required,
-        Validators.minLength(3)]),
-      selectedBox: new FormControl('1.4', Validators.required)
+      surfaceAreaTotal: new FormControl('', [Validators.required]),
+      selectedBox: new FormControl('', Validators.required)
     }); // init the form
 
     this.elems = document.querySelectorAll('select');
@@ -49,13 +40,6 @@ export class TilesCalculatorComponent implements OnInit, AfterViewInit {
     this.instance.init(this.elems, this.options); // for the dropdown menu
   }
 
-  setBoxes() {
-
-    setTimeout(() => {
-      M.FormSelect.init(document.querySelectorAll('#boxSize'), {});
-    }, 0);
-
-  }
 
   onSubmit() {
 
@@ -68,18 +52,16 @@ export class TilesCalculatorComponent implements OnInit, AfterViewInit {
       };
 
       // clear the form once submitted
-      this.tilesForm.reset();
 
-      this.numBoxes = Math.ceil( (formData.surfaceArea / formData.boxSize));
+      this.numBoxes = Math.ceil((formData.surfaceArea / formData.boxSize));
       this.remainder = (this.numBoxes - (formData.surfaceArea / formData.boxSize)).toFixed(2);
-      console.log(this.numBoxes);
-      console.log(this.userClicked);
+
+      this.tilesForm.reset();
 
       // if the user tries entering nothing
     } else {
       M.toast({html: 'Please fil entire form before submitting.', classes: 'rounded red'});
     }
   }
-
 
 }

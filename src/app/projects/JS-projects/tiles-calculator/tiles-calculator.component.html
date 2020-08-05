@@ -18,7 +18,8 @@
 
     <div class="input-field col s6">
       <select formControlName="selectedBox">
-        <option selected [value]="boxSize[0]">1.4</option>
+        <option [value]="" disabled selected>Choose an option</option>
+        <option [value]="boxSize[0]">1.4</option>
         <option [value]="boxSize[1]">1.6</option>
         <option [value]="boxSize[2]">1.9</option>
         <option [value]="boxSize[3]">2.2</option>

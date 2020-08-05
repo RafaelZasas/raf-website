@@ -33,6 +33,7 @@ import { LoginComponent } from './services/Auth/login/login.component';
 import { PythonProjectsComponent } from './projects/python-projects/python-projects.component';
 import { HttpClientModule} from '@angular/common/http';
 import { TilesCalculatorComponent } from './projects/JS-projects/tiles-calculator/tiles-calculator.component';
+import { WebDevComponent } from './projects/web-dev/web-dev.component';
 
 
 @NgModule({
@@ -51,7 +52,6 @@ import { TilesCalculatorComponent } from './projects/JS-projects/tiles-calculato
     UserProfileComponent,
     LoginComponent,
     PythonProjectsComponent,
-    TilesCalculatorComponent,
   ],
   imports: [
     BrowserModule,
