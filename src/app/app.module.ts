@@ -32,6 +32,7 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { LoginComponent } from './services/Auth/login/login.component';
 import { PythonProjectsComponent } from './projects/python-projects/python-projects.component';
 import { HttpClientModule} from '@angular/common/http';
+import { TilesCalculatorComponent } from './projects/JS-projects/tiles-calculator/tiles-calculator.component';
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import { HttpClientModule} from '@angular/common/http';
     UserProfileComponent,
     LoginComponent,
     PythonProjectsComponent,
+    TilesCalculatorComponent,
   ],
   imports: [
     BrowserModule,
