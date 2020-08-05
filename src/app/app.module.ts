@@ -24,6 +24,15 @@ import {AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService} 
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 
 import {environment} from '../environments/environment';
+import { PeerAdvisingComponent } from './peer-advising/peer-advising.component';
+import { AddStudentInfoComponent } from './peer-advising/add-student-info/add-student-info.component';
+import { StudentCardListComponent } from './peer-advising/student-card-list/student-card-list.component';
+import {AngularFireAuthModule} from '@angular/fire/auth';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { LoginComponent } from './services/Auth/login/login.component';
+import { PythonProjectsComponent } from './projects/python-projects/python-projects.component';
+import { HttpClientModule} from '@angular/common/http';
+import { TilesCalculatorComponent } from './projects/JS-projects/tiles-calculator/tiles-calculator.component';
 
 
 @NgModule({
@@ -35,7 +44,14 @@ import {environment} from '../environments/environment';
     ProjectsComponent,
     ResumeComponent,
     AboutMeComponent,
-    FeedbackComponent
+    FeedbackComponent,
+    PeerAdvisingComponent,
+    AddStudentInfoComponent,
+    StudentCardListComponent,
+    UserProfileComponent,
+    LoginComponent,
+    PythonProjectsComponent,
+    TilesCalculatorComponent,
   ],
   imports: [
     BrowserModule,
@@ -44,8 +60,10 @@ import {environment} from '../environments/environment';
     AngularFireAnalyticsModule,
     AngularFirePerformanceModule,
     AngularFirestoreModule,
+    AngularFireAuthModule,
     FontAwesomeModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule,
   ],
   providers: [
     ScreenTrackingService,

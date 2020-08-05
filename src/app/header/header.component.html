@@ -7,6 +7,18 @@
     <ul class="right hide-on-med-and-down">
       <li><a routerLink="/aboutme"><i class="material-icons">info_outline</i>About Me</a></li>
       <li><a routerLink="/feedback"><i class="material-icons">thumbs_up_down</i>Feedback</a></li>
+      <div *ngIf="auth.user$ | async; then authenticated else guest">
+        <!-- btn will replace this div -->
+      </div>
+      <ng-template #authenticated>
+        <li><a routerLink="/user-profile"><i class="material-icons">person</i>Profile</a></li>
+      </ng-template>
+
+      <ng-template #guest>
+        <li><a routerLink="/login"><i class="material-icons">person_outline</i>Login</a></li>
+      </ng-template>
+
+
     </ul>
   </div>
 </nav>
@@ -22,6 +34,10 @@
     <a href="mailto:zasas.rafi@gmail.com"><span class="helper-text email">zasas.rafi@gmail.com</span></a>
   </div></li>
 
+  <div *ngIf="auth.user$ | async; then authenticated else guest">
+    <!-- btn will replace this div -->
+  </div>
   <li><a routerLink="/aboutme"><i class="material-icons">info_outline</i>About Me</a></li>
   <li><a routerLink="/feedback"><i class="material-icons">thumbs_up_down</i>Feedback</a></li>
+  <li><a class="sidenav-close">close</a></li>
 </ul>

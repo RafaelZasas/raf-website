@@ -6,6 +6,10 @@ import {ProjectsComponent} from './projects/projects.component';
 import {ResumeComponent} from './resume/resume.component';
 import {AboutMeComponent} from './about-me/about-me.component';
 import {FeedbackComponent} from './feedback/feedback.component';
+import {PeerAdvisingComponent} from './peer-advising/peer-advising.component';
+import {UserProfileComponent} from './user-profile/user-profile.component';
+import {AuthGuard} from './services/Auth/auth.guard';
+import {LoginComponent} from './services/Auth/login/login.component';
 
 
 const routes: Routes = [
@@ -14,6 +18,9 @@ const routes: Routes = [
   {path: 'resume', component: ResumeComponent},
   {path: 'aboutme', component: AboutMeComponent},
   {path: 'feedback', component: FeedbackComponent},
+  {path: 'fys2020', component: PeerAdvisingComponent},
+  {path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard]},
+  {path: 'login', component: LoginComponent}
 ];
 
 

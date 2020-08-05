@@ -1,0 +1,51 @@
+<div class="container center">
+  <div class="row">
+    <form [formGroup]="advisingForm" (ngSubmit)="onSubmit()">
+
+
+      <div class="row">
+        <div class="input-field col s6">
+          <input id="firstName" formControlName="firstName" type="text" class="validate">
+          <label for="firstName">First Name</label>
+        </div>
+
+        <div class="row">
+          <div class="input-field col s6">
+            <input id="lastName" formControlName="lastName" type="text" class="validate">
+            <label for="lastName">lastName</label>
+          </div>
+
+
+          <div class="input-field col s6">
+            <input id="studentID" type="text" class="validate" formControlName="studentID">
+            <label for="studentID">studentID</label>
+          </div>
+
+          <div class="input-field col s6">
+            <input id="email" type="email" class="validate" formControlName="email">
+            <label for="email">Email</label>
+            <span class="helper-text" data-error="Please enter a valid email address" data-success=""></span>
+          </div>
+
+          <div class="row">
+            <div class="input-field col s6">
+              <input id="gender" type="number" class="validate" formControlName="gender">
+              <label for="gender">gender</label>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <button class="btn waves-effect" type="submit">Submit
+          <i class="material-icons right">send</i>
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+
+</div>
+

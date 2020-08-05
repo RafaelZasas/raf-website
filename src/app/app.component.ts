@@ -1,5 +1,6 @@
 import {AfterViewInit, Component} from '@angular/core';
 import {AngularFireAnalytics, DEBUG_MODE} from '@angular/fire/analytics';
+import {AuthService} from './services/Auth/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -9,7 +10,7 @@ import {AngularFireAnalytics, DEBUG_MODE} from '@angular/fire/analytics';
 export class AppComponent implements AfterViewInit {
   title = 'raf-website';
 
-  constructor() {
+  constructor(public auth: AuthService) {
 
   }
 

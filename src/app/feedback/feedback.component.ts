@@ -3,9 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import M from 'materialize-css';
 import {AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {Observable, observable} from 'rxjs';
-import {AngularFireStorage} from '@angular/fire/storage';
-import {JsonpInterceptor} from '@angular/common/http';
-import {ajaxGetJSON} from 'rxjs/internal-compatibility';
+
 
 interface Feedback {
   message: string;
@@ -29,19 +27,27 @@ export class FeedbackComponent implements OnInit {
   constructor(private afs: AngularFirestore) {
   }
 
+
   ngOnInit(): void {
+
+    // DROPDOWN FUNCTIONALITY FOR MATERIALIZE
+    this.elems = document.querySelectorAll('select');
+    M.FormSelect.init(this.elems, this.options); // for the dropdown menu
+
+    // INIT THE FORM GROUP
+
     this.feedbackForm = new FormGroup({
       feedbackMessage: new FormControl('', [Validators.required,
         Validators.minLength(3)]),
       feedbackType: new FormControl('General Feedback', Validators.required)
-    }); // init the form
+    });
 
-    this.elems = document.querySelectorAll('select');
-    M.FormSelect.init(this.elems, this.options); // for the dropdown menu
-
+    // INIT CONNECTION TO FIRESTORE COLLECTION
     this.feedbackCollection = this.afs.collection('Feedback', ref => { // collection to store firestore data
       return ref.limit(3);
     }); // reference
+
+    // SUBSCRIBE TO THE CHANGES
     this.feedbackMessages = this.feedbackCollection.valueChanges(); // observable of notes data
   }
 

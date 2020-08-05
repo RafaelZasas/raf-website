@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import M from 'materialize-css';
+import {AuthService} from '../services/Auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -11,12 +12,14 @@ export class HeaderComponent implements OnInit {
     preventScrolling: false
   };
 
-  constructor() {
+  constructor(public auth: AuthService) {
   }
 
   ngOnInit(): void {
     const elems = document.querySelectorAll('.sidenav');
-    const inst = M.Sidenav.init(elems);
+    const inst = M.Sidenav.init(elems, this.options);
   }
+
+
 
 }
