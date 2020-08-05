@@ -1,0 +1,46 @@
+<div class="container center">
+  <div class="row">
+    <h3 class="blue-grey-text">Tiles Box Calculator</h3>
+    <h5 class="light-blue-text text-accent-3">This Project is a small app to help the staff at his business calculate how many boxes are
+      required to fulfill a customer order in square meters.</h5>
+  </div>
+
+
+  <div class="row">
+    <form [formGroup]="tilesForm" (ngSubmit)="onSubmit()">
+    <div class="input-field col s6">
+      <input [value]="10"
+             formControlName="surfaceAreaTotal"
+             id="surfaceAreaTotal"
+             type="text" class="validate">
+      <label class="active" for="surfaceAreaTotal">How many square meters in total?</label>
+    </div>
+
+    <div class="input-field col s6">
+      <select formControlName="selectedBox">
+        <option selected [value]="boxSize[0]">1.4</option>
+        <option [value]="boxSize[1]">1.6</option>
+        <option [value]="boxSize[2]">1.9</option>
+        <option [value]="boxSize[3]">2.2</option>
+      </select>
+      <label>Box Size</label>
+    </div>
+
+    <div class="row center">
+      <button class="btn waves-effect light-blue" type="submit" >Submit
+        <i class="material-icons right">send</i>
+      </button>
+    </div>
+
+    </form>
+
+  </div>
+
+  <div #output  class="blue-grey-text" *ngIf="userClicked">
+    <p>You will need {{ numBoxes }} boxes.</p>
+    <p>There will be a remainder of {{ remainder }} square meters.</p>
+  </div>
+
+</div>
+
+
