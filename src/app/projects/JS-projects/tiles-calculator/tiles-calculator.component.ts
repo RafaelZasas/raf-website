@@ -18,9 +18,12 @@ export class TilesCalculatorComponent implements OnInit {
   private instance: any;
   surfaceAreaTotal = 10;
   tilesForm: FormGroup;
-  public numBoxes: number;
-  public userClicked = false;
-  public remainder: string;
+  public numBoxes: number; // number of boxes required to fulfill order
+  public userClicked = false; // when the user submits the form -> show the table
+  public totalOrderArea: any; // size of the total area required to fulfill the order
+  public tileGlue: any; // price of the tile glue
+  public tileGrout: any;
+  public deliveryCost: any;
 
 
   constructor() {
@@ -54,9 +57,11 @@ export class TilesCalculatorComponent implements OnInit {
       // clear the form once submitted
 
       this.numBoxes = Math.ceil((formData.surfaceArea / formData.boxSize));
-      this.remainder = (this.numBoxes - (formData.surfaceArea / formData.boxSize)).toFixed(2);
+      this.totalOrderArea = (this.numBoxes * formData.boxSize).toFixed(2);
+      this.tileGlue = Math.ceil((this.totalOrderArea / 2));
+      this.tileGrout = Math.ceil(this.totalOrderArea / 50);
+      this.deliveryCost = (Math.ceil(this.totalOrderArea / 50) * 480).toFixed(2);
 
-      this.tilesForm.reset();
 
       // if the user tries entering nothing
     } else {
