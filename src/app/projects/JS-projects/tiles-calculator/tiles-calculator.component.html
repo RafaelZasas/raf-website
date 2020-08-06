@@ -1,8 +1,9 @@
 <div class="container center">
   <div class="row">
     <h3 class="blue-grey-text">Tiles Box Calculator</h3>
-    <h5 class="light-blue-text text-accent-3">This Project is a small app to help the staff at his business calculate how many boxes are
-      required to fulfill a customer order in square meters.</h5>
+    <h5 class="light-blue-text text-accent-3">This project is a small app to help
+      staff at my dad's business.<br>
+      It calculates items required and delivery fees for a given order.</h5>
   </div>
 
 
@@ -19,10 +20,12 @@
     <div class="input-field col s6">
       <select formControlName="selectedBox">
         <option [value]="" disabled selected>Choose an option</option>
-        <option [value]="boxSize[0]">1.4</option>
-        <option [value]="boxSize[1]">1.6</option>
-        <option [value]="boxSize[2]">1.9</option>
-        <option [value]="boxSize[3]">2.2</option>
+        <option [value]="boxSize[3]">1.28</option>
+        <option [value]="boxSize[0]">1.44</option>
+        <option [value]="boxSize[1]">1.62</option>
+        <option [value]="boxSize[2]">1.92</option>
+        <option [value]="boxSize[3]">2.16</option>
+        <option [value]="boxSize[2]">2.88</option>
       </select>
       <label>Box Size</label>
     </div>
@@ -38,8 +41,34 @@
   </div>
 
   <div #output  class="blue-grey-text" *ngIf="userClicked">
-    <p>You will need {{ numBoxes }} boxes.</p>
-    <p>There will be a remainder of {{ remainder }} square meters.</p>
+
+    <table>
+      <tbody>
+      <tr>
+        <td>Number of Boxes:</td>
+        <td>{{ numBoxes }}</td>
+      </tr>
+      <tr>
+        <td>Total Area:</td>
+        <td>{{ totalOrderArea }} square meters.</td>
+      </tr>
+      <tr>
+        <td>Tile Glue:</td>
+        <td>{{tileGlue}} bags.</td>
+      </tr>
+
+      <tr>
+        <td>Tile Grout:</td>
+        <td>{{tileGrout}} bags.</td>
+      </tr>
+
+      <tr>
+        <td>Delivery Fee:</td>
+        <td>R{{deliveryCost}} (Gauteng only)</td>
+      </tr>
+
+      </tbody>
+    </table>
   </div>
 
 </div>
