@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { PeerAAdvisingService } from './peer-aadvising.service';
+import { PeerAdvisingService } from './peer-advising.service';
 
 describe('PeerAAdvisingService', () => {
-  let service: PeerAAdvisingService;
+  let service: PeerAdvisingService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(PeerAAdvisingService);
+    service = TestBed.inject(PeerAdvisingService);
   });
 
   it('should be created', () => {

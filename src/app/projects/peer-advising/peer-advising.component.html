@@ -1,0 +1,25 @@
+<div class="container" *ngFor="let student of StudentObservable | async">
+  <div class="col s12 m8 offset-m2 l6 offset-l3">
+    <div class="card-panel grey lighten-5 z-depth-1">
+      <div class="row valign-wrapper">
+        <div class="col s2">
+          <!--          <img [src]="student.email" alt="" class="circle responsive-img"> &lt;!&ndash; notice the "circle" class &ndash;&gt;-->
+        </div>
+
+        <div class="col s10">
+          <div class="black-text">
+            {{student.firstname}} {{student.lastname}}<br>
+            {{student.studentID}} {{student.gender}}<br>
+            {{student.email}} <br>
+            Major: {{student.major}}<br>
+            Course 1: {{student.course1}}
+            <br>
+            Course 2: {{student.course2}}
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+

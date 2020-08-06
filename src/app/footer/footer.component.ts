@@ -6,7 +6,8 @@ import {
   faAngular,
   faFontAwesomeFlag,
   faBootstrap,
-  faGitkraken
+  faGitkraken,
+  faSpotify
 } from '@fortawesome/free-brands-svg-icons';
 import {faPhone, faSwimmer} from '@fortawesome/free-solid-svg-icons';
 import {faEnvelope} from '@fortawesome/free-regular-svg-icons';
@@ -27,11 +28,13 @@ export class FooterComponent implements OnInit {
   instagram = faInstagram;
   phone = faPhone;
   email = faEnvelope;
+  spotify = faSpotify;
 
   constructor() {
   }
 
   ngOnInit(): void {
+
   }
 
 }

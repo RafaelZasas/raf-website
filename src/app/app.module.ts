@@ -24,9 +24,9 @@ import {AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService} 
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 
 import {environment} from '../environments/environment';
-import { PeerAdvisingComponent } from './peer-advising/peer-advising.component';
-import { AddStudentInfoComponent } from './peer-advising/add-student-info/add-student-info.component';
-import { StudentCardListComponent } from './peer-advising/student-card-list/student-card-list.component';
+import { PeerAdvisingComponent } from './projects/peer-advising/peer-advising.component';
+import { AddStudentInfoComponent } from './projects/peer-advising/add-student-info/add-student-info.component';
+import { StudentCardListComponent } from './projects/peer-advising/student-card/student-card-list.component';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { LoginComponent } from './services/Auth/login/login.component';
@@ -52,6 +52,8 @@ import { WebDevComponent } from './projects/web-dev/web-dev.component';
     UserProfileComponent,
     LoginComponent,
     PythonProjectsComponent,
+    WebDevComponent,
+    TilesCalculatorComponent,
   ],
   imports: [
     BrowserModule,

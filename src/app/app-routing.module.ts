@@ -6,7 +6,7 @@ import {ProjectsComponent} from './projects/projects.component';
 import {ResumeComponent} from './resume/resume.component';
 import {AboutMeComponent} from './about-me/about-me.component';
 import {FeedbackComponent} from './feedback/feedback.component';
-import {PeerAdvisingComponent} from './peer-advising/peer-advising.component';
+import {PeerAdvisingComponent} from './projects/peer-advising/peer-advising.component';
 import {UserProfileComponent} from './user-profile/user-profile.component';
 import {AuthGuard} from './services/Auth/auth.guard';
 import {LoginComponent} from './services/Auth/login/login.component';

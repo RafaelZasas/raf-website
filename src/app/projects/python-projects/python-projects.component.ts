@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import M from 'materialize-css';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {Observable} from 'rxjs';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
@@ -61,7 +60,7 @@ export class PythonProjectsComponent implements OnInit {
           this.password = data;
           this.password = this.password.password;
           console.log(this.password);
-          if (!this.password) {
+          if (this.password.length < 1) {
             M.toast({html: 'There was a server-side issue.', classes: 'rounded red'});
           }
         });
