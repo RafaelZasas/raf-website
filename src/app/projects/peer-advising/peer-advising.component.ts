@@ -13,6 +13,9 @@ interface StudentInterface {
   major: string;
   course1: string;
   course2: string;
+  plus1: string;
+  notes: string;
+  img:string;
 }
 
 

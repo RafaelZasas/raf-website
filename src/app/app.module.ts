@@ -1,9 +1,11 @@
-// MODULE IMPORTS
+// ANGULAR MODULE IMPORTS
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
-import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {ReactiveFormsModule} from '@angular/forms';
+import {environment} from '../environments/environment';
+import { HttpClientModule} from '@angular/common/http';
+
 
 // COMPONENT IMPORTS
 import {AppComponent} from './app.component';
@@ -14,7 +16,14 @@ import {ProjectsComponent} from './projects/projects.component';
 import {ResumeComponent} from './resume/resume.component';
 import {AboutMeComponent} from './about-me/about-me.component';
 import {FeedbackComponent} from './feedback/feedback.component';
-
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { LoginComponent } from './services/Auth/login/login.component';
+import { PasswordGeneratorComponent } from './projects/python-projects/password-generator/password-generator.component';
+import { PeerAdvisingComponent } from './projects/peer-advising/peer-advising.component';
+import { AddStudentInfoComponent } from './projects/peer-advising/add-student-info/add-student-info.component';
+import { StudentCardListComponent } from './projects/peer-advising/student-card/student-card-list.component';
+import { TilesCalculatorComponent } from './projects/JS-projects/tiles-calculator/tiles-calculator.component';
+import { WebDevComponent } from './projects/web-dev/web-dev.component';
 
 // FIREBASE IMPORTS
 import * as firebase from 'firebase/app';
@@ -22,18 +31,13 @@ import {AngularFireModule} from '@angular/fire';
 import {AngularFirePerformanceModule} from '@angular/fire/performance';
 import {AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService} from '@angular/fire/analytics';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
-
-import {environment} from '../environments/environment';
-import { PeerAdvisingComponent } from './projects/peer-advising/peer-advising.component';
-import { AddStudentInfoComponent } from './projects/peer-advising/add-student-info/add-student-info.component';
-import { StudentCardListComponent } from './projects/peer-advising/student-card/student-card-list.component';
 import {AngularFireAuthModule} from '@angular/fire/auth';
-import { UserProfileComponent } from './user-profile/user-profile.component';
-import { LoginComponent } from './services/Auth/login/login.component';
-import { PythonProjectsComponent } from './projects/python-projects/python-projects.component';
-import { HttpClientModule} from '@angular/common/http';
-import { TilesCalculatorComponent } from './projects/JS-projects/tiles-calculator/tiles-calculator.component';
-import { WebDevComponent } from './projects/web-dev/web-dev.component';
+
+// OTHER MODULE IMPORTS
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+
+
+
 
 
 @NgModule({
@@ -51,9 +55,10 @@ import { WebDevComponent } from './projects/web-dev/web-dev.component';
     StudentCardListComponent,
     UserProfileComponent,
     LoginComponent,
-    PythonProjectsComponent,
+    PasswordGeneratorComponent,
     WebDevComponent,
     TilesCalculatorComponent,
+    PasswordGeneratorComponent,
   ],
   imports: [
     BrowserModule,

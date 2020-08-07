@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PythonProjectsComponent } from './python-projects.component';
+import { PasswordGeneratorComponent } from './password-generator.component';
 
-describe('PythonProjectsComponent', () => {
-  let component: PythonProjectsComponent;
-  let fixture: ComponentFixture<PythonProjectsComponent>;
+describe('PasswordGeneratorComponent', () => {
+  let component: PasswordGeneratorComponent;
+  let fixture: ComponentFixture<PasswordGeneratorComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PythonProjectsComponent ]
+      declarations: [ PasswordGeneratorComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PythonProjectsComponent);
+    fixture = TestBed.createComponent(PasswordGeneratorComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

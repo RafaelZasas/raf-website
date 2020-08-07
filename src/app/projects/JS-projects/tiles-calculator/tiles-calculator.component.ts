@@ -22,8 +22,9 @@ export class TilesCalculatorComponent implements OnInit {
   public userClicked = false; // when the user submits the form -> show the table
   public totalOrderArea: any; // size of the total area required to fulfill the order
   public tileGlue: any; // price of the tile glue
-  public tileGrout: any;
+  public tileGrout: any;  // grout for tiles. 100 sqm = 2 bags of 20kg
   public deliveryCost: any;
+  public tileSpacers: number;
 
 
   constructor() {
@@ -61,6 +62,7 @@ export class TilesCalculatorComponent implements OnInit {
       this.tileGlue = Math.ceil((this.totalOrderArea / 2));
       this.tileGrout = Math.ceil(this.totalOrderArea / 50);
       this.deliveryCost = (Math.ceil(this.totalOrderArea / 50) * 480).toFixed(2);
+      this.tileSpacers = Math.ceil(this.totalOrderArea / 20);
 
 
       // if the user tries entering nothing

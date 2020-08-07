@@ -1,14 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import M from 'materialize-css';
+import { Component, OnInit } from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import M from 'materialize-css';
 
 @Component({
-  selector: 'app-python-projects',
-  templateUrl: './python-projects.component.html',
-  styleUrls: ['./python-projects.component.css']
+  selector: 'app-password-generator',
+  templateUrl: './password-generator.component.html',
+  styleUrls: ['./password-generator.component.css']
 })
-export class PythonProjectsComponent implements OnInit {
+export class PasswordGeneratorComponent implements OnInit {
+
 
   options = {};
   elems: any;
@@ -24,7 +25,6 @@ export class PythonProjectsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     // INITIALIZE THE FORM GROUP
     this.passwordForm = new FormGroup({
       pwdlength: new FormControl('10', [Validators.required]),
@@ -70,6 +70,5 @@ export class PythonProjectsComponent implements OnInit {
       M.toast({html: 'Please fil entire form before submitting.', classes: 'rounded red'});
     }
   }
-
 
 }
