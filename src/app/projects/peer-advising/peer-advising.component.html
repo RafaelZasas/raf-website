@@ -8,7 +8,10 @@
 
         <div class="col s10">
           <div class="black-text">
-            {{student.firstname}} {{student.lastname}}<br>
+            <h6 [class.materialize-red-text]="student.registrationReady!=true"
+                [class.light-green-text]="student.registrationReady==true">
+              {{student.firstname}} {{student.lastname}}</h6>
+            <br>
             {{student.studentID}} {{student.gender}}<br>
             {{student.email}} <br>
             Major: {{student.major}}<br>

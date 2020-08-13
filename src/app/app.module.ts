@@ -3,7 +3,6 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 import {ReactiveFormsModule} from '@angular/forms';
-import {environment} from '../environments/environment';
 import { HttpClientModule} from '@angular/common/http';
 
 
@@ -36,6 +35,9 @@ import {AngularFireAuthModule} from '@angular/fire/auth';
 // OTHER MODULE IMPORTS
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 
+// environment imports
+import {environment} from '../environments/environment';
+
 
 
 
@@ -61,16 +63,19 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
     PasswordGeneratorComponent,
   ],
   imports: [
+    // ANGULAR MODULE IMPORTS
     BrowserModule,
     AppRoutingModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    // ANGULAR FIREBASE MODULE IMPORTS
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAnalyticsModule,
     AngularFirePerformanceModule,
     AngularFirestoreModule,
     AngularFireAuthModule,
+    // OTHER IMPORTS
     FontAwesomeModule,
-    ReactiveFormsModule,
-    HttpClientModule,
   ],
   providers: [
     ScreenTrackingService,

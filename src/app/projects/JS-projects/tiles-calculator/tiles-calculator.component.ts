@@ -12,7 +12,7 @@ import {tokenReference} from '@angular/compiler';
 export class TilesCalculatorComponent implements OnInit {
 
 
-  boxSize = [1.4, 1.6, 1.9, 2.2];
+  boxSize = [1.28, 1.44, 1.62, 1.92, 2.16, 2.88];
   options = {dropdownOptions: this.boxSize};
   elems: any;
   private instance: any;
@@ -23,8 +23,9 @@ export class TilesCalculatorComponent implements OnInit {
   public totalOrderArea: any; // size of the total area required to fulfill the order
   public tileGlue: any; // price of the tile glue
   public tileGrout: any;  // grout for tiles. 100 sqm = 2 bags of 20kg
-  public deliveryCost: any;
+  public deliveryCost: any; // cost of delivery -> R480/ 50 sqm of tiles
   public tileSpacers: number;
+  public registrationReady: boolean; // whether student has been advised or not
 
 
   constructor() {

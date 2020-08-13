@@ -1,18 +1,32 @@
 
+<div class="center">
+  <h1 class="grey-text text-darken-2">Take a look at my different Projects!</h1>
+</div>
 
-  <blockquote>
-    <h3 class="blue-grey-text text-lighten-3">Web Development:</h3>
-    <app-web-dev></app-web-dev>
-  </blockquote>
+  <ul class="collapsible">
+    <li>
+      <div class="collapsible-header"><fa-icon [icon]="web"></fa-icon> Web Development</div>
+      <div class="collapsible-body">
 
-  <blockquote>
-    <h2 class=" blue-grey-text text-lighten-3">Python Projects:</h2>
-    <app-password-generator></app-password-generator>
-  </blockquote>
+          <app-web-dev></app-web-dev>
 
+      </div>
+    </li>
 
+    <li>
+      <div class="collapsible-header"><fa-icon [icon]="python"></fa-icon>Python Projects</div>
+      <div class="collapsible-body">
 
-  <blockquote>
-    <h2 class=" blue-grey-text text-lighten-3">Javascript Projects:</h2>
-    <app-tiles-calculator></app-tiles-calculator>
-  </blockquote>
+          <app-password-generator></app-password-generator>
+
+      </div>
+    </li>
+    <li>
+      <div class="collapsible-header"><fa-icon [icon]="javascript"></fa-icon> Javascript Projects</div>
+      <div class="collapsible-body">
+
+          <app-tiles-calculator></app-tiles-calculator>
+
+      </div>
+    </li>
+  </ul>

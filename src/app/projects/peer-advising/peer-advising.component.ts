@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
-import {AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument} from '@angular/fire/firestore';
+import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {map} from 'rxjs/operators';
 
 
@@ -15,7 +15,8 @@ interface StudentInterface {
   course2: string;
   plus1: string;
   notes: string;
-  img:string;
+  img: string;
+  registrationReady: boolean;
 }
 
 
@@ -34,23 +35,11 @@ export class PeerAdvisingComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Sets user data to firestore on login
 
 
     // REFERENCE THE FIRESTORE COLLECTION
     this.StudentCollection = this.db.collection<StudentInterface>('PeerAdvising'); // ref the collection of type interface
     this.StudentObservable = this.StudentCollection.valueChanges();
-
-    this.StudentObservable.forEach(value => console.log(value)).then(r => console.log('done') );
-
-
-    // const data = { // data payload we want to save
-    //   uid: this.StudentObservable.uid,
-    //   email: this.StudentObservable.email,
-    //   displayName: this.StudentObservable.displayName,
-    //   photoURL: this.StudentObservable.photoURL
-    // };
-
 
   }
 

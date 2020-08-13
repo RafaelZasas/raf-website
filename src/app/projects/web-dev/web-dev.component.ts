@@ -12,4 +12,6 @@ export class WebDevComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  routeToSite() {
+  }
 }
