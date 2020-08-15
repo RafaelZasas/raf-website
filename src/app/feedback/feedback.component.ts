@@ -3,11 +3,12 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import M from 'materialize-css';
 import {AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {Observable, observable} from 'rxjs';
+import {map} from 'rxjs/operators';
 
 
-interface Feedback {
-  message: string;
-  type: string;
+interface FeedbackInterface {
+  feedbackMessage: string;
+  feedbackType: string;
 }
 
 @Component({
@@ -17,8 +18,8 @@ interface Feedback {
 })
 export class FeedbackComponent implements OnInit {
 
-  feedbackCollection: AngularFirestoreCollection<Feedback>; // passing the interface : Feedback
-  feedbackMessages: Observable<Feedback[]>;
+  feedbackCollection: AngularFirestoreCollection<FeedbackInterface>; // passing the interface : Feedback
+  feedbackMessages: Observable<FeedbackInterface[]>;
   feedbackForm: FormGroup;
   options = {};
   elems: any;
@@ -43,12 +44,14 @@ export class FeedbackComponent implements OnInit {
     });
 
     // INIT CONNECTION TO FIRESTORE COLLECTION
-    this.feedbackCollection = this.afs.collection('Feedback', ref => { // collection to store firestore data
-      return ref.limit(3);
+    this.feedbackCollection = this.afs.collection<FeedbackInterface>('Feedback', ref => { // collection to store firestore data
+      return ref;
     }); // reference
 
     // SUBSCRIBE TO THE CHANGES
     this.feedbackMessages = this.feedbackCollection.valueChanges(); // observable of notes data
+
+
   }
 
   onSubmit() {

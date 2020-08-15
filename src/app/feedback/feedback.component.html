@@ -33,4 +33,17 @@
     </form>
   </div>
 
+
 </div>
+
+<div class="container">
+  <ul class="collection"  *ngFor="let message of feedbackMessages | async" >
+    <li class="collection-item"><h5 [class.red-text]="message.feedbackType== 'Bug Report'"
+                                    [class.light-blue-text]="message.feedbackType=='Feature Request'">
+      {{message.feedbackType}}</h5>
+      {{message.feedbackMessage}}
+      </li>
+  </ul>
+</div>
+
+
