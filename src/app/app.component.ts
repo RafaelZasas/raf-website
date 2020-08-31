@@ -8,7 +8,7 @@ import {AuthService} from './services/Auth/auth.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements AfterViewInit {
-  title = 'raf-website';
+  title = 'Raff\'s website';
 
   constructor(public auth: AuthService) {
 

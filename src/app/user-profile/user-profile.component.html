@@ -25,10 +25,13 @@
       <img [src]="user.photoURL" alt="" class="circle responsive-img "> <!-- notice the "circle" class -->
     </div>
 
+    <div class="container">
+      <h3>Your Permissions Are:</h3>
+      <h5 *ngIf="auth.canDelete(user)">Admin</h5>
+      <h5 *ngIf="auth.canEdit(user)">Editor</h5>
+      <h5 *ngIf="auth.canRead(user)">User</h5>
+    </div>
 
-    <h4 class="col">Name: {{user.displayName}}</h4>
-    <h5 class="col">Email: {{ user.email }}</h5>
-    <h5 class="col">User ID: {{ user.uid }}</h5>
 
     <br>
 

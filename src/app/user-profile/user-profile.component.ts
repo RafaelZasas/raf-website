@@ -5,6 +5,8 @@ import {
   faGoogle
 } from '@fortawesome/free-brands-svg-icons';
 
+import {User} from '../services/Auth/auth.service';
+
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
@@ -12,6 +14,7 @@ import {
 })
 export class UserProfileComponent implements OnInit {
   google = faGoogle;
+  private user: User;
 
   constructor(public auth: AuthService, private router: Router) { }
 

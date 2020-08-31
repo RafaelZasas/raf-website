@@ -24,13 +24,96 @@
     </textarea>
       </div>
 
-      <div class="row">
-        <button class="btn waves-effect" type="submit">Submit
+      <div class="row" *ngIf="auth.user$ | async as user; then authenticated else guest">
+        <!-- CORRESPONDING BUTTON WILL GO HERE -->
+      </div>
+
+      <ng-template #authenticated>
+        <button
+          class="btn waves-effect light-blue"
+          type="submit">Submit
           <i class="material-icons right">send</i>
         </button>
-      </div>
+      </ng-template>
+
+      <ng-template #guest>
+        <button
+          class="btn waves-effect light-blue"
+          type="submit" routerLink="/login">Create an Account
+        </button>
+      </ng-template>
+
 
     </form>
   </div>
 
+
 </div>
+
+<div class="container">
+  <ul class="collection" *ngFor="let message of feedbackMessages | async">
+    <li class="collection-item">
+      <div class="row">
+
+<!--         SECTION FOR ALL USERS TO SEE FEEDBACK MESSAGES   -->
+        <div class="col s8 m9 l9">
+          <div class="row">
+<!--          row for message type  -->
+            <h5 [class.red-text]="message.feedbackType== 'Bug Report'"
+                [class.light-blue-text]="message.feedbackType=='Feature Request'">
+              {{message.feedbackType}}</h5>
+          </div>
+          <div class="row">
+            <!--  row for feedback message -->
+            {{message.feedbackMessage}}
+          </div>
+          <div class="row">
+            <!--  row for username -->
+            {{message.displayName}}
+          </div>
+
+
+
+<!--          COLUMN FOR THE ADMIN ACCESS  -->
+        </div>
+
+
+<!--        SECTION FOR ADMIN PERMISSION   -->
+
+        <div *ngIf="this.auth.user$| async as user">
+
+          <div class="col s4 m3 l3">
+            <div class="row" *ngIf="auth.canDelete(user)">
+              <a class="right-aligned" (click)="this.feedbackPostService.deletePost(message.postID)">
+                <fa-icon [icon]="trash"></fa-icon>
+                Delete
+              </a>
+            </div>
+
+            <div class="row"  *ngIf="auth.canEdit(user)">
+              <a class="right-aligned">
+                <fa-icon [icon]="reply"></fa-icon>
+                Reply
+              </a>
+            </div>
+
+            <div class="row"  *ngIf="auth.canEdit(user)">
+              <a class="right-aligned" >
+                <fa-icon [icon]="edit"></fa-icon>
+                Edit
+              </a>
+            </div>
+
+          </div>
+        </div>
+
+
+
+
+      </div>
+
+    </li>
+  </ul>
+</div>
+
+

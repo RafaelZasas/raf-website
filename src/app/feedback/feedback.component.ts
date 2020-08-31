@@ -1,13 +1,21 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import M from 'materialize-css';
-import {AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection} from '@angular/fire/firestore';
+import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
+import {AuthService} from '../services/Auth/auth.service';
 import {Observable, observable} from 'rxjs';
+import {map} from 'rxjs/operators';
+import {Router} from '@angular/router';
+import {faTrashAlt, faEdit} from '@fortawesome/free-regular-svg-icons';
+import {faReply} from '@fortawesome/free-solid-svg-icons';
+import {FeedbackService} from '../services/Posts/feedback.service';
 
-
-interface Feedback {
-  message: string;
-  type: string;
+interface FeedbackInterface {
+  feedbackMessage: string;
+  feedbackType: string;
+  displayName?: string;
+  uid?: string;
+  postID?: string;
 }
 
 @Component({
@@ -17,14 +25,21 @@ interface Feedback {
 })
 export class FeedbackComponent implements OnInit {
 
-  feedbackCollection: AngularFirestoreCollection<Feedback>; // passing the interface : Feedback
-  feedbackMessages: Observable<Feedback[]>;
+  feedbackCollection: AngularFirestoreCollection<FeedbackInterface>; // passing the interface : Feedback
+  feedbackMessages: Observable<FeedbackInterface[]>;
   feedbackForm: FormGroup;
   options = {};
   elems: any;
 
+  // ICONS
+  edit = faEdit;
+  reply = faReply;
+  trash = faTrashAlt;
 
-  constructor(private afs: AngularFirestore) {
+
+  constructor(private afs: AngularFirestore,
+              public feedbackPostService: FeedbackService,
+              public auth: AuthService) {
   }
 
 
@@ -43,21 +58,29 @@ export class FeedbackComponent implements OnInit {
     });
 
     // INIT CONNECTION TO FIRESTORE COLLECTION
-    this.feedbackCollection = this.afs.collection('Feedback', ref => { // collection to store firestore data
-      return ref.limit(3);
+    this.feedbackCollection = this.afs.collection<FeedbackInterface>('Feedback', ref => { // collection to store firestore data
+      return ref;
     }); // reference
 
     // SUBSCRIBE TO THE CHANGES
     this.feedbackMessages = this.feedbackCollection.valueChanges(); // observable of notes data
+
+
   }
 
-  onSubmit() {
+  async onSubmit() {
+
 
     if (this.feedbackForm.valid) { // check if the form is valid
+      const {uid, displayName} = await this.auth.getUser();
+
       const formData = {
         feedbackType: this.feedbackForm.value.feedbackType,
-        feedbackMessage: this.feedbackForm.value.feedbackMessage
+        feedbackMessage: this.feedbackForm.value.feedbackMessage,
+        uid,
+        displayName,
       };
+
       // @ts-ignore
       this.feedbackCollection.add(formData).then(r => console.log('stored feedback successfully'),
         M.toast({html: 'Thank you !', classes: 'rounded blue'}));
@@ -69,6 +92,9 @@ export class FeedbackComponent implements OnInit {
     } else {
       M.toast({html: 'Please enter a message before submitting.', classes: 'rounded red'});
     }
+
+
   }
+
 
 }
