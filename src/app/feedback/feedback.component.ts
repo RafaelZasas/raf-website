@@ -1,14 +1,21 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import M from 'materialize-css';
-import {AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection} from '@angular/fire/firestore';
+import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
+import {AuthService} from '../services/Auth/auth.service';
 import {Observable, observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-
+import {Router} from '@angular/router';
+import {faTrashAlt, faEdit} from '@fortawesome/free-regular-svg-icons';
+import {faReply} from '@fortawesome/free-solid-svg-icons';
+import {FeedbackService} from '../services/Posts/feedback.service';
 
 interface FeedbackInterface {
   feedbackMessage: string;
   feedbackType: string;
+  displayName?: string;
+  uid?: string;
+  postID?: string;
 }
 
 @Component({
@@ -24,8 +31,15 @@ export class FeedbackComponent implements OnInit {
   options = {};
   elems: any;
 
+  // ICONS
+  edit = faEdit;
+  reply = faReply;
+  trash = faTrashAlt;
 
-  constructor(private afs: AngularFirestore) {
+
+  constructor(private afs: AngularFirestore,
+              public feedbackPostService: FeedbackService,
+              public auth: AuthService) {
   }
 
 
@@ -54,13 +68,19 @@ export class FeedbackComponent implements OnInit {
 
   }
 
-  onSubmit() {
+  async onSubmit() {
+
 
     if (this.feedbackForm.valid) { // check if the form is valid
+      const {uid, displayName} = await this.auth.getUser();
+
       const formData = {
         feedbackType: this.feedbackForm.value.feedbackType,
-        feedbackMessage: this.feedbackForm.value.feedbackMessage
+        feedbackMessage: this.feedbackForm.value.feedbackMessage,
+        uid,
+        displayName,
       };
+
       // @ts-ignore
       this.feedbackCollection.add(formData).then(r => console.log('stored feedback successfully'),
         M.toast({html: 'Thank you !', classes: 'rounded blue'}));
@@ -72,6 +92,9 @@ export class FeedbackComponent implements OnInit {
     } else {
       M.toast({html: 'Please enter a message before submitting.', classes: 'rounded red'});
     }
+
+
   }
+
 
 }

@@ -3,7 +3,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 import {ReactiveFormsModule} from '@angular/forms';
-import { HttpClientModule} from '@angular/common/http';
+import {HttpClientModule} from '@angular/common/http';
 
 
 // COMPONENT IMPORTS
@@ -15,14 +15,13 @@ import {ProjectsComponent} from './projects/projects.component';
 import {ResumeComponent} from './resume/resume.component';
 import {AboutMeComponent} from './about-me/about-me.component';
 import {FeedbackComponent} from './feedback/feedback.component';
-import { UserProfileComponent } from './user-profile/user-profile.component';
-import { LoginComponent } from './services/Auth/login/login.component';
-import { PasswordGeneratorComponent } from './projects/python-projects/password-generator/password-generator.component';
-import { PeerAdvisingComponent } from './projects/peer-advising/peer-advising.component';
-import { AddStudentInfoComponent } from './projects/peer-advising/add-student-info/add-student-info.component';
-import { StudentCardListComponent } from './projects/peer-advising/student-card/student-card-list.component';
-import { TilesCalculatorComponent } from './projects/JS-projects/tiles-calculator/tiles-calculator.component';
-import { WebDevComponent } from './projects/web-dev/web-dev.component';
+import {UserProfileComponent} from './user-profile/user-profile.component';
+import {LoginComponent} from './services/Auth/login/login.component';
+import {PasswordGeneratorComponent} from './projects/python-projects/password-generator/password-generator.component';
+import {PeerAdvisingComponent} from './projects/peer-advising/peer-advising.component';
+import {AddStudentInfoComponent} from './projects/peer-advising/add-student-info/add-student-info.component';
+import {TilesCalculatorComponent} from './projects/JS-projects/tiles-calculator/tiles-calculator.component';
+import {WebDevComponent} from './projects/web-dev/web-dev.component';
 
 // FIREBASE IMPORTS
 import * as firebase from 'firebase/app';
@@ -39,9 +38,6 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {environment} from '../environments/environment';
 
 
-
-
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,7 +50,6 @@ import {environment} from '../environments/environment';
     FeedbackComponent,
     PeerAdvisingComponent,
     AddStudentInfoComponent,
-    StudentCardListComponent,
     UserProfileComponent,
     LoginComponent,
     PasswordGeneratorComponent,

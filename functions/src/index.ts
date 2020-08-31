@@ -31,9 +31,17 @@ export const welcomeEmail = functions.auth.user().onCreate(user => {
 
 });
 
-// Sends email to user after signup
+// Sends email to me when feedback has been submitted
 export const feedbackSubmitted = functions.firestore.document('Feedback/{ID}')
   .onCreate(async (change, context) => {
+
+    const postRef = db.doc(`Feedback/${context.params.ID}`); // reference to post in db
+    const data = { // data payload we want to save
+      postID: context.params.ID
+    };
+   await postRef.set(data, {merge: true})
+     .then(r=> console.log(`postID updated\n${r}`))
+     .catch(e=>console.log(`Error when saving postID\n${e}`)); // merge stops destructive operation
 
     // Read the feedback document
     const entrySnap = await db.collection('Feedback').doc(context.params.ID).get();
@@ -57,3 +65,5 @@ export const feedbackSubmitted = functions.firestore.document('Feedback/{ID}')
     return sgMail.send(msg);
 
   });
+
+
