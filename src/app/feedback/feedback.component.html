@@ -84,21 +84,21 @@
 
           <div class="col s4 m3 l3">
             <div class="row" *ngIf="auth.canDelete(user)">
-              <a class="right-aligned" (click)="this.feedbackPostService.deletePost(message.postID)">
+              <a class="btn btn-block rounded materialize-red" (click)="this.feedbackPostService.deletePost(message.postID)">
                 <fa-icon [icon]="trash"></fa-icon>
                 Delete
               </a>
             </div>
 
             <div class="row"  *ngIf="auth.canEdit(user)">
-              <a class="right-aligned">
+              <a class="btn btn-block rounded light-blue">
                 <fa-icon [icon]="reply"></fa-icon>
                 Reply
               </a>
             </div>
 
             <div class="row"  *ngIf="auth.canEdit(user)">
-              <a class="right-aligned" >
+              <a class="btn btn-block green" >
                 <fa-icon [icon]="edit"></fa-icon>
                 Edit
               </a>

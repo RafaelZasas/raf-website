@@ -24,7 +24,7 @@ import {TilesCalculatorComponent} from './projects/JS-projects/tiles-calculator/
 import {WebDevComponent} from './projects/web-dev/web-dev.component';
 
 // FIREBASE IMPORTS
-import * as firebase from 'firebase/app';
+
 import {AngularFireModule} from '@angular/fire';
 import {AngularFirePerformanceModule} from '@angular/fire/performance';
 import {AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService} from '@angular/fire/analytics';
@@ -36,6 +36,7 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 
 // environment imports
 import {environment} from '../environments/environment';
+import { RegisterComponent } from './services/Auth/register/register.component';
 
 
 @NgModule({
@@ -56,6 +57,7 @@ import {environment} from '../environments/environment';
     WebDevComponent,
     TilesCalculatorComponent,
     PasswordGeneratorComponent,
+    RegisterComponent,
   ],
   imports: [
     // ANGULAR MODULE IMPORTS

@@ -11,6 +11,7 @@ import {UserProfileComponent} from './user-profile/user-profile.component';
 import {AuthGuard} from './services/Auth/auth.guard';
 import {LoginComponent} from './services/Auth/login/login.component';
 import {TilesCalculatorComponent} from './projects/JS-projects/tiles-calculator/tiles-calculator.component';
+import {RegisterComponent} from './services/Auth/register/register.component';
 
 
 const routes: Routes = [
@@ -22,6 +23,7 @@ const routes: Routes = [
   {path: 'fys2020', component: PeerAdvisingComponent},
   {path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuard]},
   {path: 'login', component: LoginComponent},
+  {path: 'register', component: RegisterComponent},
   {path: 'tilecalculator', component: TilesCalculatorComponent},
 ];
 
