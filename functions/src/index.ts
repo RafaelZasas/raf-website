@@ -2,6 +2,7 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 
+
 admin.initializeApp();
 const db = admin.firestore();
 
@@ -65,5 +66,34 @@ export const feedbackSubmitted = functions.firestore.document('Feedback/{ID}')
     return sgMail.send(msg);
 
   });
+
+// acts as an endpoint getter for Python Password Generator FastAPI
+export const getPassword = functions.https.onRequest((request, response) => {
+
+  const useSymbols = request.query.useSymbols;
+  const pwLength = request.query.pwLength;
+
+  // SEND THE HTTP GET REQUEST TO API
+
+  const headers = new HttpHeaders()
+    .set('Accept', '*');
+
+  // BUILD URL STRING WITH PARAMS
+  const ROOT_URL = `http://34.72.115.208/password?pwd_length=${formData.pwdlength}&use_symbols=${formData.useSymbols}`;
+
+  this.http.get(ROOT_URL, {headers}).subscribe(
+    (data: any[]) => {
+      this.password = data;
+      this.password = this.password.password;
+      console.log(this.password);
+      if (this.password.length < 1) {
+        M.toast({html: 'There was a server-side issue.', classes: 'rounded red'});
+      }
+    });
+
+  response.send(`useSymbols: ${useSymbols} \npwLength: ${pwLength}`);
+
+
+});
 
 

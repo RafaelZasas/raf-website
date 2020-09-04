@@ -1,11 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
-
-
+import M from 'Materialize-css';
 import {auth} from 'firebase/app';
 import {AngularFireAuth} from '@angular/fire/auth';
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
-
 import {Observable, of} from 'rxjs';
 import {first, switchMap} from 'rxjs/operators';
 
@@ -15,7 +13,7 @@ export interface User {
   email: string;
   photoURL?: string;
   displayName?: string;
-  permissions?: string[];
+  permissions?: {};
 }
 
 
@@ -23,6 +21,8 @@ export interface User {
   providedIn: 'root'
 })
 export class AuthService {
+
+  userCredential; // to store the promise returned when signing up/ in with email & password
 
   constructor(
     // inject imports for fire store auth service in constructor
@@ -61,11 +61,54 @@ export class AuthService {
     return false;
   }
 
-  private oAuthLogin(provider) {
-    return this.afAuth.signInWithPopup(provider)
-      .then((credential) => {
-        this.updateUserData(credential.user);
+
+  /*
+
+SECTION FOR AUTHENTICATING USERS WITH VARIOUS PROVIDERS
+
+ */
+
+  // FUNCTION FOR REGISTERING USERS WITH EMAIL & PASSWORD
+
+  async emailRegistration(email, password, username) {
+
+    const result = await this.afAuth.createUserWithEmailAndPassword(email, password).then(cred => {
+      this.userCredential = cred;
+      console.log(this.userCredential + '\n' + result);
+    }).catch(err => {
+      const errorCode = err.code;
+      const errorMessage = err.message;
+      console.log(`Error Code: ${errorCode}\nError Message: ${errorMessage}`);
+      M.toast({html: `Error: ${errorMessage}`, classes: 'rounded materialize-red'});
+    });
+
+    await this.insertNewUser(this.userCredential.user, username).then(r =>
+      this.router.navigate(['/user-profile']))
+      .catch(r => {
+        M.toast({html: `Error: ${r.errorMessage}`, classes: 'rounded materialize-red'});
+        console.log(`Login Error\n${r}`);
       });
+  }
+
+
+  // FUNCTION FOR SIGNING IN USERS WITH EMAIL & PASSWORD
+
+  async emailSignIn(email, password) {
+    // reference google auth provider
+
+    // pass provider to sign in with popup functionality
+    this.afAuth.signInWithEmailAndPassword(email, password)
+      .catch(err => {
+        const errorCode = err.code;
+        const errorMessage = err.message;
+        console.log(`Error Code: ${errorCode} \n Error Message: ${errorMessage}`);
+        M.toast({html: `Error: ${errorMessage}`, classes: 'rounded materialize-red'});
+      }).then(cred => {
+      this.userCredential = cred;
+      this.router.navigate(['/user-profile']);
+      M.toast({html: `Signed in as ${this.userCredential.displayName}`, classes: 'rounded blue'});
+    });
+
   }
 
 
@@ -76,15 +119,52 @@ export class AuthService {
     // pass provider to sign in with popup functionality
     const credential = await this.afAuth.signInWithPopup(provider);  // auth.signInWithPopup(provider);
 
-    await this.updateUserData(credential.user).then(r =>
-      this.router.navigate(['/user-profile'])).catch(r => console.log('Login Error'));
+    await this.updateUserData(credential.user)
+      .then(r =>
+        this.router.navigate(['/user-profile'])).catch(r => console.log('Login Error'))
+      .then(M.toast({html: `Signed in as ${credential.user.displayName}`, classes: 'rounded blue'}))
+      .catch(err => {
+        M.toast({html: `Error: ${err.errorMessage}`, classes: 'rounded materialize-red'});
+      });
   }
 
   async signOut() {
     await this.afAuth.signOut().then(r =>
-      this.router.navigate(['/login']).then(res => console.log('logged out.')))
+      this.router.navigate(['/login'])
+        .then(res =>
+          M.toast({html: `Logged out successfully`, classes: 'rounded materialize-red'})
+        ))
       .catch(e => console.log(`Error Signing Out\n${e}`));  // auth.signOut();
   }
+
+
+  private insertNewUser(user, username) {
+    console.log(user);
+    // Sets user data to firestore on login
+    const userRef: AngularFirestoreDocument<User> = this.afs.doc(`users/${user.uid}`);
+
+    const data = { // data payload we want to save
+      uid: user.uid,
+      email: user.email,
+      displayName: username,
+      photoURL: 'https://firebasestorage.googleapis.com/v0/b/rafael-zasas.appspot.com' +
+        '/o/peer-advising%2Fdefault.jpg?alt=media&token=8afe60c6-0fd5-42da-9a1d-3897a77a1fb9',
+      permissions: {
+        user: true,
+        edit: false,
+        admin: false
+      }
+    };
+
+    return userRef.set(data, {merge: true}); // merge stops destructive operation
+
+  }
+
+
+  /*
+      SECTION FOR UPDATING USER DATA IN FIRESTORE
+*/
+
 
   private updateUserData(user) {
     // Sets user data to firestore on login

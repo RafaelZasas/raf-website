@@ -21,7 +21,7 @@ export class HomeComponent implements AfterViewInit {
      this.auth.getUser().then(user => {
         if (!user) {
           console.log('not logged in');
-         this.displayToast(`Hey New User! Please Consider Leaving Feedback`);
+          this.displayToast(`Hey New User! Please Consider Leaving Feedback`);
         } else {
           console.log(`logged in as ${user.displayName}`);
         }
