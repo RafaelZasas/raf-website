@@ -47,23 +47,7 @@ export class PasswordGeneratorComponent implements OnInit {
         useSymbols: this.passwordForm.value.useSymbols
       };
 
-      // SEND THE HTTP GET REQUEST TO API
 
-      const headers = new HttpHeaders()
-        .set('Accept', '*');
-
-      // BUILD URL STRING WITH PARAMS
-      const ROOT_URL = `http://34.72.115.208/password?pwd_length=${formData.pwdlength}&use_symbols=${formData.useSymbols}`;
-
-      this.http.get(ROOT_URL, {headers}).subscribe(
-        (data: any[]) => {
-          this.password = data;
-          this.password = this.password.password;
-          console.log(this.password);
-          if (this.password.length < 1) {
-            M.toast({html: 'There was a server-side issue.', classes: 'rounded red'});
-          }
-        });
 
       // if the user tries entering nothing
     } else {
