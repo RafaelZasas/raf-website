@@ -5,7 +5,6 @@ import {AppRoutingModule} from './app-routing.module';
 import {ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 
-
 // COMPONENT IMPORTS
 import {AppComponent} from './app.component';
 import {HomeComponent} from './home/home.component';

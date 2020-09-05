@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import M from 'materialize-css';
@@ -14,7 +14,6 @@ export class PasswordGeneratorComponent implements OnInit {
   options = {};
   elems: any;
   password: any;
-  private params: HttpParams;
   userClicked = false;
   passwordForm: FormGroup;
 
@@ -47,6 +46,18 @@ export class PasswordGeneratorComponent implements OnInit {
         useSymbols: this.passwordForm.value.useSymbols
       };
 
+      // SET HEADERS
+      const headers = new HttpHeaders()
+        .set('Access-Control-Allow-Origin', '*');
+
+      //  FUNCTION URL + PARAMS: User ID, Role to be set, Name for logging
+      const ROOT_URL = `https://us-central1-rafael-zasas.cloudfunctions.net/getPassword
+?pwdLength=${formData.pwdlength}&useSymbols=${formData.useSymbols}`;
+
+      this.http.get(ROOT_URL, {headers}).subscribe(
+        (data: any[]) => {
+          console.log(data);  // LOGGING RESPONSE
+        });
 
 
       // if the user tries entering nothing
