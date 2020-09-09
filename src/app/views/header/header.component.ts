@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import M from 'materialize-css';
-import {AuthService} from '../services/Auth/auth.service';
+import {AuthService} from '../../services/Auth/auth.service';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['../../../node_modules/materialize-css/dist/css/materialize.min.css', './header.component.css']
+  styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
   options = {

@@ -7,20 +7,20 @@ import {HttpClientModule} from '@angular/common/http';
 
 // COMPONENT IMPORTS
 import {AppComponent} from './app.component';
-import {HomeComponent} from './home/home.component';
-import {HeaderComponent} from './header/header.component';
-import {FooterComponent} from './footer/footer.component';
-import {ProjectsComponent} from './projects/projects.component';
-import {ResumeComponent} from './resume/resume.component';
-import {AboutMeComponent} from './about-me/about-me.component';
-import {FeedbackComponent} from './feedback/feedback.component';
-import {UserProfileComponent} from './user-profile/user-profile.component';
+import {HomeComponent} from './views/home/home.component';
+import {HeaderComponent} from './views/header/header.component';
+import {FooterComponent} from './views/footer/footer.component';
+import {ProjectsComponent} from './views/projects/projects.component';
+import {ResumeComponent} from './views/resume/resume.component';
+import {AboutMeComponent} from './views/about-me/about-me.component';
+import {FeedbackComponent} from './views/feedback/feedback.component';
+import {UserProfileComponent} from './views/user-profile/user-profile.component';
 import {LoginComponent} from './services/Auth/login/login.component';
-import {PasswordGeneratorComponent} from './projects/python-projects/password-generator/password-generator.component';
-import {PeerAdvisingComponent} from './projects/peer-advising/peer-advising.component';
-import {AddStudentInfoComponent} from './projects/peer-advising/add-student-info/add-student-info.component';
-import {TilesCalculatorComponent} from './projects/JS-projects/tiles-calculator/tiles-calculator.component';
-import {WebDevComponent} from './projects/web-dev/web-dev.component';
+import {PasswordGeneratorComponent} from './views/projects/python-projects/Password-Generator/password-generator.component';
+import {PeerAdvisingComponent} from './views/projects/peer-advising/peer-advising.component';
+import {AddStudentInfoComponent} from './views/projects/peer-advising/add-student-info/add-student-info.component';
+import {TilesCalculatorComponent} from './views/projects/JS-projects/tiles-calculator/tiles-calculator.component';
+import {WebDevComponent} from './views/projects/web-dev/web-dev.component';
 
 // FIREBASE IMPORTS
 
@@ -70,6 +70,7 @@ import { RegisterComponent } from './services/Auth/register/register.component';
     AngularFirePerformanceModule,
     AngularFirestoreModule,
     AngularFireAuthModule,
+    AngularFirePerformanceModule,
     // OTHER IMPORTS
     FontAwesomeModule,
   ],

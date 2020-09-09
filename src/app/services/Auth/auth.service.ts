@@ -62,6 +62,29 @@ export class AuthService {
   }
 
 
+  async getUser() {
+    return this.user$.pipe(first()).toPromise();
+    // gets the first obj in user$ observable
+  }
+
+  ///// Role-based Authorization //////
+
+  canRead(user: User): boolean {
+    const allowed = ['admin', 'edit', 'user'];
+    return AuthService.checkAuthorization(user, allowed);
+  }
+
+  canEdit(user: User): boolean {
+    const allowed = ['admin', 'edit'];
+    return AuthService.checkAuthorization(user, allowed);
+  }
+
+  canDelete(user: User): boolean {
+    const allowed = ['admin'];
+    return AuthService.checkAuthorization(user, allowed);
+  }
+
+
   /*
 
 SECTION FOR AUTHENTICATING USERS WITH VARIOUS PROVIDERS
@@ -184,27 +207,5 @@ SECTION FOR AUTHENTICATING USERS WITH VARIOUS PROVIDERS
 
   }
 
-
-  async getUser() {
-    return this.user$.pipe(first()).toPromise();
-    // gets the first obj in user$ observable
-  }
-
-  ///// Role-based Authorization //////
-
-  canRead(user: User): boolean {
-    const allowed = ['admin', 'edit', 'user'];
-    return AuthService.checkAuthorization(user, allowed);
-  }
-
-  canEdit(user: User): boolean {
-    const allowed = ['admin', 'edit'];
-    return AuthService.checkAuthorization(user, allowed);
-  }
-
-  canDelete(user: User): boolean {
-    const allowed = ['admin'];
-    return AuthService.checkAuthorization(user, allowed);
-  }
 
 }
