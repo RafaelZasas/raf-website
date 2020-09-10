@@ -1,14 +1,15 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import M from 'materialize-css';
 import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
-import {AuthService} from '../services/Auth/auth.service';
-import {Observable, observable} from 'rxjs';
-import {map} from 'rxjs/operators';
-import {Router} from '@angular/router';
+import {AuthService} from '../../services/Auth/auth.service';
+import {FeedbackService} from '../../services/Posts/feedback.service';
+import {Observable} from 'rxjs';
 import {faTrashAlt, faEdit} from '@fortawesome/free-regular-svg-icons';
 import {faReply} from '@fortawesome/free-solid-svg-icons';
-import {FeedbackService} from '../services/Posts/feedback.service';
+import M from 'materialize-css';
+import * as firebase from 'firebase/app';
+// Add the Performance Monitoring library
+import 'firebase/performance';
 
 interface FeedbackInterface {
   feedbackMessage: string;
@@ -23,7 +24,10 @@ interface FeedbackInterface {
   templateUrl: './feedback.component.html',
   styleUrls: ['./feedback.component.css']
 })
-export class FeedbackComponent implements OnInit {
+export class FeedbackComponent implements OnInit, OnDestroy {
+
+  perf = firebase.performance(); // initializes the firebase performance module
+  screenTrace: firebase.performance.Trace; // tracks how long the screen has been opened
 
   feedbackCollection: AngularFirestoreCollection<FeedbackInterface>; // passing the interface : Feedback
   feedbackMessages: Observable<FeedbackInterface[]>;
@@ -45,6 +49,10 @@ export class FeedbackComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.screenTrace = this.perf.trace('aboutMeScreen'); // trace name = loginScreen for tracking in FB
+    this.screenTrace.start(); // start the timer
+    const trace = this.perf.trace('feedbackQueryTrace');
+
     // DROPDOWN FUNCTIONALITY FOR MATERIALIZE
     this.elems = document.querySelectorAll('select');
     M.FormSelect.init(this.elems, this.options); // for the dropdown menu
@@ -63,12 +71,18 @@ export class FeedbackComponent implements OnInit {
     }); // reference
 
     // SUBSCRIBE TO THE CHANGES
-    this.feedbackMessages = this.feedbackCollection.valueChanges(); // observable of notes data
+    this.feedbackMessages = this.feedbackCollection
+      .valueChanges({idField: 'id'});
+  }
 
-
+  ngOnDestroy(): void {
+    this.screenTrace.stop();
   }
 
   async onSubmit() {
+// todo: add trace metrics for size of collection query and how long it takes
+    const trace = this.perf.trace('feedbackSubmitted'); // Track how long it takes users to log in
+    trace.start(); // start the screen tracking timer
 
 
     if (this.feedbackForm.valid) { // check if the form is valid
@@ -93,7 +107,7 @@ export class FeedbackComponent implements OnInit {
       M.toast({html: 'Please enter a message before submitting.', classes: 'rounded red'});
     }
 
-
+    trace.stop();
   }
 
 

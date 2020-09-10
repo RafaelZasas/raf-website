@@ -1,16 +1,16 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 
-import {HomeComponent} from './home/home.component';
-import {ProjectsComponent} from './projects/projects.component';
-import {ResumeComponent} from './resume/resume.component';
-import {AboutMeComponent} from './about-me/about-me.component';
-import {FeedbackComponent} from './feedback/feedback.component';
-import {PeerAdvisingComponent} from './projects/peer-advising/peer-advising.component';
-import {UserProfileComponent} from './user-profile/user-profile.component';
+import {HomeComponent} from './views/home/home.component';
+import {ProjectsComponent} from './views/projects/projects.component';
+import {ResumeComponent} from './views/resume/resume.component';
+import {AboutMeComponent} from './views/about-me/about-me.component';
+import {FeedbackComponent} from './views/feedback/feedback.component';
+import {PeerAdvisingComponent} from './views/projects/peer-advising/peer-advising.component';
+import {UserProfileComponent} from './views/user-profile/user-profile.component';
 import {AuthGuard} from './services/Auth/auth.guard';
 import {LoginComponent} from './services/Auth/login/login.component';
-import {TilesCalculatorComponent} from './projects/JS-projects/tiles-calculator/tiles-calculator.component';
+import {TilesCalculatorComponent} from './views/projects/JS-projects/tiles-calculator/tiles-calculator.component';
 import {RegisterComponent} from './services/Auth/register/register.component';
 
 

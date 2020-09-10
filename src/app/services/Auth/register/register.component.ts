@@ -1,25 +1,30 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../auth.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {Router} from '@angular/router';
 import M from 'Materialize-css';
-
+import * as firebase from 'firebase/app';
+// Add the Performance Monitoring library
+import 'firebase/performance';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html'
 })
 
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
+  perf = firebase.performance(); // initializes the firebase performance module
+  screenTrace: firebase.performance.Trace; // tracks how long the screen has been opened
   registerForm: FormGroup;
 
   constructor(public auth: AuthService, private fb: FormBuilder) {
   }
 
   ngOnInit(): void {
+
+    this.screenTrace = this.perf.trace('loginScreen'); // trace name = loginScreen for tracking in FB
+    this.screenTrace.start(); // start the timer
+
     // Init the data to be collected and validate
-
-
     // FORM GROUP FOR THE USER DATA
     const userData = this.fb.group({
       username: new FormControl('', [Validators.required]),
@@ -49,6 +54,8 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmit() {
+    const trace = this.perf.trace('userRegistration'); // Track how long it takes users to log in
+    trace.start();
 
     if (this.registerForm.valid) { // check if the form is valid
       // provide credentials for email login service
@@ -57,11 +64,15 @@ export class RegisterComponent implements OnInit {
         this.password.value,
         this.username.value
       ).then(r =>
-        M.toast({html: `Hey ${this.username.value}, Thanks for signing up!`, classes: 'rounded blue'}));
+        M.toast({html: `Hey ${this.username.value}, Thanks for signing up!`, classes: 'rounded blue'}))
+        .catch(err => {
+          trace.putAttribute('errorCode', err.code); // log the error to performance monitoring
+        });
       // if the user hasn't filled out correctly
     } else {
       console.log('Please fill out form correctly');
     }
+    trace.stop();
   }
 
   /*
@@ -86,6 +97,10 @@ export class RegisterComponent implements OnInit {
 
   get passwordsMatch() {
     return this.password.value === this.password2.value;
+  }
+
+  ngOnDestroy(): void {
+    this.screenTrace.stop(); // stop timing the screen when the component is closed
   }
 
 
