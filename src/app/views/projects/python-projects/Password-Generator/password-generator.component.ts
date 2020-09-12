@@ -37,6 +37,8 @@ export class PasswordGeneratorComponent implements OnInit {
 
   getPassword() {
     // FOR WHEN THE USER CLICKS THE SUBMIT -> DISPLAY DATA
+    // FOR WHEN THE USER CLICKS THE SUBMIT -> DISPLAY DATA
+    let password;
     this.userClicked = true;
 
     // CHECK IF THE FORM HAS BEEN FILLED OUT CORRECTLY
@@ -48,16 +50,21 @@ export class PasswordGeneratorComponent implements OnInit {
 
       // SET HEADERS
       const headers = new HttpHeaders()
-        .set('Access-Control-Allow-Origin', '*');
+        .set('Access-Control-Allow-Origin', '*')
+        .set('content-type', 'application/json')
+        .set('name', 'Rafael Zasas')
+        .set('Accept', 'application/json');
 
       //  FUNCTION URL + PARAMS: User ID, Role to be set, Name for logging
-      const ROOT_URL = `https://us-central1-rafael-zasas.cloudfunctions.net/getPassword
-?pwdLength=${formData.pwdlength}&useSymbols=${formData.useSymbols}`;
 
+      const ROOT_URL = `http://34.72.115.208/password?pwd_length=${formData.pwdlength}&use_symbols=${formData.useSymbols}`;
       this.http.get(ROOT_URL, {headers}).subscribe(
-        (data: any[]) => {
-          console.log(data);  // LOGGING RESPONSE
+        result => {
+          console.log(result);
+          this.password = result;
         });
+
+      return this.password;
 
 
       // if the user tries entering nothing
@@ -65,5 +72,6 @@ export class PasswordGeneratorComponent implements OnInit {
       M.toast({html: 'Please fil entire form before submitting.', classes: 'rounded red'});
     }
   }
+
 
 }
