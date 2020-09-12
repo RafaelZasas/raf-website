@@ -1,10 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AuthService} from '../auth.service';
+import {AuthService} from '../../../services/Auth/auth.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+import {CustomValidator} from '../../../form-validators/authentication.validator';
 import M from 'Materialize-css';
 import * as firebase from 'firebase/app';
 // Add the Performance Monitoring library
 import 'firebase/performance';
+import 'firebase/analytics';
+import {AngularFirestore} from '@angular/fire/firestore';
+import {faGoogle} from '@fortawesome/free-brands-svg-icons';
 
 @Component({
   selector: 'app-register',
@@ -12,11 +16,15 @@ import 'firebase/performance';
 })
 
 export class RegisterComponent implements OnInit, OnDestroy {
+
+
+  google = faGoogle;
+  analytics = firebase.analytics();
   perf = firebase.performance(); // initializes the firebase performance module
   screenTrace: firebase.performance.Trace; // tracks how long the screen has been opened
   registerForm: FormGroup;
 
-  constructor(public auth: AuthService, private fb: FormBuilder) {
+  constructor(public auth: AuthService, private fb: FormBuilder, private afs: AngularFirestore) {
   }
 
   ngOnInit(): void {
@@ -27,9 +35,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
     // Init the data to be collected and validate
     // FORM GROUP FOR THE USER DATA
     const userData = this.fb.group({
-      username: new FormControl('', [Validators.required]),
-      email: new FormControl('', [Validators.required,
-        Validators.email]),
+      username: new FormControl('', [Validators.required],
+        [CustomValidator.usernameAvailability(this.afs)]),
+      email: new FormControl('',
+        [Validators.required, Validators.email],
+        [CustomValidator.emailRegistration(this.afs)]),
     });
 
     // FORM GROUP FOR THE USER PASSWORDS
@@ -63,8 +73,10 @@ export class RegisterComponent implements OnInit, OnDestroy {
         this.email.value,
         this.password.value,
         this.username.value
-      ).then(r =>
-        M.toast({html: `Hey ${this.username.value}, Thanks for signing up!`, classes: 'rounded blue'}))
+      ).then(r => {
+        this.analytics.logEvent('authService', {serviceName: 'User Registration'});
+        M.toast({html: `Hey ${this.username.value}, Thanks for signing up!`, classes: 'rounded blue'});
+      })
         .catch(err => {
           trace.putAttribute('errorCode', err.code); // log the error to performance monitoring
         });

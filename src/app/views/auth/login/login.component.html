@@ -16,6 +16,15 @@
                    formControlName="email">
           </div>
 
+          <div *ngIf="!this.email.valid && this.email.touched" > <!--  div for error responses    -->
+            <p *ngIf="!this.email.valid && this.email.errors.emailExists !==false"
+               class="amber-text">Please enter a valid email</p>
+
+            <p *ngIf="this.email.errors.emailExists ===false"
+               class="amber-text">Can't seem to find email. <a routerLink="/register">Register Instead?</a></p>
+          </div>
+
+
 
           <div class="row">
             <input type="password"
@@ -31,17 +40,19 @@
 
           <div class="row">
             <div class="col-6">
-              <button type="submit" class="btn light-blue accent-2">Login</button>
+              <button type="submit"
+                      [disabled]="!this.email.valid"
+                      class="btn light-blue accent-2">Login</button>
             </div>
           </div>
 
         </form>
-        <button class="center btn-small light-blue" (click)="auth.googleSignin()">
+        <button class="center btn-small light-blue" (click)="auth.googleSignIn()">
           <fa-icon [icon]="google"></fa-icon>
           Login With Google
         </button>
         <br>
-        <p>Dont have an account? <a routerLink="/register">Register Here</a>.</p>
+        <p>Don't have an account? <a routerLink="/register">Register Here</a>.</p>
       </div>
       <br>
     </div>

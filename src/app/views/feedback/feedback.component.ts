@@ -27,6 +27,7 @@ interface FeedbackInterface {
 export class FeedbackComponent implements OnInit, OnDestroy {
 
   perf = firebase.performance(); // initializes the firebase performance module
+  analytics = firebase.analytics();
   screenTrace: firebase.performance.Trace; // tracks how long the screen has been opened
 
   feedbackCollection: AngularFirestoreCollection<FeedbackInterface>; // passing the interface : Feedback
@@ -95,9 +96,9 @@ export class FeedbackComponent implements OnInit, OnDestroy {
         displayName,
       };
 
-      // @ts-ignore
       this.feedbackCollection.add(formData).then(r => console.log('stored feedback successfully'),
         M.toast({html: 'Thank you !', classes: 'rounded blue'}));
+      this.analytics.logEvent('feedbackService', {serviceName: 'Feedback Submitted'});
 
       // clear the form once submitted
       this.feedbackForm.reset();

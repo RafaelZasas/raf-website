@@ -6,7 +6,8 @@ import {AngularFireAuth} from '@angular/fire/auth';
 import {AngularFirestore, AngularFirestoreDocument} from '@angular/fire/firestore';
 import {Observable, of} from 'rxjs';
 import {first, switchMap} from 'rxjs/operators';
-
+import 'firebase/analytics';
+import * as firebase from 'firebase';
 
 export interface User {
   uid: string;
@@ -22,6 +23,7 @@ export interface User {
 })
 export class AuthService {
 
+  analytics = firebase.analytics(); // this declaration works better than constructor init from import
   userCredential; // to store the promise returned when signing up/ in with email & password
 
   constructor(
@@ -97,7 +99,8 @@ SECTION FOR AUTHENTICATING USERS WITH VARIOUS PROVIDERS
 
     const result = await this.afAuth.createUserWithEmailAndPassword(email, password).then(cred => {
       this.userCredential = cred;
-      console.log(this.userCredential + '\n' + result);
+      console.log(`New user: ${this.userCredential.email} has registered`);
+      this.analytics.logEvent('authService', {serviceName: 'Email & Password registration'});
     }).catch(err => {
       const errorCode = err.code;
       const errorMessage = err.message;
@@ -128,6 +131,7 @@ SECTION FOR AUTHENTICATING USERS WITH VARIOUS PROVIDERS
         M.toast({html: `Error: ${errorMessage}`, classes: 'rounded materialize-red'});
       }).then(cred => {
       this.userCredential = cred;
+      this.analytics.logEvent('authService', {serviceName: 'Email & Password Sign In'});
       this.router.navigate(['/user-profile']);
       M.toast({html: `Signed in as ${this.userCredential.displayName}`, classes: 'rounded blue'});
     });
@@ -135,20 +139,38 @@ SECTION FOR AUTHENTICATING USERS WITH VARIOUS PROVIDERS
   }
 
 
-  async googleSignin() { // async function due to promised based api
+  async googleSignIn(registration: boolean = false) { // optional param to specify that user is registering
+    // async function to sign in or register users with Google oAuth provider
+
     // reference google auth provider
     const provider = new auth.GoogleAuthProvider();
 
     // pass provider to sign in with popup functionality
     const credential = await this.afAuth.signInWithPopup(provider);  // auth.signInWithPopup(provider);
+    this.analytics.logEvent('authService', {serviceName: 'Google Login'});
 
-    await this.updateUserData(credential.user)
-      .then(r =>
-        this.router.navigate(['/user-profile'])).catch(r => console.log('Login Error'))
-      .then(M.toast({html: `Signed in as ${credential.user.displayName}`, classes: 'rounded blue'}))
-      .catch(err => {
-        M.toast({html: `Error: ${err.errorMessage}`, classes: 'rounded materialize-red'});
-      });
+    if (registration) {
+      await this.updateUserData(credential.user)
+        .then(r =>
+          this.router.navigate(['/user-profile'])).catch(r => console.log('Login Error')
+        )
+        .then(
+          M.toast({html: `Signed in as ${credential.user.displayName}`, classes: 'rounded blue'}))
+        .catch(err => {
+          M.toast({html: `Error: ${err.errorMessage}`, classes: 'rounded materialize-red'});
+        });
+    } else {
+      await this.insertNewUser(credential.user, credential.user.displayName)
+        .then(r =>
+          this.router.navigate(['/user-profile'])).catch(r => console.log('Login Error')
+        )
+        .then(
+          M.toast({html: `Signed in as ${credential.user.displayName}`, classes: 'rounded blue'}))
+        .catch(err => {
+          M.toast({html: `Error: ${err.errorMessage}`, classes: 'rounded materialize-red'});
+        });
+    }
+
   }
 
   async signOut() {
@@ -170,6 +192,7 @@ SECTION FOR AUTHENTICATING USERS WITH VARIOUS PROVIDERS
       uid: user.uid,
       email: user.email,
       displayName: username,
+      username,
       photoURL: 'https://firebasestorage.googleapis.com/v0/b/rafael-zasas.appspot.com' +
         '/o/peer-advising%2Fdefault.jpg?alt=media&token=8afe60c6-0fd5-42da-9a1d-3897a77a1fb9',
       permissions: {
@@ -190,7 +213,7 @@ SECTION FOR AUTHENTICATING USERS WITH VARIOUS PROVIDERS
 
 
   private updateUserData(user) {
-    // Sets user data to firestore on login
+    // updates user data upon login. Keeps track of user profile photo/ display name changes
     const userRef: AngularFirestoreDocument<any> = this.afs.doc(`users/${user.uid}`);
 
     const data = { // data payload we want to save
@@ -198,9 +221,6 @@ SECTION FOR AUTHENTICATING USERS WITH VARIOUS PROVIDERS
       email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL,
-      permissions: {
-        user: true
-      }
     };
 
     return userRef.set(data, {merge: true}); // merge stops destructive operation

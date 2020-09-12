@@ -1,0 +1,117 @@
+<div class="center">
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <h1>Register</h1>
+    <p class="teal-text">Create your account</p>
+
+    <!-- USER DATA FORM GROUP -->
+
+    <div formGroupName="userData">
+      <!-- USERNAME -->
+      <div class="row">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="icon-user"></i></span>
+        </div>
+        <label>
+          <input type="text"
+                 class="input-field col s6 offset-s3 m8 offset-m2 l8 offset-l2"
+                 placeholder="Username"
+                 autocomplete="username"
+                 formControlName="username"
+                 required>
+        </label>
+      </div>
+      <div *ngIf="!this.username.valid && this.username.touched" > <!--  div for error responses    -->
+        <p *ngIf="this.username.value==''"
+           class="amber-text">Please enter a username</p>
+
+        <p *ngIf="this.username.errors.usernameAvailable ==false"
+           class="amber-text">Username has been taken. Please choose another</p>
+
+      </div>
+
+
+      <!--  EMAIL INPUT -->
+      <div class="row">
+
+        <label>
+          <input type="text"
+                 class="input-field col s6 offset-s3 m8 offset-m2 l8 offset-l2"
+                 placeholder="Email"
+                 autocomplete="email"
+                 formControlName="email"
+                 required>
+        </label>
+      </div>
+
+      <div *ngIf="!this.email.valid && this.email.touched" > <!--  div for error responses    -->
+        <p *ngIf="this.email.errors.emailNew !==false"
+           class="amber-text">Please enter a valid email</p>
+
+        <p *ngIf="this.email.errors.emailNew ==false"
+           class="amber-text">Email has been taken <a routerLink="/login">Login Instead?</a></p>
+      </div>
+
+
+    </div>
+
+
+    <div formGroupName="userPasswords">
+      <!--  PASSWORD 1 INPUT -->
+      <div class="row">
+        <div class="input-group-prepend">
+          <span class="input-group-text"><i class="icon-lock"></i></span>
+        </div>
+        <label for="password"></label>
+        <input type="password"
+               class="input-field col s6 offset-s3 m8 offset-m2 l8 offset-l2"
+               id="password"
+               placeholder="Password"
+               autocomplete="new-password"
+               formControlName="password"
+               required>
+
+      </div>
+      <p *ngIf="this.password.touched && !this.password.valid"
+         class="amber-text">Please enter a valid password</p>
+
+      <!--  2nd PASSWORD INPUT FOR VALIDATION -->
+
+      <div class="row">
+
+        <label for="password2"></label>
+        <input type="password"
+               class="input-field col s6 offset-s3 m8 offset-m2 l8 offset-l2"
+               placeholder="Repeat password"
+               id="password2"
+               autocomplete="new-password"
+               formControlName="password2"
+               required>
+
+      </div>
+      <p *ngIf="this.password.touched && !passwordsMatch"
+         class="amber-text">Passwords do not match</p>
+    </div>
+
+
+    <div class="row">
+      <button type="submit"
+              [disabled]="!registerForm.valid || !passwordsMatch"
+              class="btn center light-blue accent-2">Create Account
+      </button>
+    </div>
+
+
+    <div class="row">
+      <button class="center btn-small light-blue" (click)="auth.googleSignIn(true)">
+        <fa-icon [icon]="google"></fa-icon>
+        Register With Google
+      </button>
+    </div>
+
+    <br>
+
+    <p>Have an account? <a routerLink="/login">Login Here</a>.</p>
+
+  </form>
+
+</div>

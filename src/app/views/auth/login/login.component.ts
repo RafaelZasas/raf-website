@@ -1,13 +1,16 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AuthService} from '../auth.service';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {AuthService} from '../../../services/Auth/auth.service';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import M from 'Materialize-css';
-import {Router} from '@angular/router';
-import * as firebase from 'firebase/app';
-// Add the Performance Monitoring library
-import 'firebase/performance';
 
 import {faGoogle} from '@fortawesome/free-brands-svg-icons';
+import {CustomValidator} from '../../../form-validators/authentication.validator';
+import {AngularFirestore} from '@angular/fire/firestore';
+// Add the Performance Monitoring library
+import * as firebase from 'firebase/app';
+import {AngularFireAnalytics} from '@angular/fire/analytics';
+import 'firebase/performance';
+import 'firebase/analytics';
 
 @Component({
   selector: 'app-login',
@@ -18,9 +21,10 @@ export class LoginComponent implements OnInit, OnDestroy {
   perf = firebase.performance(); // initializes the firebase performance module
   screenTrace: firebase.performance.Trace; // tracks how long the screen has been opened
   google = faGoogle;
-  loginForm: any;
+  loginForm: FormGroup;
+  analytics: AngularFireAnalytics;
 
-  constructor(public auth: AuthService, private router: Router) {
+  constructor(public auth: AuthService, private afs: AngularFirestore, private fb: FormBuilder) {
 
   }
 
@@ -30,9 +34,10 @@ export class LoginComponent implements OnInit, OnDestroy {
 
     // Init the data to be collected and validate
 
-    this.loginForm = new FormGroup({
-      email: new FormControl('', [Validators.required,
-        Validators.email]),
+    this.loginForm = this.fb.group({
+      email: new FormControl('',
+        [Validators.required, Validators.email],
+        [CustomValidator.emailLogin(this.afs)]),
 
       password: new FormControl('', [
         Validators.required,
@@ -53,7 +58,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       };
       // provide credentials for email login service
       this.auth.emailSignIn(formData.email, formData.password)
-        .catch( err => {
+        .catch(err => {
           trace.putAttribute('errorCode', err.code); // log the error to performance monitoring
           M.toast({html: `Error: ${err.errorMessage}`, classes: 'rounded materialize-red'});
         });
@@ -69,5 +74,9 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.screenTrace.stop(); // stop timing the screen when the component is closed
+  }
+
+  get email() {
+    return this.loginForm.get('email');
   }
 }

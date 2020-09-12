@@ -39,10 +39,6 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
     this.screenTrace.stop();
   }
 
-  ResumeClick() {
-    this.analytics.logEvent('page_view', {page_title: 'resume', name: 'resume clicked'});
-    firebase.analytics().logEvent('Resume Click', {name: 'Resume CLick'});
-  }
 
   displayToast(message){
     M.toast({html: `${message}`, classes: 'rounded green', displayLength: 5000});

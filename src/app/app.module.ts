@@ -6,27 +6,35 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 
 // COMPONENT IMPORTS
+
+// auth components
+import {LoginComponent} from './views/auth/login/login.component';
+import {RegisterComponent} from './views/auth/register/register.component';
+
+// base components
 import {AppComponent} from './app.component';
-import {HomeComponent} from './views/home/home.component';
 import {HeaderComponent} from './views/header/header.component';
 import {FooterComponent} from './views/footer/footer.component';
+
+// views
+import {HomeComponent} from './views/home/home.component';
 import {ProjectsComponent} from './views/projects/projects.component';
 import {ResumeComponent} from './views/resume/resume.component';
 import {AboutMeComponent} from './views/about-me/about-me.component';
+import {WebDevComponent} from './views/projects/web-dev/web-dev.component';
 import {FeedbackComponent} from './views/feedback/feedback.component';
 import {UserProfileComponent} from './views/user-profile/user-profile.component';
-import {LoginComponent} from './services/Auth/login/login.component';
 import {PasswordGeneratorComponent} from './views/projects/python-projects/Password-Generator/password-generator.component';
 import {PeerAdvisingComponent} from './views/projects/peer-advising/peer-advising.component';
 import {AddStudentInfoComponent} from './views/projects/peer-advising/add-student-info/add-student-info.component';
 import {TilesCalculatorComponent} from './views/projects/JS-projects/tiles-calculator/tiles-calculator.component';
-import {WebDevComponent} from './views/projects/web-dev/web-dev.component';
+
 
 // FIREBASE IMPORTS
 
 import {AngularFireModule} from '@angular/fire';
 import {AngularFirePerformanceModule} from '@angular/fire/performance';
-import {AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService} from '@angular/fire/analytics';
+import {AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService, CONFIG } from '@angular/fire/analytics';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {AngularFireAuthModule} from '@angular/fire/auth';
 
@@ -35,7 +43,7 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 
 // environment imports
 import {environment} from '../environments/environment';
-import { RegisterComponent } from './services/Auth/register/register.component';
+
 
 
 @NgModule({
@@ -75,8 +83,13 @@ import { RegisterComponent } from './services/Auth/register/register.component';
     FontAwesomeModule,
   ],
   providers: [
-    ScreenTrackingService,
-    UserTrackingService
+    ScreenTrackingService, // auto logs screen_view events with the router module
+    UserTrackingService, // tracks the users. auto sets setuserid and setUserProperties.
+    { provide: CONFIG, useValue: {
+        send_page_view: true,
+        allow_ad_personalization_signals: true,
+        anonymize_ip: false
+      } }  // send custom config data to analytics
   ],
   bootstrap: [AppComponent]
 })

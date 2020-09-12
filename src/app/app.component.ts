@@ -1,6 +1,7 @@
 import {AfterViewInit, Component} from '@angular/core';
-import {AngularFireAnalytics, DEBUG_MODE} from '@angular/fire/analytics';
 import {AuthService} from './services/Auth/auth.service';
+import 'firebase/performance';
+import 'firebase/analytics';
 
 @Component({
   selector: 'app-root',
@@ -15,5 +16,6 @@ export class AppComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+
   }
 }
