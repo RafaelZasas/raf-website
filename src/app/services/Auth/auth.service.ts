@@ -221,6 +221,7 @@ SECTION FOR AUTHENTICATING USERS WITH VARIOUS PROVIDERS
       email: user.email,
       displayName: user.displayName,
       photoURL: user.photoURL,
+      emailVerified: user.emailVerified
     };
 
     return userRef.set(data, {merge: true}); // merge stops destructive operation

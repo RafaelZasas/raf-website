@@ -1,7 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import M from 'materialize-css';
+import {CustomValidator} from '../../../../form-validators/authentication.validator';
+
 
 @Component({
   selector: 'app-password-generator',
@@ -20,12 +22,13 @@ export class PasswordGeneratorComponent implements OnInit {
 
   constructor(
     private http: HttpClient,
+    private fb: FormBuilder
   ) {
   }
 
   ngOnInit(): void {
     // INITIALIZE THE FORM GROUP
-    this.passwordForm = new FormGroup({
+    this.passwordForm = this.fb.group({
       pwdlength: new FormControl('10', [Validators.required]),
       useSymbols: new FormControl('true', [Validators.required])
     });
@@ -37,6 +40,8 @@ export class PasswordGeneratorComponent implements OnInit {
 
   getPassword() {
     // FOR WHEN THE USER CLICKS THE SUBMIT -> DISPLAY DATA
+    // FOR WHEN THE USER CLICKS THE SUBMIT -> DISPLAY DATA
+
     this.userClicked = true;
 
     // CHECK IF THE FORM HAS BEEN FILLED OUT CORRECTLY
@@ -50,20 +55,36 @@ export class PasswordGeneratorComponent implements OnInit {
       const headers = new HttpHeaders()
         .set('Access-Control-Allow-Origin', '*');
 
-      //  FUNCTION URL + PARAMS: User ID, Role to be set, Name for logging
-      const ROOT_URL = `https://us-central1-rafael-zasas.cloudfunctions.net/getPassword
-?pwdLength=${formData.pwdlength}&useSymbols=${formData.useSymbols}`;
+      const params = new HttpParams()
+        .set('pwdLength', this.pwLength.value)
+        .set('useSymbols', this.getUseSymbols.value);
 
-      this.http.get(ROOT_URL, {headers}).subscribe(
-        (data: any[]) => {
-          console.log(data);  // LOGGING RESPONSE
+      //  FUNCTION URL + PARAMS: User ID, Role to be set, Name for logging
+
+      const ROOT_URL = `https://us-central1-rafael-zasas.cloudfunctions.net/getPassword`;
+
+      this.http.get(ROOT_URL, {headers, params}).subscribe(
+        result => {
+
+          console.log(result);
+          this.password = result;
         });
 
 
       // if the user tries entering nothing
     } else {
-      M.toast({html: 'Please fil entire form before submitting.', classes: 'rounded red'});
+      M.toast({html: 'Please fill entire form before submitting.', classes: 'rounded red'});
     }
   }
+
+
+  get pwLength() {
+    return this.passwordForm.get('pwdlength');
+  }
+
+  get getUseSymbols() {
+    return this.passwordForm.get('useSymbols');
+  }
+
 
 }
