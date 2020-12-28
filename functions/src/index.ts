@@ -10,6 +10,7 @@ admin.initializeApp();
 const db = admin.firestore();
 
 
+
 // Sendgrid Config
 
 // tslint:disable-next-line:no-implicit-dependencies
@@ -84,13 +85,14 @@ export const getPassword = functions.https.onRequest((req, res) => {
   const useSymbols = req.query.useSymbols;
   const pwLength= req.query.pwdLength;
   // BUILD URL STRING WITH PARAMS
-  const ROOT_URL = `http://34.72.115.208/password?pwd_length=${pwLength}&use_symbols=${useSymbols}`;
+  const ROOT_URL = `http://34.67.150.38/password?pwd_length=${pwLength}&use_symbols=${useSymbols}`;
   const debug ={
     pwLenType: typeof pwLength,
     pwLen: pwLength,
     useSymbolsType:typeof useSymbols,
     useSymbols: useSymbols,
   }
+  console.log(req.query);
   console.log(debug);
   // let password: any; // password to be received
 
@@ -105,15 +107,47 @@ export const getPassword = functions.https.onRequest((req, res) => {
           return res.status(400).send(err);
         });
 
-      // password = https.get(ROOT_URL);
-
-      // response.status(200).send(`password: ${password}`);
     }
-  );      // .catch((err: any) => {
-  //   response.status(500).send(`error: ${err}`);
-  // })
+  );
 
 
 });
+
+exports.getRandomPassword = functions.https.onCall(async (data, context) => {
+  const useSymbols = data.useSymbols;
+  const useNumbers = data.useNumbers;
+  const useLetters= data.useLetters;
+  const pwLength= data.pwLength;
+  let password;
+
+  // BUILD URL STRING WITH PARAMS
+  const ROOT_URL = `http://34.67.150.38/password?pwd_length=${pwLength}&use_symbols=${useSymbols}&use_numbers=${useNumbers}&use_letters=${useLetters}`;
+
+  const res = await http.get(ROOT_URL);
+  console.log(res.getBody());
+
+
+  password = res.getBody() as Map<String , any>;
+
+  const debug ={
+    received_data_type: typeof data,
+    received_data:data,
+    pwLen_type: typeof pwLength,
+    pwLength,
+    useSymbols_type:typeof useSymbols,
+    useSymbols,
+    useNumbers,
+    useLetters,
+    ResultingPayloadType: typeof password,
+    ResultingPayload: password,
+
+  }
+
+  console.log(debug);
+
+  return Promise.resolve(password)
+
+});
+
 
 

@@ -13,7 +13,7 @@ import {CustomValidator} from '../../../../form-validators/authentication.valida
 export class PasswordGeneratorComponent implements OnInit {
 
 
-  options = {};
+
   elems: any;
   password: any;
   userClicked = false;
@@ -35,27 +35,23 @@ export class PasswordGeneratorComponent implements OnInit {
 
 
     this.elems = document.querySelectorAll('select');
-    M.FormSelect.init(this.elems, this.options); // for the dropdown menu
+    M.FormSelect.init(this.elems); // for the dropdown menu
   }
 
   getPassword() {
     // FOR WHEN THE USER CLICKS THE SUBMIT -> DISPLAY DATA
     // FOR WHEN THE USER CLICKS THE SUBMIT -> DISPLAY DATA
 
-    this.userClicked = true;
+    this.userClicked = true;  // display the password when clicked
 
     // CHECK IF THE FORM HAS BEEN FILLED OUT CORRECTLY
     if (this.passwordForm.valid) { // check if the form is valid
-      const formData = {
-        pwdlength: this.passwordForm.value.pwdlength,
-        useSymbols: this.passwordForm.value.useSymbols
-      };
 
       // SET HEADERS
       const headers = new HttpHeaders()
         .set('Access-Control-Allow-Origin', '*');
 
-      const params = new HttpParams()
+      const params = new HttpParams() // set the parameters to be sent
         .set('pwdLength', this.pwLength.value)
         .set('useSymbols', this.getUseSymbols.value);
 
@@ -78,6 +74,9 @@ export class PasswordGeneratorComponent implements OnInit {
   }
 
 
+
+  // functions to retrieve form input fields.
+  // note* This retrieves the field not the value
   get pwLength() {
     return this.passwordForm.get('pwdlength');
   }

@@ -67,7 +67,8 @@ export class FeedbackComponent implements OnInit, OnDestroy {
     });
 
     // INIT CONNECTION TO FIRESTORE COLLECTION
-    this.feedbackCollection = this.afs.collection<FeedbackInterface>('Feedback', ref => { // collection to store firestore data
+    this.feedbackCollection = this.afs.collection<FeedbackInterface>(
+      'Feedback', ref => { // collection to store firestore data
       return ref;
     }); // reference
 

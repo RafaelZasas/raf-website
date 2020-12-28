@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../../services/Auth/auth.service';
-import {Router} from '@angular/router';
+
 import {
   faGoogle
 } from '@fortawesome/free-brands-svg-icons';
@@ -19,7 +19,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   perf = firebase.performance(); // initializes the firebase performance module
   screenTrace: firebase.performance.Trace; // tracks how long the screen has been opened
 
-  constructor(public auth: AuthService, private router: Router) { }
+  constructor(public auth: AuthService) { }
 
   ngOnInit(): void {
     this.screenTrace = this.perf.trace('aboutMeScreen'); // trace name = loginScreen for tracking in FB

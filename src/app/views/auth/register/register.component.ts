@@ -69,7 +69,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
     if (this.registerForm.valid) { // check if the form is valid
       // provide credentials for email login service
-      this.auth.emailRegistration(
+      this.auth.emailRegistration( //  email registration function in auth service
         this.email.value,
         this.password.value,
         this.username.value
