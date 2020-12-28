@@ -33,7 +33,7 @@ import {TilesCalculatorComponent} from './views/projects/JS-projects/tiles-calcu
 // FIREBASE IMPORTS
 
 import {AngularFireModule} from '@angular/fire';
-import {AngularFirePerformanceModule} from '@angular/fire/performance';
+import {AngularFirePerformanceModule, PerformanceMonitoringService} from '@angular/fire/performance';
 import {AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService, CONFIG } from '@angular/fire/analytics';
 import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {AngularFireAuthModule} from '@angular/fire/auth';
@@ -78,11 +78,11 @@ import {environment} from '../environments/environment';
     AngularFirePerformanceModule,
     AngularFirestoreModule,
     AngularFireAuthModule,
-    AngularFirePerformanceModule,
     // OTHER IMPORTS
     FontAwesomeModule,
   ],
   providers: [
+    PerformanceMonitoringService, // enable performance monitoring across the entire site
     ScreenTrackingService, // auto logs screen_view events with the router module
     UserTrackingService, // tracks the users. auto sets setuserid and setUserProperties.
     { provide: CONFIG, useValue: {
