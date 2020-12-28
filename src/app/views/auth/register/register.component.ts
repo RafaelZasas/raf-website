@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../../../services/Auth/auth.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {CustomValidator} from '../../../form-validators/authentication.validator';
-import M from 'Materialize-css';
+import M from 'materialize-css';
 import * as firebase from 'firebase/app';
 // Add the Performance Monitoring library
 import 'firebase/performance';

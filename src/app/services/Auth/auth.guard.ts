@@ -3,7 +3,7 @@ import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Route
 import {Observable} from 'rxjs';
 import {AuthService} from './auth.service';
 import {map, take, tap} from 'rxjs/operators';
-import M from 'Materialize-css';
+import M from 'materialize-css';
 
 @Injectable({
   providedIn: 'root'
