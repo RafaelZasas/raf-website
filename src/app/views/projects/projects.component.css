@@ -1,3 +1,9 @@
 fa-icon{
   padding-right: 10px;
 }
+
+.card-image:hover{
+  transition: 0.4s ease-out;
+  transform: translateY(-20px);
+}
+

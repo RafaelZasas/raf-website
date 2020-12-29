@@ -1,32 +1,23 @@
 
-<div class="center">
-  <h1 class="grey-text text-darken-2">Take a look at my different Projects!</h1>
-</div>
 
-  <ul class="collapsible">
-    <li>
-      <div class="collapsible-header"><fa-icon [icon]="web"></fa-icon> Web Development</div>
-      <div class="collapsible-body">
+  <!-- Container for all the cards -->
+  <div class="container">
+    <!--  specify columns are multiline for future proofing-->
+    <div class="columns is-multiline" id="productsSection">
 
-          <app-web-dev></app-web-dev>
-
+      <div class="column is-one-quarter" *ngFor="let card of projectCards"> <!-- specify exactly 4 cards per row-->
+        <a routerLink="{{card.link}}">
+        <div class="card-image">
+          <figure class="image is-5by4">
+            <img alt='{{card.alt}}' src="{{card.img}}">
+          </figure>
+          <div class="card-content center">
+            <p class="title is-4" >{{card.title}}</p>
+          </div>
+        </div>
+        </a>
       </div>
-    </li>
 
-    <li>
-      <div class="collapsible-header"><fa-icon [icon]="python"></fa-icon>Python Projects</div>
-      <div class="collapsible-body">
 
-          <app-password-generator></app-password-generator>
-
-      </div>
-    </li>
-    <li>
-      <div class="collapsible-header"><fa-icon [icon]="javascript"></fa-icon> Javascript Projects</div>
-      <div class="collapsible-body">
-
-          <app-tiles-calculator></app-tiles-calculator>
-
-      </div>
-    </li>
-  </ul>
+    </div>
+  </div>

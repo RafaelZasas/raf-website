@@ -18,17 +18,12 @@ import {FooterComponent} from './views/footer/footer.component';
 
 // views
 import {HomeComponent} from './views/home/home.component';
-import {ProjectsComponent} from './views/projects/projects.component';
 import {ResumeComponent} from './views/resume/resume.component';
 import {AboutMeComponent} from './views/about-me/about-me.component';
-import {WebDevComponent} from './views/projects/web-dev/web-dev.component';
 import {FeedbackComponent} from './views/feedback/feedback.component';
 import {UserProfileComponent} from './views/user-profile/user-profile.component';
-import {PasswordGeneratorComponent} from './views/projects/python-projects/Password-Generator/password-generator.component';
 import {PeerAdvisingComponent} from './views/projects/peer-advising/peer-advising.component';
 import {AddStudentInfoComponent} from './views/projects/peer-advising/add-student-info/add-student-info.component';
-import {TilesCalculatorComponent} from './views/projects/JS-projects/tiles-calculator/tiles-calculator.component';
-
 
 // FIREBASE IMPORTS
 
@@ -52,7 +47,6 @@ import {environment} from '../environments/environment';
     HomeComponent,
     HeaderComponent,
     FooterComponent,
-    ProjectsComponent,
     ResumeComponent,
     AboutMeComponent,
     FeedbackComponent,
@@ -60,10 +54,6 @@ import {environment} from '../environments/environment';
     AddStudentInfoComponent,
     UserProfileComponent,
     LoginComponent,
-    PasswordGeneratorComponent,
-    WebDevComponent,
-    TilesCalculatorComponent,
-    PasswordGeneratorComponent,
     RegisterComponent,
   ],
   imports: [

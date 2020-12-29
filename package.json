@@ -26,6 +26,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.13.0",
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "@sendgrid/mail": "^7.2.5",
+    "bulma": "^0.9.1",
     "cors": "^2.8.5",
     "firebase": "^7.14.6",
     "materialize-css": "^1.0.0",
