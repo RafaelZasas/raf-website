@@ -1,7 +1,7 @@
-.logo-pad-top{
-  padding-top: 10px;
-}
-.logo-pad-bot{
-  padding-bottom: 10px;
+
+
+.card:hover{
+  transition: 0.4s ease-out;
+  transform: translateY(-20px);
 }
 

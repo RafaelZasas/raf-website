@@ -47,49 +47,19 @@ export class PasswordGeneratorComponent implements OnInit {
     // CHECK IF THE FORM HAS BEEN FILLED OUT CORRECTLY
     if (this.passwordForm.valid) { // check if the form is valid
       const callable = this.fns.httpsCallable('getRandomPassword');
-      callable({
-        useSymbols: this.getUseSymbols.value,
-        useNumbers: this.getUseNumbers.value,
-        useLetters: this.getUseLetters.value,
-        pwLength: this.pwLength.value
-      }).subscribe(res => {
-        this.password = res.password;
-        console.log(this.password);
-      });
-      // if the user tries entering nothing
-    } else {
-      M.toast({html: 'Please fill entire form before submitting.', classes: 'rounded red'});
-    }
-  }
-
-  getPassword() {
-    // FOR WHEN THE USER CLICKS THE SUBMIT -> DISPLAY DATA
-
-
-    this.userClicked = true;  // display the password when clicked
-
-    // CHECK IF THE FORM HAS BEEN FILLED OUT CORRECTLY
-    if (this.passwordForm.valid) { // check if the form is valid
-
-      // SET HEADERS
-      const headers = new HttpHeaders()
-        .set('Access-Control-Allow-Origin', '*');
-
-      const params = new HttpParams() // set the parameters to be sent
-        .set('pwdLength', this.pwLength.value)
-        .set('useSymbols', this.getUseSymbols.value);
-
-      //  FUNCTION URL + PARAMS: User ID, Role to be set, Name for logging
-
-      const ROOT_URL = `https://us-central1-rafael-zasas.cloudfunctions.net/getPassword`;
-
-      this.http.get(ROOT_URL, {headers, params}).subscribe(
-        result => {
-
-          console.log(result);
-          this.password = result;
+      try {
+        callable({
+          useSymbols: this.getUseSymbols.value,
+          useNumbers: this.getUseNumbers.value,
+          useLetters: this.getUseLetters.value,
+          pwLength: this.pwLength.value
+        }).subscribe(res => {
+          this.password = res.password;
+          console.log(this.password);
         });
-
+      } catch (e){
+        M.toast({html: `${e.code}\n${e.message}`, classes: 'rounded red'});
+      }
 
       // if the user tries entering nothing
     } else {
