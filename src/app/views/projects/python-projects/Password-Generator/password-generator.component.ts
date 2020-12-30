@@ -1,10 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {AngularFireFunctions} from '@angular/fire/functions';
-import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import M from 'materialize-css';
-import {CustomValidator} from '../../../../form-validators/authentication.validator';
-import {first} from 'rxjs/operators';
+import {faCopy} from '@fortawesome/free-solid-svg-icons';
 
 
 @Component({
@@ -13,13 +12,12 @@ import {first} from 'rxjs/operators';
   styleUrls: ['./password-generator.component.css']
 })
 export class PasswordGeneratorComponent implements OnInit {
-
-
+  callable = this.fns.httpsCallable('getRandomPassword');
   elems: any;
   password: any;
   userClicked = false;
   passwordForm: FormGroup;
-
+  copyIcon = faCopy;
 
   constructor(
     private http: HttpClient,
@@ -42,34 +40,32 @@ export class PasswordGeneratorComponent implements OnInit {
     M.FormSelect.init(this.elems); // for the dropdown menu
   }
 
-   getRandomPassword() {
-    this.userClicked = true;  // display the password when clicked
-    // CHECK IF THE FORM HAS BEEN FILLED OUT CORRECTLY
-    if (this.passwordForm.valid) { // check if the form is valid
-      const callable = this.fns.httpsCallable('getRandomPassword');
-      try {
-        callable({
-          useSymbols: this.getUseSymbols.value,
-          useNumbers: this.getUseNumbers.value,
-          useLetters: this.getUseLetters.value,
-          pwLength: this.pwLength.value
-        }).subscribe(res => {
-          this.password = res.password;
-          console.log(this.password);
-        });
-      } catch (e){
-        M.toast({html: `${e.code}\n${e.message}`, classes: 'rounded red'});
-      }
+    async getRandomPassword() {
+     this.userClicked = true;  // display the password when clicked
+     // CHECK IF THE FORM HAS BEEN FILLED OUT CORRECTLY
+     if (this.passwordForm.valid) { // check if the form is valid
+       try {
+         this.password = await this.callable({
+           useSymbols: this.getUseSymbols.value,
+           useNumbers: this.getUseNumbers.value,
+           useLetters: this.getUseLetters.value,
+           pwLength: this.pwLength.value
+         }).toPromise();
+         console.log(this.password);
+       } catch (e) {
+         M.toast({html: `${e.code}\n${e.message}`, classes: 'rounded red'});
+       }
 
-      // if the user tries entering nothing
-    } else {
-      M.toast({html: 'Please fill entire form before submitting.', classes: 'rounded red'});
-    }
-  }
+       // if the user tries entering nothing
+     } else {
+       M.toast({html: 'Please fill entire form before submitting.', classes: 'rounded red'});
+     }
+   }
 
 
   // functions to retrieve form input fields.
   // note* This retrieves the field not the value
+
   get pwLength() {
     return this.passwordForm.get('pwdlength');
   }
@@ -87,4 +83,14 @@ export class PasswordGeneratorComponent implements OnInit {
   }
 
 
+  copyPassword() {
+    const pw = document.createElement('textarea');
+    pw.value = this.password.password;
+    document.body.appendChild(pw);
+    pw.focus();
+    pw.select();
+    document.execCommand('copy');
+    document.body.removeChild(pw);
+    M.toast({html: 'Copied to clipboard', classes: 'rounded blue'});
+  }
 }

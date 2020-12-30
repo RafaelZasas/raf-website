@@ -38,6 +38,7 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 
 // environment imports
 import {environment} from '../environments/environment';
+import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
 
 
 
@@ -55,6 +56,7 @@ import {environment} from '../environments/environment';
     UserProfileComponent,
     LoginComponent,
     RegisterComponent,
+    PageNotFoundComponent,
   ],
   imports: [
     // ANGULAR MODULE IMPORTS

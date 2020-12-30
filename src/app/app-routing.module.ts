@@ -10,6 +10,7 @@ import {UserProfileComponent} from './views/user-profile/user-profile.component'
 import {AuthGuard} from './services/Auth/auth.guard';
 import {LoginComponent} from './views/auth/login/login.component';
 import {RegisterComponent} from './views/auth/register/register.component';
+import {PageNotFoundComponent} from './views/page-not-found/page-not-found.component';
 
 
 const routes: Routes = [
@@ -24,6 +25,13 @@ const routes: Routes = [
   {path: 'projects', loadChildren: () =>
       import('./views/projects/projects.module').then((m) => m.ProjectsModule),
   },
+  {
+    path: '**',
+    component: PageNotFoundComponent,
+    data: {
+      title: '404'
+    }
+  }
 
 ];
 

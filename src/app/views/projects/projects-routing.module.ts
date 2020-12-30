@@ -5,6 +5,10 @@ import {PasswordGeneratorComponent} from './python-projects/Password-Generator/p
 import {TilesCalculatorComponent} from './JS-projects/tiles-calculator/tiles-calculator.component';
 import {ProjectsComponent} from './projects.component';
 import {AppDevComponent} from './app-dev/app-dev.component';
+import {AppDetailsComponent} from './app-dev/app-details/app-details.component';
+import {PythonProjectsComponent} from './python-projects/python-projects.component';
+import {PageNotFoundComponent} from '../page-not-found/page-not-found.component';
+import {JSProjectsComponent} from './JS-projects/js-projects.component';
 
 
 const routes: Routes = [
@@ -30,19 +34,40 @@ const routes: Routes = [
     }
   },
   {
+    path: 'app-dev/app-details',
+    component: AppDetailsComponent,
+    data: {
+      title: 'App Details'
+    }
+  },
+  {
     path: 'python-dev',
-    component: PasswordGeneratorComponent,
+    component: PythonProjectsComponent,
     data: {
       title: 'Python Projects'
     }
   },
   {
+    path: 'python-dev/password-generator',
+    component: PasswordGeneratorComponent,
+    data: {
+      title: 'Password Generator'
+    }
+  },
+  {
     path: 'js-dev',
-    component: TilesCalculatorComponent,
+    component: JSProjectsComponent,
     data: {
       title: 'JS Projects'
     }
-  }
+  },
+  {
+    path: 'js-dev/tiles-calculator',
+    component: TilesCalculatorComponent,
+    data: {
+      title: 'Tiles Calculator'
+    }
+  },
 
 ];
 
