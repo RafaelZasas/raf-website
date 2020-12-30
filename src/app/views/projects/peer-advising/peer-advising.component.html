@@ -1,0 +1,32 @@
+<div class="container" *ngFor="let student of StudentObservable | async">
+  <div class="col s12 m8 offset-m2 l6 offset-l3">
+    <div class="card-panel grey lighten-5 z-depth-1">
+      <div class="row valign-wrapper">
+        <div class="col s2">
+          <img [src]="student.img" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
+        </div>
+
+        <div class="col s10">
+          <div class="black-text">
+            <h6 [class.materialize-red-text]="student.registrationReady!=true"
+                [class.light-green-text]="student.registrationReady==true">
+              {{student.firstname}} {{student.lastname}}</h6>
+            <br>
+            {{student.studentID}} {{student.gender}}<br>
+            {{student.email}} <br>
+            Major: {{student.major}}<br>
+            Course 1: {{student.course1}}
+            <br>
+            Course 2: {{student.course2}}
+            <br>
+            Plus 1: {{student.plus1}}
+            <br>
+            <p class="blue-grey-text">Other notes: {{student.notes}}</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -3,6 +3,7 @@ import {CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Route
 import {Observable} from 'rxjs';
 import {AuthService} from './auth.service';
 import {map, take, tap} from 'rxjs/operators';
+import M from 'materialize-css';
 
 @Injectable({
   providedIn: 'root'
@@ -18,10 +19,11 @@ export class AuthGuard implements CanActivate {
     return this.auth.user$.pipe(
       take(1),
       map(user => !!user),  // map to boolean
-      tap(loggedIn => {
+      tap(async loggedIn => {
         if (!loggedIn) {
-         this.router.navigate(['/login']).then(r =>
-            console.log('access denied.'));
+          await this.router.navigate(['/login']);
+          M.toast({html: `access denied.`, classes: 'rounded materialize-red'});
+          console.log('access denied.');
         }
       })
     );

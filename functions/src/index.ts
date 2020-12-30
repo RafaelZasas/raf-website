@@ -2,17 +2,27 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 
+const http = require('requestify');
+// tslint:disable-next-line:no-implicit-dependencies
+const cors = require('cors')({origin: true});
+
 admin.initializeApp();
 const db = admin.firestore();
 
+
+
 // Sendgrid Config
+
+// tslint:disable-next-line:no-implicit-dependencies
 import * as sgMail from '@sendgrid/mail';
+
 
 const API_KEY = functions.config().sendgrid.key;
 const TEMPLATE_ID = functions.config().sendgrid.template;
 sgMail.setApiKey(API_KEY);
 
 // Sends email to user after signup
+
 export const welcomeEmail = functions.auth.user().onCreate(user => {
 
   const msg = {
@@ -31,29 +41,113 @@ export const welcomeEmail = functions.auth.user().onCreate(user => {
 
 });
 
-// Sends email to user after signup
+// Sends email to me when feedback has been submitted
 export const feedbackSubmitted = functions.firestore.document('Feedback/{ID}')
   .onCreate(async (change, context) => {
 
+    // saves the documentID as a field
+
+    const snapshot = db.doc(`Feedback/${context.params.ID}`); // reference to post in db
+    const data = { // Document ID we wish to save as post ID in doc
+      postID: context.params.ID
+    };
+    await snapshot.set(data, {merge: true})
+      .then(r => console.log(`postID updated\n${r}`))
+      .catch(e => console.log(`Error when saving postID\n${e}`)); // merge stops destructive operation
+
     // Read the feedback document
-    const entrySnap = await db.collection('Feedback').doc(context.params.ID).get();
+    const entrySnap = await snapshot.get();
 
     // Get the raw data
     const feedback = entrySnap.data();
 
-    const msg = {
-      to: 'zasas.rafi@gmail.com',
-      from: 'admin@rafaelzasas.com',
-      templateId: 'd-e64dad9f967b46a2aeb85407fcad0fd6', // hardcoded template ID
-      dynamic_template_data: {
-        subject: 'Feedback on RafaelZasas.com!',
-        preheader: feedback.feedbackType,
-        type: feedback.feedbackType,
-        message: feedback.feedbackMessage
-      },
-    };
-
-
-    return sgMail.send(msg);
+    if (feedback) {
+      const msg = {
+        to: 'zasas.rafi@gmail.com',
+        from: 'admin@rafaelzasas.com',
+        templateId: 'd-e64dad9f967b46a2aeb85407fcad0fd6', // hardcoded template ID
+        dynamic_template_data: {
+          subject: 'Feedback submitted on RafaelZasas.com',
+          preheader: feedback.feedbackType,
+          type: feedback.feedbackType,
+          message: feedback.feedbackMessage
+        },
+      };
+      return sgMail.send(msg);
+    }
+    return 'error sending feedback email';
 
   });
+
+// acts as an endpoint getter for Python Password Generator FastAPI
+export const getPassword = functions.https.onRequest((req, res) => {
+
+  const useSymbols = req.query.useSymbols;
+  const pwLength= req.query.pwdLength;
+  // BUILD URL STRING WITH PARAMS
+  const ROOT_URL = `http://34.67.150.38/password?pwd_length=${pwLength}&use_symbols=${useSymbols}`;
+  const debug ={
+    pwLenType: typeof pwLength,
+    pwLen: pwLength,
+    useSymbolsType:typeof useSymbols,
+    useSymbols: useSymbols,
+  }
+  console.log(req.query);
+  console.log(debug);
+  // let password: any; // password to be received
+
+  cors(req, res, () => {
+
+      http.get(ROOT_URL).then((response: any) => {
+        console.log(response.getBody());
+        return res.status(200).send(response.getBody());
+      })
+        .catch((err: any) => {
+          console.log(err);
+          return res.status(400).send(err);
+        });
+
+    }
+  );
+
+
+});
+
+exports.getRandomPassword = functions.https.onCall(async (data, context) => {
+  const useSymbols = data.useSymbols;
+  const useNumbers = data.useNumbers;
+  const useLetters= data.useLetters;
+  const pwLength= data.pwLength;
+  let password;
+
+  // BUILD URL STRING WITH PARAMS
+  const ROOT_URL = `http://34.67.150.38/password?pwd_length=${pwLength}&use_symbols=${useSymbols}&use_numbers=${useNumbers}&use_letters=${useLetters}`;
+
+  const res = await http.get(ROOT_URL);
+  console.log(res.getBody());
+
+
+  password = res.getBody() as Map<String , any>;
+
+  const debug ={
+    received_data_type: typeof data,
+    received_data:data,
+    pwLen_type: typeof pwLength,
+    pwLength,
+    useSymbols_type:typeof useSymbols,
+    useSymbols,
+    useNumbers,
+    useLetters,
+    ResultingPayloadType: typeof password,
+    ResultingPayload: password,
+
+  }
+
+  console.log(debug);
+
+  return Promise.resolve(password)
+
+});
+
+
+

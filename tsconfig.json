@@ -1,6 +1,8 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "allowSyntheticDefaultImports":true, // added this in an attempt to get GitHub Deploy action working
+    "esModuleInterop": true, // ^^
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,

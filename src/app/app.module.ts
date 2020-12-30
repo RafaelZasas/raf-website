@@ -1,38 +1,45 @@
-// MODULE IMPORTS
+// ANGULAR MODULE IMPORTS
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
-import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {ReactiveFormsModule} from '@angular/forms';
+import {HttpClientModule} from '@angular/common/http';
 
 // COMPONENT IMPORTS
-import {AppComponent} from './app.component';
-import {HomeComponent} from './home/home.component';
-import {HeaderComponent} from './header/header.component';
-import {FooterComponent} from './footer/footer.component';
-import {ProjectsComponent} from './projects/projects.component';
-import {ResumeComponent} from './resume/resume.component';
-import {AboutMeComponent} from './about-me/about-me.component';
-import {FeedbackComponent} from './feedback/feedback.component';
 
+// auth components
+import {LoginComponent} from './views/auth/login/login.component';
+import {RegisterComponent} from './views/auth/register/register.component';
+
+// base components
+import {AppComponent} from './app.component';
+import {HeaderComponent} from './views/header/header.component';
+import {FooterComponent} from './views/footer/footer.component';
+
+// views
+import {HomeComponent} from './views/home/home.component';
+import {ResumeComponent} from './views/resume/resume.component';
+import {AboutMeComponent} from './views/about-me/about-me.component';
+import {FeedbackComponent} from './views/feedback/feedback.component';
+import {UserProfileComponent} from './views/user-profile/user-profile.component';
+import {PeerAdvisingComponent} from './views/projects/peer-advising/peer-advising.component';
+import {AddStudentInfoComponent} from './views/projects/peer-advising/add-student-info/add-student-info.component';
 
 // FIREBASE IMPORTS
-import * as firebase from 'firebase/app';
-import {AngularFireModule} from '@angular/fire';
-import {AngularFirePerformanceModule} from '@angular/fire/performance';
-import {AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService} from '@angular/fire/analytics';
-import {AngularFirestoreModule} from '@angular/fire/firestore';
 
-import {environment} from '../environments/environment';
-import { PeerAdvisingComponent } from './peer-advising/peer-advising.component';
-import { AddStudentInfoComponent } from './peer-advising/add-student-info/add-student-info.component';
-import { StudentCardListComponent } from './peer-advising/student-card-list/student-card-list.component';
+import {AngularFireModule} from '@angular/fire';
+import {AngularFirePerformanceModule, PerformanceMonitoringService} from '@angular/fire/performance';
+import {AngularFireAnalyticsModule, ScreenTrackingService, UserTrackingService, CONFIG } from '@angular/fire/analytics';
+import {AngularFirestoreModule} from '@angular/fire/firestore';
 import {AngularFireAuthModule} from '@angular/fire/auth';
-import { UserProfileComponent } from './user-profile/user-profile.component';
-import { LoginComponent } from './services/Auth/login/login.component';
-import { PythonProjectsComponent } from './projects/python-projects/python-projects.component';
-import { HttpClientModule} from '@angular/common/http';
-import { TilesCalculatorComponent } from './projects/JS-projects/tiles-calculator/tiles-calculator.component';
+
+// OTHER MODULE IMPORTS
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
+
+// environment imports
+import {environment} from '../environments/environment';
+import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
+
 
 
 @NgModule({
@@ -41,33 +48,40 @@ import { TilesCalculatorComponent } from './projects/JS-projects/tiles-calculato
     HomeComponent,
     HeaderComponent,
     FooterComponent,
-    ProjectsComponent,
     ResumeComponent,
     AboutMeComponent,
     FeedbackComponent,
     PeerAdvisingComponent,
     AddStudentInfoComponent,
-    StudentCardListComponent,
     UserProfileComponent,
     LoginComponent,
-    PythonProjectsComponent,
-    TilesCalculatorComponent,
+    RegisterComponent,
+    PageNotFoundComponent,
   ],
   imports: [
+    // ANGULAR MODULE IMPORTS
     BrowserModule,
     AppRoutingModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    // ANGULAR FIREBASE MODULE IMPORTS
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAnalyticsModule,
     AngularFirePerformanceModule,
     AngularFirestoreModule,
     AngularFireAuthModule,
+    // OTHER IMPORTS
     FontAwesomeModule,
-    ReactiveFormsModule,
-    HttpClientModule,
   ],
   providers: [
-    ScreenTrackingService,
-    UserTrackingService
+    PerformanceMonitoringService, // enable performance monitoring across the entire site
+    ScreenTrackingService, // auto logs screen_view events with the router module
+    UserTrackingService, // tracks the users. auto sets setuserid and setUserProperties.
+    { provide: CONFIG, useValue: {
+        send_page_view: true,
+        allow_ad_personalization_signals: true,
+        anonymize_ip: false
+      } }  // send custom config data to analytics
   ],
   bootstrap: [AppComponent]
 })

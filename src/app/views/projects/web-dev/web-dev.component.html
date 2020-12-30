@@ -1,0 +1,23 @@
+<!-- Container for all the cards -->
+<div class="container">
+  <!--  specify columns are multiline for future proofing-->
+  <div class="columns is-multiline" id="productsSection">
+
+    <div class="column is-one-quarter" *ngFor="let card of websiteCards"> <!-- specify exactly 4 cards per row-->
+      <a href="{{card.link}}">
+        <div class="card-image">
+          <figure class="image is-5by4">
+            <img alt='{{card.alt}}' src="{{card.img}}">
+          </figure>
+          <div class="card-content center">
+            <p class="subtitle is-6" >{{card.title}}</p>
+          </div>
+        </div>
+      </a>
+    </div>
+
+
+  </div>
+</div>
+
+
