@@ -1,7 +1,4 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import M from 'materialize-css';
-import {faJsSquare, faPython} from '@fortawesome/free-brands-svg-icons';
-import {faFileCode} from '@fortawesome/free-regular-svg-icons';
 import * as firebase from 'firebase/app';
 // Add the Performance Monitoring library
 import 'firebase/performance';
