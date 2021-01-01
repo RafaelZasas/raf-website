@@ -1,9 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {AngularFirestore, AngularFirestoreCollection} from '@angular/fire/firestore';
 import {AuthService} from '../../services/Auth/auth.service';
-import {FeedbackService} from '../../services/Posts/feedback.service';
-import {Observable} from 'rxjs';
+import {FeedbackInterface, FeedbackService} from '../../services/Posts/feedback.service';
 import {faTrashAlt, faEdit} from '@fortawesome/free-regular-svg-icons';
 import {faReply} from '@fortawesome/free-solid-svg-icons';
 import M from 'materialize-css';
@@ -11,95 +9,122 @@ import * as firebase from 'firebase/app';
 // Add the Performance Monitoring library
 import 'firebase/performance';
 
-interface FeedbackInterface {
-  feedbackMessage: string;
-  feedbackType: string;
-  displayName?: string;
-  uid?: string;
-  postID?: string;
-}
-
 @Component({
   selector: 'app-feedback',
   templateUrl: './feedback.component.html',
-  styleUrls: ['./feedback.component.css']
+  styleUrls: ['./feedback.component.css',
+  ]
 })
 export class FeedbackComponent implements OnInit, OnDestroy {
 
+  replyingTo = '';
   perf = firebase.performance(); // initializes the firebase performance module
   analytics = firebase.analytics();
   screenTrace: firebase.performance.Trace; // tracks how long the screen has been opened
 
-  feedbackCollection: AngularFirestoreCollection<FeedbackInterface>; // passing the interface : Feedback
-  feedbackMessages: Observable<FeedbackInterface[]>;
   feedbackForm: FormGroup;
+  replyForm: FormGroup;
   options = {};
-  elems: any;
+  formsElem: any;
+  modalElem: any;
+  dropdownElem: any;
 
   // ICONS
   edit = faEdit;
   reply = faReply;
   trash = faTrashAlt;
+  hasReplies: boolean;
+  showSpinner: boolean;
+  showPostsSpinner: boolean;
+  currentPost: FeedbackInterface;
 
 
-  constructor(private afs: AngularFirestore,
-              public feedbackPostService: FeedbackService,
-              public auth: AuthService) {
+  constructor(
+    public feedbackPostService: FeedbackService,
+    public auth: AuthService) {
   }
 
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
 
-    this.screenTrace = this.perf.trace('aboutMeScreen'); // trace name = loginScreen for tracking in FB
+    this.showPostsSpinner = true;
+
+    this.screenTrace = this.perf.trace('Feedback Screen');
     this.screenTrace.start(); // start the timer
-    const trace = this.perf.trace('feedbackQueryTrace');
+    const feedbackQueryTrace = this.perf.trace('Feedback Query Trace');
 
-    // DROPDOWN FUNCTIONALITY FOR MATERIALIZE
-    this.elems = document.querySelectorAll('select');
-    M.FormSelect.init(this.elems, this.options); // for the dropdown menu
+    this.initMaterialize();
+    this.initForms();
 
-    // INIT THE FORM GROUP
-
-    this.feedbackForm = new FormGroup({
-      feedbackMessage: new FormControl('', [Validators.required,
-        Validators.minLength(3)]),
-      feedbackType: new FormControl('General Feedback', Validators.required)
-    });
-
-    // INIT CONNECTION TO FIRESTORE COLLECTION
-    this.feedbackCollection = this.afs.collection<FeedbackInterface>(
-      'Feedback', ref => { // collection to store firestore data
-      return ref;
-    }); // reference
-
-    // SUBSCRIBE TO THE CHANGES
-    this.feedbackMessages = this.feedbackCollection
-      .valueChanges({idField: 'id'});
+    feedbackQueryTrace.start();
+    await this.feedbackPostService.getPosts();
+    feedbackQueryTrace.stop();
+    this.showPostsSpinner = false;
   }
 
   ngOnDestroy(): void {
     this.screenTrace.stop();
   }
 
-  async onSubmit() {
+
+  /**
+   * Initialize all the dom elements from materialize css that need javascript initializations
+   */
+  initMaterialize() {
+
+
+    this.formsElem = document.querySelectorAll('select');
+    M.FormSelect.init(this.formsElem, this.options); // for the dropdown menu
+
+    this.modalElem = document.querySelectorAll('.modal');
+    M.Modal.init(this.modalElem); // for the popup modals
+
+    this.dropdownElem = document.getElementById('.dropdown-trigger');
+    const dropdownOptions = {
+      closeOnClick: true,
+      hover: true,
+    };
+    M.Dropdown.init(this.dropdownElem, dropdownOptions);
+  }
+
+
+  /**
+   * Initialize all the reactive form groups and their validators
+   */
+  initForms() {
+    //  INIT THE FEEDBACK FORM GROUP
+    this.feedbackForm = new FormGroup({
+      feedbackMessage: new FormControl('', [Validators.required,
+        Validators.minLength(3)]),
+      feedbackType: new FormControl('General Feedback', Validators.required)
+    });
+
+    // INIT THE REPLY FORM GROUP
+    this.replyForm = new FormGroup({
+      message: new FormControl('', Validators.required),
+    });
+  }
+
+  /**
+   * Validate that forms have been filled out correctly and then call feedback service to create a new post on firestore
+   */
+  async submitFeedback() {
 // todo: add trace metrics for size of collection query and how long it takes
     const trace = this.perf.trace('feedbackSubmitted'); // Track how long it takes users to log in
     trace.start(); // start the screen tracking timer
 
 
     if (this.feedbackForm.valid) { // check if the form is valid
-      const {uid, displayName} = await this.auth.getUser();
+      const {uid, username} = await this.auth.getUser();
 
       const formData = {
         feedbackType: this.feedbackForm.value.feedbackType,
         feedbackMessage: this.feedbackForm.value.feedbackMessage,
         uid,
-        displayName,
+        username,
       };
 
-      this.feedbackCollection.add(formData).then(r => console.log('stored feedback successfully'),
-        M.toast({html: 'Thank you !', classes: 'rounded blue'}));
-      this.analytics.logEvent('feedbackService', {serviceName: 'Feedback Submitted'});
+      await this.feedbackPostService.createPost(formData);
 
       // clear the form once submitted
       this.feedbackForm.reset();
@@ -112,5 +137,40 @@ export class FeedbackComponent implements OnInit, OnDestroy {
     trace.stop();
   }
 
+  /**
+   * validates reply form is filled out correctly and calls the reply function in feedback service to add the reply to firestore
+   */
+  async replyToPost() {
+    if (this.replyForm.valid) {
+      const user = await this.auth.getUser();
+      const reply = {
+        user: user.uid,
+        profilePhoto: user.profilePhoto,
+        username: user.username,
+        message: this.replyForm.value.message
+      };
+      await this.feedbackPostService.reply(this.replyingTo, reply);
+    } else {
+      console.log(this.replyForm.valid);
+      M.toast({html: 'Please don\'t leave empty replies.', classes: 'rounded red'});
+    }
+    this.replyForm.reset();
 
+  }
+
+  /**
+   * Show the replies for one individual feedback post in a popup modal
+   * @param postID: The ID of the post, used to get replies sub collection of that post
+   */
+  async showReplies(postID: string) {
+    this.showSpinner = true;
+    this.hasReplies = await this.feedbackPostService.getReplies(postID);
+    this.showSpinner = false;
+  }
+
+
+  setPost(message) {
+    this.currentPost = message;
+    console.log(this.currentPost);
+  }
 }

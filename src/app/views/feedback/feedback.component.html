@@ -1,6 +1,6 @@
 <div class="container center">
   <div class="row">
-    <form [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()">
 
       <div class="row center">
         <label class="col s12 m4 l4 xl4">
@@ -39,26 +39,28 @@
       <ng-template #guest>
         <button
           class="btn waves-effect light-blue"
-          type="submit" routerLink="/login">Create an Account
+          type="submit" routerLink="/login">Login to submit feedback
         </button>
       </ng-template>
-
-
     </form>
   </div>
-
-
 </div>
 
+<div class="row" *ngIf="showPostsSpinner">
+  <app-loading-spinner></app-loading-spinner>
+</div>
+
+
+
 <div class="container">
-  <ul class="collection" *ngFor="let message of feedbackMessages | async">
+  <ul class="collection" *ngFor="let message of feedbackPostService.feedbackMessages | async">
     <li class="collection-item">
       <div class="row">
 
-<!--         SECTION FOR ALL USERS TO SEE FEEDBACK MESSAGES   -->
+        <!--         SECTION FOR ALL USERS TO SEE FEEDBACK MESSAGES   -->
         <div class="col s8 m9 l9">
           <div class="row">
-<!--          row for message type  -->
+            <!--          row for message type  -->
             <h5 [class.red-text]="message.feedbackType== 'Bug Report'"
                 [class.light-blue-text]="message.feedbackType=='Feature Request'">
               {{message.feedbackType}}</h5>
@@ -72,48 +74,124 @@
             {{message.displayName}}
           </div>
 
+          <a class="subheader modal-trigger"
+             data-target="repliesModal"
+             style="cursor: pointer"
+             (click)="showReplies(message.postID)">show replies</a>
 
 
-<!--          COLUMN FOR THE ADMIN ACCESS  -->
+          <!--          COLUMN FOR THE ADMIN ACCESS  -->
         </div>
 
 
-<!--        SECTION FOR ADMIN PERMISSION   -->
-
-        <div *ngIf="this.auth.user$| async as user">
-
-          <div class="col s4 m3 l3">
-            <div class="row" *ngIf="auth.canDelete(user)">
-              <a class="btn btn-block rounded materialize-red" (click)="this.feedbackPostService.deletePost(message.postID)">
-                <fa-icon [icon]="trash"></fa-icon>
-                Delete
-              </a>
-            </div>
-
-            <div class="row"  *ngIf="auth.canEdit(user)">
-              <a class="btn btn-block rounded light-blue">
-                <fa-icon [icon]="reply"></fa-icon>
-                Reply
-              </a>
-            </div>
-
-            <div class="row"  *ngIf="auth.canEdit(user)">
-              <a class="btn btn-block green" >
-                <fa-icon [icon]="edit"></fa-icon>
-                Edit
-              </a>
-            </div>
-
-          </div>
-        </div>
-
-
+        <!-- Dropdown Trigger -->
+        <a *ngIf="this.auth.user$"
+           (click)="this.setPost(message)"
+           id="modal-trigger"
+           class="material-icons modal-trigger"
+           style="cursor: pointer; padding-top: 15px; padding-left: 15px"
+           data-target="more_options">more_vert</a>
 
 
       </div>
 
+
     </li>
   </ul>
 </div>
+
+<!-- Show more options dropdown -->
+
+<div id="more_options" class="modal small">
+<ul  class='modal-content' *ngIf="this.auth.user$| async as user">
+  <li *ngIf="auth.canDelete(user)">
+    <a class="btn btn-small rounded materialize-red"
+       (click)="this.feedbackPostService.deletePost(this.currentPost.postID)">
+      <fa-icon [icon]="trash"></fa-icon>
+      Delete
+    </a>
+  </li>
+
+  <li class="row" *ngIf="auth.canEdit(user)">
+    <a class="btn btn-small rounded light-blue modal-trigger"
+       data-target="replyModal"
+       (click)="replyingTo=this.currentPost.postID">
+      <fa-icon [icon]="reply"></fa-icon>
+      Reply
+    </a>
+  </li>
+
+  <li class="row" *ngIf="auth.canEdit(user)">
+    <a class="btn btn-small rounded green">
+      <fa-icon [icon]="edit"></fa-icon>
+      Edit
+    </a>
+  </li>
+</ul>
+  <div class="modal-footer">
+    <button
+      class="btn modal-close light-blue"
+      type="submit">close
+    </button>
+  </div>
+</div>
+
+
+<!-- Show Replies modal -->
+<div id="repliesModal" class="modal">
+
+  <div class="row center-block">
+    <app-loading-spinner *ngIf="this.showSpinner"></app-loading-spinner>
+  </div>
+
+  <div class="modal-content">
+    <div class="col" *ngIf="this.hasReplies; else no_content">
+      <ul class="collection">
+        <li *ngFor="let reply of feedbackPostService.feedbackReplies |async "
+        class="collection-item avatar">
+          <img src="{{reply.profilePhoto}}" alt="profile-photo" class="circle">
+          <span class="title"> {{reply.username}}</span>
+          <p class=" helper-text">{{reply.message}}</p>
+        </li>
+      </ul>
+    </div>
+    <ng-template #no_content>
+      <p>No replies</p>
+    </ng-template>
+
+  </div>
+  <div class="modal-footer">
+    <button
+      class="btn modal-close light-blue"
+      type="submit">close
+    </button>
+  </div>
+</div>
+
+
+<!-- Reply to feedback modal -->
+<div id="replyModal" class="modal">
+  <form [formGroup]="replyForm" (ngSubmit)="replyToPost()">
+    <div class="modal-content">
+      <label class="active" for="txtReply">Reply:</label>
+      <textarea
+        type="text"
+        formControlName="message"
+        id="txtReply"
+        class="col s12 materialize-textarea validate"
+        data-length="120">
+     </textarea>
+    </div>
+    <div class="modal-footer">
+      <button
+        [disabled]="!replyForm.valid"
+        class="btn modal-close light-blue"
+        type="submit">reply
+      </button>
+
+    </div>
+  </form>
+</div>
+
 
 
