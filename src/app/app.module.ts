@@ -24,6 +24,7 @@ import {FeedbackComponent} from './views/feedback/feedback.component';
 import {UserProfileComponent} from './views/user-profile/user-profile.component';
 import {PeerAdvisingComponent} from './views/projects/peer-advising/peer-advising.component';
 import {AddStudentInfoComponent} from './views/projects/peer-advising/add-student-info/add-student-info.component';
+import { LoadingSpinnerComponent } from './ui/loading-spinner/loading-spinner.component';
 
 // FIREBASE IMPORTS
 
@@ -42,6 +43,8 @@ import { PageNotFoundComponent } from './views/page-not-found/page-not-found.com
 
 
 
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,6 +60,7 @@ import { PageNotFoundComponent } from './views/page-not-found/page-not-found.com
     LoginComponent,
     RegisterComponent,
     PageNotFoundComponent,
+    LoadingSpinnerComponent,
   ],
   imports: [
     // ANGULAR MODULE IMPORTS
