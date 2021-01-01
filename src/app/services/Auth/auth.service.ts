@@ -108,7 +108,7 @@ export class AuthService {
    *  @param  {String} password: Password captured from form
    *  @param  {String} username: Username captured from form
    */
-  async emailRegistration(email, password, username) {
+  async emailRegistration(email: string, password: string, username: string) {
 
     try {
       this.userCredential = await this.afAuth.createUserWithEmailAndPassword(email, password);
@@ -133,7 +133,7 @@ export class AuthService {
    *  @param  {String} email: Email captured from form
    *  @param  {String} password: Password captured from form
    */
-  async emailSignIn(email, password) {
+  async emailSignIn(email: string, password: string) {
     try {
       this.userCredential = await this.afAuth.signInWithEmailAndPassword(email, password);
       await this.router.navigate(['/user-profile']);
