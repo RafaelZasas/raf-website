@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {AuthService} from '../../services/Auth/auth.service';
 import {FeedbackInterface, FeedbackService} from '../../services/Posts/feedback.service';
@@ -8,6 +8,7 @@ import M from 'materialize-css';
 import * as firebase from 'firebase/app';
 // Add the Performance Monitoring library
 import 'firebase/performance';
+import {Angular2MaterializeV1Service} from 'angular2-materialize-v1';
 
 @Component({
   selector: 'app-feedback',
@@ -15,7 +16,7 @@ import 'firebase/performance';
   styleUrls: ['./feedback.component.css',
   ]
 })
-export class FeedbackComponent implements OnInit, OnDestroy {
+export class FeedbackComponent implements OnInit, OnDestroy, AfterViewInit{
 
   replyingTo = '';
   perf = firebase.performance(); // initializes the firebase performance module
@@ -24,10 +25,7 @@ export class FeedbackComponent implements OnInit, OnDestroy {
 
   feedbackForm: FormGroup;
   replyForm: FormGroup;
-  options = {};
-  formsElem: any;
-  modalElem: any;
-  dropdownElem: any;
+
 
   // ICONS
   edit = faEdit;
@@ -41,7 +39,8 @@ export class FeedbackComponent implements OnInit, OnDestroy {
 
   constructor(
     public feedbackPostService: FeedbackService,
-    public auth: AuthService) {
+    public auth: AuthService,
+    private angular2MaterializeService: Angular2MaterializeV1Service) {
   }
 
 
@@ -53,7 +52,6 @@ export class FeedbackComponent implements OnInit, OnDestroy {
     this.screenTrace.start(); // start the timer
     const feedbackQueryTrace = this.perf.trace('Feedback Query Trace');
 
-    this.initMaterialize();
     this.initForms();
 
     feedbackQueryTrace.start();
@@ -62,29 +60,22 @@ export class FeedbackComponent implements OnInit, OnDestroy {
     this.showPostsSpinner = false;
   }
 
-  ngOnDestroy(): void {
-    this.screenTrace.stop();
-  }
-
-
   /**
    * Initialize all the dom elements from materialize css that need javascript initializations
    */
-  initMaterialize() {
+  ngAfterViewInit(): void {
 
+    // initialize all elements of type select
+    this.angular2MaterializeService.initSelect('select');
 
-    this.formsElem = document.querySelectorAll('select');
-    M.FormSelect.init(this.formsElem, this.options); // for the dropdown menu
+    this.angular2MaterializeService.initDropdown('.dropdown-trigger');
+    // initialize all Modals with class .Modal
+    this.angular2MaterializeService.initModal('.modal');
 
-    this.modalElem = document.querySelectorAll('.modal');
-    M.Modal.init(this.modalElem); // for the popup modals
+  }
 
-    this.dropdownElem = document.getElementById('.dropdown-trigger');
-    const dropdownOptions = {
-      closeOnClick: true,
-      hover: true,
-    };
-    M.Dropdown.init(this.dropdownElem, dropdownOptions);
+  ngOnDestroy(): void {
+    this.screenTrace.stop();
   }
 
 
@@ -115,13 +106,14 @@ export class FeedbackComponent implements OnInit, OnDestroy {
 
 
     if (this.feedbackForm.valid) { // check if the form is valid
-      const {uid, username} = await this.auth.getUser();
+      const {uid, username, profilePhoto} = await this.auth.getUser();
 
       const formData = {
         feedbackType: this.feedbackForm.value.feedbackType,
         feedbackMessage: this.feedbackForm.value.feedbackMessage,
         uid,
         username,
+        profilePhoto
       };
 
       await this.feedbackPostService.createPost(formData);
@@ -173,4 +165,5 @@ export class FeedbackComponent implements OnInit, OnDestroy {
     this.currentPost = message;
     console.log(this.currentPost);
   }
+
 }

@@ -6,6 +6,7 @@ import {AngularFireAnalytics} from '@angular/fire/analytics';
 import M from 'materialize-css';
 import {take} from 'rxjs/operators';
 
+
 export interface User {
   // describes the data that a user is expected expected to contain
   uid: string;
@@ -17,9 +18,9 @@ export interface User {
 
 export interface FeedbackInterface {
   uid: string;
-  displayName?: string;
+  username?: string;
   email: string;
-  photoURL?: string;
+  profilePhoto?: string;
   permissions?: string;
   feedbackMessage: string;
   feedbackType: string;
