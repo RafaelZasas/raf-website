@@ -16,7 +16,7 @@ import {Angular2MaterializeV1Service} from 'angular2-materialize-v1';
   styleUrls: ['./feedback.component.css',
   ]
 })
-export class FeedbackComponent implements OnInit, OnDestroy, AfterViewInit{
+export class FeedbackComponent implements OnInit, OnDestroy, AfterViewInit {
 
   replyingTo = '';
   perf = firebase.performance(); // initializes the firebase performance module
@@ -31,6 +31,8 @@ export class FeedbackComponent implements OnInit, OnDestroy, AfterViewInit{
   edit = faEdit;
   reply = faReply;
   trash = faTrashAlt;
+
+  // controls
   hasReplies: boolean;
   showSpinner: boolean;
   showPostsSpinner: boolean;
@@ -67,8 +69,9 @@ export class FeedbackComponent implements OnInit, OnDestroy, AfterViewInit{
 
     // initialize all elements of type select
     this.angular2MaterializeService.initSelect('select');
-
-    this.angular2MaterializeService.initDropdown('.dropdown-trigger');
+    // initialize all elements of type dropdown
+    this.angular2MaterializeService.initDropdown('.dropdown-trigger', {
+      container: document.getElementById('dropdown-container')});
     // initialize all Modals with class .Modal
     this.angular2MaterializeService.initModal('.modal');
 
@@ -162,6 +165,7 @@ export class FeedbackComponent implements OnInit, OnDestroy, AfterViewInit{
 
 
   setPost(message) {
+    const instance = document.getElementById('dropdown1');
     this.currentPost = message;
     console.log(this.currentPost);
   }

@@ -96,7 +96,7 @@ export class AuthService {
     return AuthService.checkAuthorization(user, allowed);
   }
 
-  canDelete(user: User): boolean {
+  isAdmin(user: User): boolean {
     const allowed = ['admin'];
     return AuthService.checkAuthorization(user, allowed);
   }

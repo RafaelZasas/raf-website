@@ -63,25 +63,29 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   }
 
-  onSubmit() {
+  async onSubmit() {
     const trace = this.perf.trace('userRegistration'); // Track how long it takes users to log in
     trace.start();
 
     if (this.registerForm.valid) { // check if the form is valid
       // provide credentials for email login service
-      this.auth.emailRegistration( //  email registration function in auth service
-        this.email.value,
-        this.password.value,
-        this.username.value
-      ).then(r => {
+      try {
+        await this.auth.emailRegistration( //  email registration function in auth service
+          this.email.value,
+          this.password.value,
+          this.username.value
+        );
         this.analytics.logEvent('authService', {serviceName: 'User Registration'});
         M.toast({html: `Hey ${this.username.value}, Thanks for signing up!`, classes: 'rounded blue'});
-      })
-        .catch(err => {
-          trace.putAttribute('errorCode', err.code); // log the error to performance monitoring
-        });
+      } catch (e) {
+        M.toast({html: `error signing up\n${e.code}`, classes: 'rounded red'});
+        console.log(`error signing up\n${e.code}\n${e.message}`);
+        trace.putAttribute('errorCode', e.code); // log the error to performance monitoring
+      }
+
       // if the user hasn't filled out correctly
     } else {
+      M.toast({html: 'Please fill out form correctly', classes: 'rounded red'});
       console.log('Please fill out form correctly');
     }
     trace.stop();

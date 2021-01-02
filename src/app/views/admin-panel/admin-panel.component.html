@@ -1,0 +1,70 @@
+<div class="row" *ngIf="getUsersSpinner">
+  <app-loading-spinner></app-loading-spinner>
+</div>
+
+<div class="switch">
+  <label>
+    Off
+    <input type="checkbox" id="myswitch">
+    <span class="lever"></span>
+    On
+  </label>
+</div>
+
+<h5 >Admin Panel</h5>
+
+<div class="card" *ngFor="let user of this.adminService.users | async">
+  <div class="card-content">
+    <div class="row">
+
+      <div class="col s5 m5 l5 xl5 push-s1 push-m1 push-l1 push-xl1">
+        <div class="row">
+          <p class="col">Username:</p>
+          <p class="col">{{user.username}}</p>
+        </div>
+
+        <div class="row">
+          <p class="col">Email:</p>
+          <p class="col">{{user.email}}</p>
+        </div>
+      </div>
+
+      <div class="col s6 m6 l6 xl6"> <!-- Column for changing permissions -->
+
+      <div class="col s6 m6 l6 xl6">
+        User:
+      </div>
+      <div class="col s6 m6 l6 xl6">
+        <div class="switch">
+          <label>
+            Off
+            <input type="checkbox">
+            <span class="lever"></span>
+            On
+          </label>
+        </div>
+      </div>
+
+
+
+      <div class="col s6 m6 l6 xl6">
+        Editor:
+      </div>
+      <div class="col s6 m6 l6 xl6">
+        <div class="switch">
+          <label>
+            Off
+            <input type="checkbox">
+            <span class="lever"></span>
+            On
+          </label>
+        </div>
+      </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+

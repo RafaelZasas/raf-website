@@ -7,15 +7,6 @@ import M from 'materialize-css';
 import {take} from 'rxjs/operators';
 
 
-export interface User {
-  // describes the data that a user is expected expected to contain
-  uid: string;
-  email: string;
-  profilePhoto?: string;
-  username?: string;
-  permissions?: {};
-}
-
 export interface FeedbackInterface {
   uid: string;
   username?: string;
@@ -41,7 +32,7 @@ export interface FeedbackRepliesInterface {
 })
 export class FeedbackService {
 
-  feedbackCollection: AngularFirestoreCollection<FeedbackInterface>; // passing the interface : Feedback
+  usersCollection: AngularFirestoreCollection<FeedbackInterface>; // passing the interface : Feedback
   feedbackMessages: Observable<FeedbackInterface[]>;
 
   feedbackRepliesCollection: AngularFirestoreCollection<FeedbackRepliesInterface>;
@@ -65,12 +56,12 @@ export class FeedbackService {
   async getPosts() {
     try {
       // INIT CONNECTION TO FIRESTORE COLLECTION
-      this.feedbackCollection = this.afs.collection<FeedbackInterface>
+      this.usersCollection = this.afs.collection<FeedbackInterface>
       ('Feedback', ref => { // collection to store firestore data
         return ref;
       }); // reference
       // SUBSCRIBE TO THE CHANGES
-      this.feedbackMessages = await this.feedbackCollection.valueChanges({idField: 'id'});
+      this.feedbackMessages = await this.usersCollection.valueChanges({idField: 'id'});
     } catch (e) {
       console.log(`${e.code}\n${e.message}`);
       M.toast({html: `Error getting feedback\n${e.code}`, classes: 'rounded red'});
@@ -84,7 +75,7 @@ export class FeedbackService {
    */
   async createPost(formData) {
     try {
-      await this.feedbackCollection.add(formData);
+      await this.usersCollection.add(formData);
       console.log('stored feedback successfully');
       M.toast({html: 'Thank you !', classes: 'rounded blue'});
       await this.analytics.logEvent('feedbackService', {serviceName: 'Feedback Submitted'});
@@ -110,7 +101,7 @@ export class FeedbackService {
    */
   async deletePost(postID) {
     try {
-      await this.feedbackCollection.doc(postID).delete();
+      await this.usersCollection.doc(postID).delete();
       M.toast({html: `Post deleted!`, classes: 'rounded blue'});
       console.log('Post was successfully deleted');
     } catch (e) {

@@ -65,7 +65,7 @@
               [class.light-blue-text]="message.feedbackType=='Feature Request'">
               {{message.feedbackType}}
         </span>
-        <i class="material-icons right activator"
+        <i class="material-icons right dropdown-trigger"
            data-target='dropdown'
            style="cursor:pointer;"
            *ngIf="this.auth.user$"
@@ -99,7 +99,7 @@
               </a>
             </div>
 
-            <div class="col" *ngIf="auth.canDelete(user)">
+            <div class="col" *ngIf="auth.isAdmin(user)">
               <a class="btn btn-small rounded materialize-red"
                  style="padding-right: 10px"
                  (click)="this.feedbackPostService.deletePost(message.postID)">
@@ -120,6 +120,29 @@
 
     </div>
   </div>
+</div>
+
+
+<!-- Dropdown for the options -->
+<div class="container" id="dropdown-container">
+  <ul id='dropdown' class='dropdown-content'>
+    <li>
+      <a class="btn btn-small rounded light-blue modal-trigger"
+         (click)="this.feedbackPostService.deletePost(this.currentPost.postID)"
+         data-target="replyModal">
+        <fa-icon [icon]="reply"></fa-icon>
+        Reply
+      </a>
+    </li>
+
+    <li>
+      <a class="btn btn-small rounded materialize-red"
+         (click)="this.feedbackPostService.deletePost(this.currentPost.postID)">
+        <fa-icon [icon]="trash"></fa-icon>
+        Delete
+      </a>
+    </li>
+  </ul>
 </div>
 
 
