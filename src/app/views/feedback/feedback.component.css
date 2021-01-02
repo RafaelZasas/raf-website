@@ -23,3 +23,14 @@
     max-width: 86%
   }
 }
+
+.feedback-avatar {
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  overflow: hidden;
+  left: 25px;
+  display: inline-block;
+  vertical-align: middle;
+  border-radius: 50%;
+}
