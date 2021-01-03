@@ -9,6 +9,8 @@ import * as firebase from 'firebase/app';
 // Add the Performance Monitoring library
 import 'firebase/performance';
 import {Angular2MaterializeV1Service} from 'angular2-materialize-v1';
+import {FeedbackCardComponent} from './feedback-card/feedback-card.component';
+import {IDropdown} from 'angular2-materialize-v1/lib/IInstance';
 
 @Component({
   selector: 'app-feedback',
@@ -52,26 +54,35 @@ export class FeedbackComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.screenTrace = this.perf.trace('Feedback Screen');
     this.screenTrace.start(); // start the timer
-    const feedbackQueryTrace = this.perf.trace('Feedback Query Trace');
+
 
     this.initForms();
 
-    feedbackQueryTrace.start();
-    await this.feedbackPostService.getPosts();
-    feedbackQueryTrace.stop();
-    this.showPostsSpinner = false;
+
   }
 
   /**
    * Initialize all the dom elements from materialize css that need javascript initializations
    */
-  ngAfterViewInit(): void {
+  async ngAfterViewInit(): Promise<void> {
+
+    const feedbackQueryTrace = this.perf.trace('Feedback Query Trace');
+    feedbackQueryTrace.start();
+    await this.feedbackPostService.getPosts();
+
+
+
+    // this.feedbackPostService.feedbackMessages.subscribe(async (data: FeedbackInterface[]) => {
+    //   await new Promise(res => setTimeout(res, 500));
+    //   data.forEach(d => {
+    //     this.angular2MaterializeService.initDropdown(`.dropdown-trigger`, {constrainWidth: false});
+    //   });
+    // });
+    this.showPostsSpinner = false;
+    feedbackQueryTrace.stop();
 
     // initialize all elements of type select
     this.angular2MaterializeService.initSelect('select');
-    // initialize all elements of type dropdown
-    this.angular2MaterializeService.initDropdown('.dropdown-trigger', {
-      container: document.getElementById('dropdown-container')});
     // initialize all Modals with class .Modal
     this.angular2MaterializeService.initModal('.modal');
 
@@ -164,10 +175,8 @@ export class FeedbackComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
 
-  setPost(message) {
-    const instance = document.getElementById('dropdown1');
-    this.currentPost = message;
-    console.log(this.currentPost);
+  ngForContentLoaded() {
+    console.log('last');
+    this.angular2MaterializeService.initDropdown(`.dropdown-trigger`, {constrainWidth: false});
   }
-
 }

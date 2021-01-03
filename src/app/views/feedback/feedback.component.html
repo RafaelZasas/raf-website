@@ -53,97 +53,15 @@
 </div>
 
 <!--         SECTION FOR ALL USERS TO SEE FEEDBACK MESSAGES   -->
-<div class="container">
-  <div class="card" *ngFor="let message of feedbackPostService.feedbackMessages | async">
-    <div class="card-content">
-
-      <div class="row">
-
-        <!-- row for message type  -->
-        <span class="card-title text-darken-4"
-              [class.red-text]="message.feedbackType== 'Bug Report'"
-              [class.light-blue-text]="message.feedbackType=='Feature Request'">
-              {{message.feedbackType}}
-        </span>
-        <i class="material-icons right dropdown-trigger"
-           data-target='dropdown'
-           style="cursor:pointer;"
-           *ngIf="this.auth.user$"
-           (click)="this.setPost(message)">more_vert</i>
-
-        <div class="row">
-
-            <img src="{{message.profilePhoto}}" alt="profilePhoto" class="feedback-avatar">
-          <div style="padding-left: 50px">
-            <p class="title">{{message.username}}</p>
-            <p> {{message.feedbackMessage}}</p>
-          </div>
-        </div>
-
-        <a class="subheader modal-trigger"
-           data-target="repliesModal"
-           style="cursor: pointer"
-           (click)="showReplies(message.postID)">show replies</a>
-
-
-          <div class="row no-pad-bot" *ngIf="this.auth.user$| async as user"
-          style="padding-top: 25px">
-
-            <div class="col" *ngIf="auth.canEdit(user)">
-              <a class="btn btn-small rounded light-blue modal-trigger"
-                 style="padding-right: 10px"
-                 data-target="replyModal"
-                 (click)="replyingTo=message.postID">
-                <fa-icon [icon]="reply"></fa-icon>
-                Reply
-              </a>
-            </div>
-
-            <div class="col" *ngIf="auth.isAdmin(user)">
-              <a class="btn btn-small rounded materialize-red"
-                 style="padding-right: 10px"
-                 (click)="this.feedbackPostService.deletePost(message.postID)">
-                <fa-icon [icon]="trash"></fa-icon>
-                Delete
-              </a>
-            </div>
-
-            <div class="col" *ngIf="auth.canEdit(user)">
-              <a class="btn btn-small rounded green">
-                <fa-icon [icon]="edit"></fa-icon>
-                Edit
-              </a>
-            </div>
-          </div>
-
-        </div>
-
-    </div>
-  </div>
+<div class="container" *ngIf="this.auth.user$ | async as user">
+<ng-container *ngFor="let message of feedbackPostService.feedbackMessages | async">
+  <app-feedback-card
+    [feedbackMessage]="message"
+    [user]="user"
+    (replyClicked)="showReplies($event)"></app-feedback-card>
+</ng-container>
 </div>
 
-
-<!-- Dropdown for the options -->
-<div class="container" id="dropdown-container">
-  <ul id='dropdown' class='dropdown-content'>
-    <li>
-      <a class="btn btn-small rounded light-blue modal-trigger"
-         (click)="this.feedbackPostService.deletePost(this.currentPost.postID)"
-         data-target="replyModal">
-        <fa-icon [icon]="reply"></fa-icon>
-        Reply
-      </a>
-    </li>
-
-    <li>
-      <a class="btn btn-small rounded materialize-red"
-         (click)="this.feedbackPostService.deletePost(this.currentPost.postID)">
-        <fa-icon [icon]="trash"></fa-icon>
-        Delete
-      </a>
-    </li>
-  </ul>
-</div>
 
 
 <!-- Show Replies modal -->
