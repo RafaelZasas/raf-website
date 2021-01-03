@@ -3,13 +3,9 @@ import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
 
 const http = require('requestify');
-// tslint:disable-next-line:no-implicit-dependencies
-const cors = require('cors')({origin: true});
 
 admin.initializeApp();
 const db = admin.firestore();
-
-
 
 // Sendgrid Config
 
@@ -79,39 +75,6 @@ export const feedbackSubmitted = functions.firestore.document('Feedback/{ID}')
 
   });
 
-// acts as an endpoint getter for Python Password Generator FastAPI
-export const getPassword = functions.https.onRequest((req, res) => {
-
-  const useSymbols = req.query.useSymbols;
-  const pwLength= req.query.pwdLength;
-  // BUILD URL STRING WITH PARAMS
-  const ROOT_URL = `http://34.67.150.38/password?pwd_length=${pwLength}&use_symbols=${useSymbols}`;
-  const debug ={
-    pwLenType: typeof pwLength,
-    pwLen: pwLength,
-    useSymbolsType:typeof useSymbols,
-    useSymbols: useSymbols,
-  }
-  console.log(req.query);
-  console.log(debug);
-  // let password: any; // password to be received
-
-  cors(req, res, () => {
-
-      http.get(ROOT_URL).then((response: any) => {
-        console.log(response.getBody());
-        return res.status(200).send(response.getBody());
-      })
-        .catch((err: any) => {
-          console.log(err);
-          return res.status(400).send(err);
-        });
-
-    }
-  );
-
-
-});
 
 exports.getRandomPassword = functions.https.onCall(async (data, context) => {
   const useSymbols = data.useSymbols;

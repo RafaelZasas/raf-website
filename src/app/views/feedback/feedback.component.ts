@@ -4,11 +4,11 @@ import {AuthService} from '../../services/Auth/auth.service';
 import {FeedbackInterface, FeedbackService} from '../../services/Posts/feedback.service';
 import {faTrashAlt, faEdit} from '@fortawesome/free-regular-svg-icons';
 import {faReply} from '@fortawesome/free-solid-svg-icons';
-import M from 'materialize-css';
 import * as firebase from 'firebase/app';
 // Add the Performance Monitoring library
 import 'firebase/performance';
 import {Angular2MaterializeV1Service} from 'angular2-materialize-v1';
+
 
 @Component({
   selector: 'app-feedback',
@@ -16,9 +16,8 @@ import {Angular2MaterializeV1Service} from 'angular2-materialize-v1';
   styleUrls: ['./feedback.component.css',
   ]
 })
-export class FeedbackComponent implements OnInit, OnDestroy, AfterViewInit{
+export class FeedbackComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  replyingTo = '';
   perf = firebase.performance(); // initializes the firebase performance module
   analytics = firebase.analytics();
   screenTrace: firebase.performance.Trace; // tracks how long the screen has been opened
@@ -31,10 +30,12 @@ export class FeedbackComponent implements OnInit, OnDestroy, AfterViewInit{
   edit = faEdit;
   reply = faReply;
   trash = faTrashAlt;
+
+  // controls
   hasReplies: boolean;
   showSpinner: boolean;
   showPostsSpinner: boolean;
-  currentPost: FeedbackInterface;
+  replyingTo = '';
 
 
   constructor(
@@ -50,25 +51,34 @@ export class FeedbackComponent implements OnInit, OnDestroy, AfterViewInit{
 
     this.screenTrace = this.perf.trace('Feedback Screen');
     this.screenTrace.start(); // start the timer
-    const feedbackQueryTrace = this.perf.trace('Feedback Query Trace');
+
 
     this.initForms();
 
-    feedbackQueryTrace.start();
-    await this.feedbackPostService.getPosts();
-    feedbackQueryTrace.stop();
-    this.showPostsSpinner = false;
+
   }
 
   /**
    * Initialize all the dom elements from materialize css that need javascript initializations
    */
-  ngAfterViewInit(): void {
+  async ngAfterViewInit(): Promise<void> {
+
+    const feedbackQueryTrace = this.perf.trace('Feedback Query Trace');
+    feedbackQueryTrace.start();
+    await this.feedbackPostService.getPosts();
+
+
+    // this.feedbackPostService.feedbackMessages.subscribe(async (data: FeedbackInterface[]) => {
+    //   await new Promise(res => setTimeout(res, 500));
+    //   data.forEach(d => {
+    //     this.angular2MaterializeService.initDropdown(`.dropdown-trigger`, {constrainWidth: false});
+    //   });
+    // });
+    this.showPostsSpinner = false;
+    feedbackQueryTrace.stop();
 
     // initialize all elements of type select
     this.angular2MaterializeService.initSelect('select');
-
-    this.angular2MaterializeService.initDropdown('.dropdown-trigger');
     // initialize all Modals with class .Modal
     this.angular2MaterializeService.initModal('.modal');
 
@@ -123,7 +133,7 @@ export class FeedbackComponent implements OnInit, OnDestroy, AfterViewInit{
 
       // if the user tries entering nothing
     } else {
-      M.toast({html: 'Please enter a message before submitting.', classes: 'rounded red'});
+      this.angular2MaterializeService.toast({html: 'Please enter a message before submitting.', classes: 'rounded red'});
     }
 
     trace.stop();
@@ -144,10 +154,13 @@ export class FeedbackComponent implements OnInit, OnDestroy, AfterViewInit{
       await this.feedbackPostService.reply(this.replyingTo, reply);
     } else {
       console.log(this.replyForm.valid);
-      M.toast({html: 'Please don\'t leave empty replies.', classes: 'rounded red'});
+      this.angular2MaterializeService.toast({html: 'Please don\'t leave empty replies.', classes: 'rounded red'});
     }
     this.replyForm.reset();
+  }
 
+  setReplyingTo(postID) {
+    this.replyingTo = postID;
   }
 
   /**
@@ -158,12 +171,6 @@ export class FeedbackComponent implements OnInit, OnDestroy, AfterViewInit{
     this.showSpinner = true;
     this.hasReplies = await this.feedbackPostService.getReplies(postID);
     this.showSpinner = false;
-  }
-
-
-  setPost(message) {
-    this.currentPost = message;
-    console.log(this.currentPost);
   }
 
 }

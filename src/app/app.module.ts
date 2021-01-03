@@ -40,6 +40,8 @@ import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 // environment imports
 import {environment} from '../environments/environment';
 import { PageNotFoundComponent } from './views/page-not-found/page-not-found.component';
+import { AdminPanelComponent } from './views/admin-panel/admin-panel.component';
+import { FeedbackCardComponent } from './views/feedback/feedback-card/feedback-card.component';
 
 
 
@@ -61,6 +63,8 @@ import { PageNotFoundComponent } from './views/page-not-found/page-not-found.com
     RegisterComponent,
     PageNotFoundComponent,
     LoadingSpinnerComponent,
+    AdminPanelComponent,
+    FeedbackCardComponent,
   ],
   imports: [
     // ANGULAR MODULE IMPORTS

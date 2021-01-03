@@ -8,8 +8,14 @@
     <h3 class=" blue-grey-text">Login</h3>
     <p class=" blue-grey-text">If you dont have an account one will be created for you!</p>
     <button class="center btn-small light-blue" (click)="auth.googleSignIn()">
-      <fa-icon [icon]="google"></fa-icon> Connect Google
+      <fa-icon [icon]="google"></fa-icon>
+      Login with Google
     </button>
+    <div class="row">
+      <button class="center btn-small light-blue" (click)="navigateToLogin()">
+        Go to login page
+      </button>
+    </div>
   </div>
 </ng-template>
 
@@ -18,26 +24,92 @@
 <ng-template #authenticated>
   <div *ngIf="auth.user$ | async as user " class="center">
 
-    <h3 class="blue-grey-text">Howdy, {{ user.username }}</h3>
-    <br>
-
     <div class="row">
-      <img [src]="user.profilePhoto" alt="" class="circle responsive-img "> <!-- notice the "circle" class -->
+
+
+      <div class="col s12 m4 l4 xl4">
+        <h3 class="blue-grey-text">Howdy, {{ user.username }}</h3>
+        <br>
+
+        <div class="row">
+          <img [src]="user.profilePhoto" alt="" class="circle responsive-img "> <!-- notice the "circle" class -->
+        </div>
+
+        <div class="collection">
+          <h4 class="collection-header blue-grey-text">You have access to:</h4>
+          <h5 class="collection-item left-align"  *ngIf="auth.isUser(user)">View feedback posts</h5>
+          <h5 class="collection-item left-align"  *ngIf="auth.canEdit(user)">Edit and reply to feedback posts</h5>
+          <h5 class="collection-item left-align" *ngIf="auth.isAdmin(user)">Do whatever tf you want</h5>
+        </div>
+      </div>
+
+      <div class="col s12 m8 l8 xl8">
+        <h3 class="blue-grey-text" >Edit your profile:</h3>
+        <!-- USER DATA FORM GROUP -->
+        <div class="row">
+          <div class="col s12 l8 m8 xl8 push-m2 push-l2 push-xl2">
+            <form [formGroup]="updateUserDataForm" (ngSubmit)="updateUserData()">
+
+              <div formGroupName="userData">
+                <!-- USERNAME -->
+
+                <div class="input-group-prepend">
+                  <span class="input-group-text"><i class="icon-user"></i></span>
+                </div>
+                <input type="text"
+                       id="username"
+                       class="input-field"
+                       placeholder="{{user.username}}"
+                       autocomplete="username"
+                       formControlName="username">
+                <label for="username">username:</label>
+
+                <div *ngIf="!this.username.valid && this.username.touched" >
+                  <p class="amber-text" *ngIf="this.username.value.length < 4">not long enough</p>
+                  <!-- for error responses  -->
+                  <p *ngIf="this.username.errors.usernameAvailable ==false"
+                     class="amber-text">Username has been taken. Please choose another</p>
+                </div>
+
+
+                <!--  Profile Picture INPUT -->
+
+                    <div class="file-field input-field">
+                      <div class="btn light-blue accent-4">
+                        <span>File</span>
+                        <input type="file" formControlName="profilePhoto">
+                      </div>
+                      <div class="file-path-wrapper">
+                        <label>
+                          <input class="file-path validate"
+                                 formControlName="profilePhoto"
+                                 type="text">
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+
+              <div class="row">
+                <button type="submit"
+                        [disabled]="!updateUserDataForm.valid ||  this.profilePhoto.value==''"
+                        class="btn center light-blue accent-4 darken-2">Update Information
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <br>
+        <button class="btn-small light-blue accent-4" (click)="auth.signOut()">Logout</button>
+
+      </div>
+    </div> <!-- End row for user information -->
+
+    <div class="row"> <!-- Row for Admin Panel -->
+      <div class="col s12 l8 m8 xl8 push-m2 push-l2 push-xl2">
+        <app-admin-panel *ngIf="this.auth.isAdmin(user)"></app-admin-panel>
+      </div>
     </div>
-
-    <div class="container">
-      <h3>Your Permissions Are:</h3>
-      <h5 *ngIf="auth.canDelete(user)">Admin</h5>
-      <h5 *ngIf="auth.canEdit(user)">Editor</h5>
-      <h5 *ngIf="auth.canRead(user)">User</h5>
-    </div>
-
-
-    <br>
-
-
-    <button class="btn-small light-blue" (click)="auth.signOut()">Logout</button>
-
   </div>
 
 

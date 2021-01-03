@@ -3,7 +3,9 @@
     <span class="brand-logo">
       <a routerLink="" class="name-pad">Rafael Zasas</a>
     </span>
-    <a data-target="mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
+    <a data-target="mobile"
+       style="cursor:pointer;"
+       class="sidenav-trigger"><i class="material-icons">menu</i></a>
     <ul class="right hide-on-med-and-down">
       <li><a routerLink="/aboutme"><i class="material-icons">info_outline</i>About Me</a></li>
       <li><a routerLink="/feedback"><i class="material-icons">thumbs_up_down</i>Feedback</a></li>
@@ -11,7 +13,7 @@
         <!-- btn will replace this div -->
       </div>
       <ng-template #authenticated>
-        <li><a routerLink="/user-profile"><i class="material-icons">person</i>Profile</a></li>
+        <li><a routerLink="/user-profile" class="sidenav-close"><i class="material-icons">person</i>Profile</a></li>
       </ng-template>
 
       <ng-template #guest>
@@ -25,20 +27,26 @@
 
 <ul class="sidenav" id="mobile">
 
-  <li><div class="user-view" *ngIf="auth.user$ | async as user">
-    <div class="background">
-      <img src="assets/background.jpg">
+  <li>
+    <div class="user-view" *ngIf="auth.user$ | async as user">
+      <div class="background">
+        <img src="assets/background.jpg">
+      </div>
+      <a routerLink="/"><img class="circle" src="{{user.profilePhoto}}"></a>
+      <a routerLink="/"><span class="helper-text name">{{user.username}}</span></a>
+      <a href="mailto:zasas.rafi@gmail.com"><span class="helper-text email">{{user.email}}</span></a>
     </div>
-    <a routerLink="/"><img class="circle" src="{{user.profilePhoto}}"></a>
-    <a routerLink="/"><span class="helper-text name">{{user.username}}</span></a>
-    <a href="mailto:zasas.rafi@gmail.com"><span class="helper-text email">{{user.email}}</span></a>
-  </div></li>
+  </li>
 
   <div *ngIf="auth.user$ | async; then authenticated else guest">
     <!-- profile icon will replace this div -->
   </div>
-  <li><a routerLink="/aboutme"><i class="material-icons">info_outline</i>About Me</a></li>
-  <li><a routerLink="/feedback"><i class="material-icons">thumbs_up_down</i>Feedback</a></li>
-  <li><a (click)="this.auth.signOut()"><i class="material-icons">directions_run</i>Logout</a></li>
-  <li><a class="sidenav-close"><i class="material-icons">close</i>close sidenav</a></li>
+  <li><a routerLink="/aboutme"
+         class="sidenav-close"><i class="material-icons">info_outline</i>About Me</a></li>
+  <li><a routerLink="/feedback"
+         class="sidenav-close"><i class="material-icons">thumbs_up_down</i>Feedback</a></li>
+  <li><a (click)="this.auth.signOut()"
+         style="cursor: pointer"
+         class="sidenav-close"><i class="material-icons">directions_run</i>Logout</a></li>
+
 </ul>
