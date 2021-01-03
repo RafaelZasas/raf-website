@@ -6,8 +6,8 @@ import {faEdit, faTrashAlt} from '@fortawesome/free-regular-svg-icons';
 import {faReply} from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  // marks the feedback Message & replyClicked input as required
-  selector: 'app-feedback-card[feedbackMessage][replyClicked][user]',
+  // marks the feedback Message & showRepliesClicked input as required
+  selector: 'app-feedback-card[feedbackMessage][showRepliesClicked][user][setReplyingTo]',
   templateUrl: './feedback-card.component.html',
   styleUrls: ['./feedback-card.component.css']
 })
@@ -20,13 +20,15 @@ export class FeedbackCardComponent implements OnInit, AfterViewInit {
 
   @Input() user: User; // The user details to determine if the user has permissions to delete
   @Input() feedbackMessage: FeedbackInterface; // one individual feedback message used to initialize dropdown
-  @Output() replyClicked: EventEmitter<string>; // to call the show Replies Modal
+  @Output() showRepliesClicked: EventEmitter<string>; // to call the show Replies Modal
+  @Output() setReplyingTo: EventEmitter<string>; // pass the post ID for replying
 
   constructor(public feedbackPostService: FeedbackService,
               public auth: AuthService,
               private angular2MaterializeService: Angular2MaterializeV1Service)
   {
-    this.replyClicked = new EventEmitter<string>();
+    this.showRepliesClicked = new EventEmitter<string>();
+    this.setReplyingTo = new EventEmitter<string>();
   }
 
   ngOnInit(): void {

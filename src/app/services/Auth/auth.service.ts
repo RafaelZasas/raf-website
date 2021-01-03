@@ -16,7 +16,11 @@ export interface User {
   profilePhoto?: string;
   displayName?: string;
   username?: string;
-  permissions?: {};
+  permissions: {
+    user: boolean,
+    edit: boolean,
+    admin: boolean
+  };
 }
 
 
@@ -86,7 +90,7 @@ export class AuthService {
    * The following functions are used by the checkAuthorization function
    */
 
-  canRead(user: User): boolean {
+  isUser(user: User): boolean {
     const allowed = ['admin', 'edit', 'user'];
     return AuthService.checkAuthorization(user, allowed);
   }

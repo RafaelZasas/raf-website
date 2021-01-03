@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AdminService} from '../../services/admin.service';
+import {AuthService} from '../../services/Auth/auth.service';
 
 @Component({
   selector: 'app-admin-panel',
@@ -11,12 +12,12 @@ export class AdminPanelComponent implements OnInit {
   // controls
   getUsersSpinner: boolean;
 
-  constructor(public adminService: AdminService) {
+  constructor(public adminService: AdminService, public authService: AuthService) {
   }
 
-  async ngOnInit(): Promise<void> {
+   ngOnInit(): void {
     this.getUsersSpinner = true;
-    await this.adminService.getAllUsers();
+    this.adminService.getAllUsers();
     this.getUsersSpinner = false;
 
   }

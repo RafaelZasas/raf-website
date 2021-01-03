@@ -2,16 +2,7 @@
   <app-loading-spinner></app-loading-spinner>
 </div>
 
-<div class="switch">
-  <label>
-    Off
-    <input type="checkbox" id="myswitch" checked="checked">
-    <span class="lever"></span>
-    On
-  </label>
-</div>
-
-<h5 >Admin Panel</h5>
+<h5>Admin Panel</h5>
 
 <div class="card" *ngFor="let user of this.adminService.users | async">
   <div class="card-content">
@@ -31,36 +22,54 @@
 
       <div class="col s6 m6 l6 xl6"> <!-- Column for changing permissions -->
 
-      <div class="col s6 m6 l6 xl6">
-        User:
-      </div>
-      <div class="col s6 m6 l6 xl6">
-        <div class="switch">
-          <label>
-            Off
-            <input type="checkbox" >
-            <span class="lever"></span>
-            On
-          </label>
+        <div class="col s6 m6 l6 xl6">
+          User:
         </div>
-      </div>
-
-
-
-      <div class="col s6 m6 l6 xl6">
-        Editor:
-      </div>
-      <div class="col s6 m6 l6 xl6">
-        <div class="switch">
-          <label>
-            Off
-            <input type="checkbox">
-            <span class="lever"></span>
-            On
-          </label>
+        <div class="col s6 m6 l6 xl6">
+          <div class="switch">
+            <label>
+              Off
+              <input type="checkbox" [checked]="this.authService.isUser(user)"
+                     (click)="this.adminService.changePermissions(user,'user')">
+              <span class="lever"></span>
+              On
+            </label>
+          </div>
         </div>
-      </div>
-      </div>
+
+
+        <div class="col s6 m6 l6 xl6">
+          Editor:
+        </div>
+        <div class="col s6 m6 l6 xl6">
+          <div class="switch">
+            <label>
+              Off
+              <input type="checkbox" [checked]="authService.canEdit(user)"
+                     (click)="this.adminService.changePermissions(user,'edit')">
+              <span class="lever"></span>
+              On
+            </label>
+          </div>
+        </div>
+
+        <div class="col s6 m6 l6 xl6">
+          Admin:
+        </div>
+        <div class="col s6 m6 l6 xl6">
+          <div class="switch">
+            <label>
+              Off
+              <input type="checkbox" [checked]="this.authService.isAdmin(user)"
+                     (click)="this.adminService.changePermissions(user,'admin')">
+              <span class="lever"></span>
+              On
+            </label>
+          </div>
+        </div>
+
+      </div> <!-- End permission change section -->
+
 
     </div>
   </div>

@@ -22,7 +22,7 @@
       <ul [id]="feedbackMessage.postID" class='dropdown-content'>
         <li *ngIf="auth.canEdit(user)">
           <a class="light-blue-text modal-trigger"
-             (click)="replyingTo=feedbackMessage.postID"
+             (click)="setReplyingTo.emit(feedbackMessage.postID)"
              data-target="replyModal">
             <fa-icon [icon]="reply"></fa-icon>
             Reply
@@ -37,7 +37,9 @@
           </a>
         </li>
         <li>
-          <a class="green-text" *ngIf="auth.canEdit(user)">
+          <a *ngIf="auth.canEdit(user)"
+             class="green-text"
+             (click)="feedbackPostService.editPost(this.feedbackMessage.postID)">
             <fa-icon [icon]="edit"></fa-icon>
             Edit
           </a>
@@ -56,7 +58,7 @@
       <a class="subheader modal-trigger"
          data-target="repliesModal"
          style="cursor: pointer"
-         (click)="replyClicked.emit(feedbackMessage.postID)">show replies</a>
+         (click)="showRepliesClicked.emit(feedbackMessage.postID)">show replies</a>
 
     </div>
   </div>

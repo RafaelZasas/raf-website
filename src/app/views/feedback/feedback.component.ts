@@ -4,13 +4,11 @@ import {AuthService} from '../../services/Auth/auth.service';
 import {FeedbackInterface, FeedbackService} from '../../services/Posts/feedback.service';
 import {faTrashAlt, faEdit} from '@fortawesome/free-regular-svg-icons';
 import {faReply} from '@fortawesome/free-solid-svg-icons';
-import M from 'materialize-css';
 import * as firebase from 'firebase/app';
 // Add the Performance Monitoring library
 import 'firebase/performance';
 import {Angular2MaterializeV1Service} from 'angular2-materialize-v1';
-import {FeedbackCardComponent} from './feedback-card/feedback-card.component';
-import {IDropdown} from 'angular2-materialize-v1/lib/IInstance';
+
 
 @Component({
   selector: 'app-feedback',
@@ -20,7 +18,6 @@ import {IDropdown} from 'angular2-materialize-v1/lib/IInstance';
 })
 export class FeedbackComponent implements OnInit, OnDestroy, AfterViewInit {
 
-  replyingTo = '';
   perf = firebase.performance(); // initializes the firebase performance module
   analytics = firebase.analytics();
   screenTrace: firebase.performance.Trace; // tracks how long the screen has been opened
@@ -38,7 +35,7 @@ export class FeedbackComponent implements OnInit, OnDestroy, AfterViewInit {
   hasReplies: boolean;
   showSpinner: boolean;
   showPostsSpinner: boolean;
-  currentPost: FeedbackInterface;
+  replyingTo = '';
 
 
   constructor(
@@ -69,7 +66,6 @@ export class FeedbackComponent implements OnInit, OnDestroy, AfterViewInit {
     const feedbackQueryTrace = this.perf.trace('Feedback Query Trace');
     feedbackQueryTrace.start();
     await this.feedbackPostService.getPosts();
-
 
 
     // this.feedbackPostService.feedbackMessages.subscribe(async (data: FeedbackInterface[]) => {
@@ -137,7 +133,7 @@ export class FeedbackComponent implements OnInit, OnDestroy, AfterViewInit {
 
       // if the user tries entering nothing
     } else {
-      M.toast({html: 'Please enter a message before submitting.', classes: 'rounded red'});
+      this.angular2MaterializeService.toast({html: 'Please enter a message before submitting.', classes: 'rounded red'});
     }
 
     trace.stop();
@@ -158,10 +154,13 @@ export class FeedbackComponent implements OnInit, OnDestroy, AfterViewInit {
       await this.feedbackPostService.reply(this.replyingTo, reply);
     } else {
       console.log(this.replyForm.valid);
-      M.toast({html: 'Please don\'t leave empty replies.', classes: 'rounded red'});
+      this.angular2MaterializeService.toast({html: 'Please don\'t leave empty replies.', classes: 'rounded red'});
     }
     this.replyForm.reset();
+  }
 
+  setReplyingTo(postID) {
+    this.replyingTo = postID;
   }
 
   /**
@@ -174,9 +173,4 @@ export class FeedbackComponent implements OnInit, OnDestroy, AfterViewInit {
     this.showSpinner = false;
   }
 
-
-  ngForContentLoaded() {
-    console.log('last');
-    this.angular2MaterializeService.initDropdown(`.dropdown-trigger`, {constrainWidth: false});
-  }
 }

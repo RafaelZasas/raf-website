@@ -37,7 +37,7 @@
 
         <div class="collection">
           <h4 class="collection-header blue-grey-text">You have access to:</h4>
-          <h5 class="collection-item left-align"  *ngIf="auth.canRead(user)">View feedback posts</h5>
+          <h5 class="collection-item left-align"  *ngIf="auth.isUser(user)">View feedback posts</h5>
           <h5 class="collection-item left-align"  *ngIf="auth.canEdit(user)">Edit and reply to feedback posts</h5>
           <h5 class="collection-item left-align" *ngIf="auth.isAdmin(user)">Do whatever tf you want</h5>
         </div>
