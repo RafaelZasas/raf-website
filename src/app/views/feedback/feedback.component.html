@@ -1,4 +1,6 @@
+
 <div class="container center">
+
   <div class="row">
     <form [formGroup]="feedbackForm" (ngSubmit)="submitFeedback()">
 
@@ -50,94 +52,20 @@
   <app-loading-spinner></app-loading-spinner>
 </div>
 
-
-
-<div class="container">
-  <ul class="collection" *ngFor="let message of feedbackPostService.feedbackMessages | async">
-    <li class="collection-item">
-      <div class="row">
-
-        <!--         SECTION FOR ALL USERS TO SEE FEEDBACK MESSAGES   -->
-        <div class="col s8 m9 l9">
-          <div class="row">
-            <!--          row for message type  -->
-            <h5 [class.red-text]="message.feedbackType== 'Bug Report'"
-                [class.light-blue-text]="message.feedbackType=='Feature Request'">
-              {{message.feedbackType}}</h5>
-          </div>
-          <div class="row">
-            <!--  row for feedback message -->
-            {{message.feedbackMessage}}
-          </div>
-          <div class="row">
-            <!--  row for username -->
-            {{message.displayName}}
-          </div>
-
-          <a class="subheader modal-trigger"
-             data-target="repliesModal"
-             style="cursor: pointer"
-             (click)="showReplies(message.postID)">show replies</a>
-
-
-          <!--          COLUMN FOR THE ADMIN ACCESS  -->
-        </div>
-
-
-        <!-- Dropdown Trigger -->
-        <a *ngIf="this.auth.user$"
-           (click)="this.setPost(message)"
-           id="modal-trigger"
-           class="material-icons modal-trigger"
-           style="cursor: pointer; padding-top: 15px; padding-left: 15px"
-           data-target="more_options">more_vert</a>
-
-
-      </div>
-
-
-    </li>
-  </ul>
-</div>
-
-<!-- Show more options dropdown -->
-
-<div id="more_options" class="modal small">
-<ul  class='modal-content' *ngIf="this.auth.user$| async as user">
-  <li *ngIf="auth.canDelete(user)">
-    <a class="btn btn-small rounded materialize-red"
-       (click)="this.feedbackPostService.deletePost(this.currentPost.postID)">
-      <fa-icon [icon]="trash"></fa-icon>
-      Delete
-    </a>
-  </li>
-
-  <li class="row" *ngIf="auth.canEdit(user)">
-    <a class="btn btn-small rounded light-blue modal-trigger"
-       data-target="replyModal"
-       (click)="replyingTo=this.currentPost.postID">
-      <fa-icon [icon]="reply"></fa-icon>
-      Reply
-    </a>
-  </li>
-
-  <li class="row" *ngIf="auth.canEdit(user)">
-    <a class="btn btn-small rounded green">
-      <fa-icon [icon]="edit"></fa-icon>
-      Edit
-    </a>
-  </li>
-</ul>
-  <div class="modal-footer">
-    <button
-      class="btn modal-close light-blue"
-      type="submit">close
-    </button>
-  </div>
+<!--         SECTION FOR ALL USERS TO SEE FEEDBACK MESSAGES   -->
+<div class="container" *ngIf="this.auth.user$ | async as user">
+<ng-container *ngFor="let message of feedbackPostService.feedbackMessages | async">
+  <app-feedback-card
+    [feedbackMessage]="message"
+    (setReplyingTo) = "setReplyingTo($event)"
+    [user]="user"
+    (showRepliesClicked)="showReplies($event)"></app-feedback-card>
+</ng-container>
 </div>
 
 
-<!-- Show Replies modal -->
+
+<!-- Modal to show all the replies for a given post -->
 <div id="repliesModal" class="modal">
 
   <div class="row center-block">
@@ -145,16 +73,29 @@
   </div>
 
   <div class="modal-content">
+<!--    Template to show if the post does have replies on it-->
     <div class="col" *ngIf="this.hasReplies; else no_content">
       <ul class="collection">
         <li *ngFor="let reply of feedbackPostService.feedbackReplies |async "
-        class="collection-item avatar">
-          <img src="{{reply.profilePhoto}}" alt="profile-photo" class="circle">
-          <span class="title"> {{reply.username}}</span>
-          <p class=" helper-text">{{reply.message}}</p>
+            class="collection-item avatar">
+          <div class="row">
+            <!--  Column for the reply information-->
+            <div class="col s8 m8 l8 xl8">
+              <img src="{{reply.profilePhoto}}" alt="profile-photo" class="circle">
+              <span class="title"> {{reply.username}}</span>
+              <p class=" helper-text">{{reply.message}}</p>
+            </div>
+            <!--  Column for the button to delete the reply -->
+            <div class="col s3 m3 l3 xl3 push-s1 push-m1 push-l1 offset-xl1">
+              <a class="btn-small materialize-red" (click)="this.feedbackPostService.deleteReply(reply.id)" >
+                <fa-icon [icon]="trash"></fa-icon>
+                Delete</a></div>
+          </div>
         </li>
       </ul>
     </div>
+
+<!--    Template to show if the post has no replies on it-->
     <ng-template #no_content>
       <p>No replies</p>
     </ng-template>

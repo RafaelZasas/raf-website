@@ -5,25 +5,22 @@ import {AngularFireAuth} from '@angular/fire/auth';
 import {AngularFireAnalytics} from '@angular/fire/analytics';
 import M from 'materialize-css';
 import {take} from 'rxjs/operators';
+import {Angular2MaterializeV1Service} from 'angular2-materialize-v1';
 
-export interface User {
-  // describes the data that a user is expected expected to contain
-  uid: string;
-  email: string;
-  profilePhoto?: string;
-  username?: string;
-  permissions?: {};
-}
 
 export interface FeedbackInterface {
   uid: string;
-  displayName?: string;
+  username?: string;
   email: string;
-  photoURL?: string;
-  permissions?: string;
+  profilePhoto?: string;
+  permissions: {
+    user: boolean,
+    edit: boolean,
+    admin: boolean
+  };
   feedbackMessage: string;
   feedbackType: string;
-  postID?: string;
+  postID: string;
   replies: FeedbackRepliesInterface;
 }
 
@@ -32,6 +29,7 @@ export interface FeedbackRepliesInterface {
   profilePhoto: string;
   uid: string;
   username: string;
+  id: string;
 }
 
 
@@ -40,7 +38,7 @@ export interface FeedbackRepliesInterface {
 })
 export class FeedbackService {
 
-  feedbackCollection: AngularFirestoreCollection<FeedbackInterface>; // passing the interface : Feedback
+  FeedbackCollection: AngularFirestoreCollection<FeedbackInterface>; // passing the interface : Feedback
   feedbackMessages: Observable<FeedbackInterface[]>;
 
   feedbackRepliesCollection: AngularFirestoreCollection<FeedbackRepliesInterface>;
@@ -54,7 +52,8 @@ export class FeedbackService {
   constructor(    // inject imports for fire store auth service in constructor
     private afAuth: AngularFireAuth,
     private afs: AngularFirestore,
-    private analytics: AngularFireAnalytics) {
+    private analytics: AngularFireAnalytics,
+    private angular2MaterializeService: Angular2MaterializeV1Service) {
   }
 
 
@@ -64,15 +63,15 @@ export class FeedbackService {
   async getPosts() {
     try {
       // INIT CONNECTION TO FIRESTORE COLLECTION
-      this.feedbackCollection = this.afs.collection<FeedbackInterface>
+      this.FeedbackCollection = this.afs.collection<FeedbackInterface>
       ('Feedback', ref => { // collection to store firestore data
         return ref;
       }); // reference
       // SUBSCRIBE TO THE CHANGES
-      this.feedbackMessages = await this.feedbackCollection.valueChanges({idField: 'id'});
+      this.feedbackMessages = await this.FeedbackCollection.valueChanges({idField: 'id'});
     } catch (e) {
       console.log(`${e.code}\n${e.message}`);
-      M.toast({html: `Error getting feedback\n${e.code}`, classes: 'rounded red'});
+      this.angular2MaterializeService.toast({html: `Error getting feedback 🐛\n${e.code}`, classes: 'rounded red'});
     }
 
   }
@@ -83,13 +82,13 @@ export class FeedbackService {
    */
   async createPost(formData) {
     try {
-      await this.feedbackCollection.add(formData);
+      await this.FeedbackCollection.add(formData);
       console.log('stored feedback successfully');
-      M.toast({html: 'Thank you !', classes: 'rounded blue'});
+      this.angular2MaterializeService.toast({html: 'Thank you 🍻!', classes: 'rounded blue'});
       await this.analytics.logEvent('feedbackService', {serviceName: 'Feedback Submitted'});
     } catch (e) {
       console.log(`${e.code}\n${e.message}`);
-      M.toast({html: `Error submitting feedback\n${e.code}`, classes: 'rounded red'});
+      this.angular2MaterializeService.toast({html: `Error submitting feedback 🐛\n${e.code}`, classes: 'rounded red'});
     }
   }
 
@@ -97,10 +96,15 @@ export class FeedbackService {
    * Update the firestore Feedback/{document} post with a new message
    * @param message: the updated string to overwrite the current message
    */
-  async editPost(message) {
-    await this.postRef.update({
-      feedbackMessage: message
+  editPost(message) {
+    const html = '<p class="black-text text-accent-4">This functionality is still under construction 👷</p>';
+    this.angular2MaterializeService.toast({
+      html,
+      classes: 'rounded  teal accent-1'
     });
+    // await this.postRef.update({
+    //   feedbackMessage: message
+    // });
   }
 
   /**
@@ -109,11 +113,11 @@ export class FeedbackService {
    */
   async deletePost(postID) {
     try {
-      await this.feedbackCollection.doc(postID).delete();
-      M.toast({html: `Post deleted!`, classes: 'rounded blue'});
+      await this.FeedbackCollection.doc(postID).delete();
+      M.toast({html: `Post deleted! 💥`, classes: 'rounded blue'});
       console.log('Post was successfully deleted');
     } catch (e) {
-      M.toast({html: `Error deleting post\n${e.code}`, classes: 'rounded red'});
+      M.toast({html: `Error deleting post 🐛\n${e.code}`, classes: 'rounded red'});
       console.log(`${e.code}\n${e.message}\npostID:${postID}`);
     }
   }
@@ -131,7 +135,21 @@ export class FeedbackService {
       console.log(`${e.code}\n${e.message}`);
       M.toast({html: `Error submitting reply: ${e.code} `, classes: 'rounded red'});
     }
+  }
 
+  /**
+   * Delete a reply in the Feedback/{id}/replies collection
+   * @param replyID: the document ID of the reply which is being deleted
+   */
+  async deleteReply(replyID: string) {
+    try {
+      await this.feedbackRepliesCollection.doc(replyID).delete();
+      M.toast({html: `Reply deleted! 💥`, classes: 'rounded blue'});
+      console.log('Reply was successfully deleted');
+    } catch (e) {
+      M.toast({html: `Error deleting reply 🐛\n${e.code}`, classes: 'rounded red'});
+      console.log(`${e.code}\n${e.message}\nReplyID:${replyID}`);
+    }
   }
 
   /**
@@ -152,7 +170,7 @@ export class FeedbackService {
       });
 
     } catch (e) {
-      M.toast({html: `Error getting replies: ${e.code} `, classes: 'rounded red'});
+      M.toast({html: `Error getting replies 🐛: ${e.code} `, classes: 'rounded red'});
       this.hasReplies = false;
     }
     return this.hasReplies;

@@ -1,0 +1,65 @@
+<div class="card">
+  <div class="card-content">
+
+    <div class="row">
+
+      <!-- row for feedbackMessage type  -->
+      <span class="card-title text-darken-4"
+            [class.red-text]="feedbackMessage.feedbackType== 'Bug Report'"
+            [class.light-blue-text]="feedbackMessage.feedbackType=='Feature Request'">
+              {{feedbackMessage.feedbackType}}
+        </span>
+
+      <!-- Dropdown trigger for the options -->
+      <i class="material-icons right dropdown-trigger"
+         [attr.data-target]="feedbackMessage.postID"
+         [id]="'trigger-' + feedbackMessage.postID"
+         style="cursor:pointer;"
+         *ngIf="this.auth.user$">more_vert</i>
+
+
+      <!-- Dropdown for the options -->
+      <ul [id]="feedbackMessage.postID" class='dropdown-content'>
+        <li *ngIf="auth.canEdit(user)">
+          <a class="light-blue-text modal-trigger"
+             (click)="setReplyingTo.emit(feedbackMessage.postID)"
+             data-target="replyModal">
+            <fa-icon [icon]="reply"></fa-icon>
+            Reply
+          </a>
+        </li>
+
+        <li *ngIf="auth.isAdmin(user)">
+          <a class="materialize-red-text"
+             (click)="this.feedbackPostService.deletePost(this.feedbackMessage.postID)">
+            <fa-icon [icon]="trash"></fa-icon>
+            Delete
+          </a>
+        </li>
+        <li>
+          <a *ngIf="auth.canEdit(user)"
+             class="green-text"
+             (click)="feedbackPostService.editPost(this.feedbackMessage.postID)">
+            <fa-icon [icon]="edit"></fa-icon>
+            Edit
+          </a>
+        </li>
+      </ul>
+
+      <div class="row">
+
+        <img src="{{feedbackMessage.profilePhoto}}" alt="profilePhoto" class="feedback-avatar">
+        <div style="padding-left: 50px">
+          <p class="title">{{feedbackMessage.username}}</p>
+          <p> {{feedbackMessage.feedbackMessage}}</p>
+        </div>
+      </div>
+
+      <a class="subheader modal-trigger"
+         data-target="repliesModal"
+         style="cursor: pointer"
+         (click)="showRepliesClicked.emit(feedbackMessage.postID)">show replies</a>
+
+    </div>
+  </div>
+</div>
