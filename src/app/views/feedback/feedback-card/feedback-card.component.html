@@ -15,7 +15,7 @@
          [attr.data-target]="feedbackMessage.postID"
          [id]="'trigger-' + feedbackMessage.postID"
          style="cursor:pointer;"
-         *ngIf="this.auth.user$">more_vert</i>
+         *ngIf="auth.canEdit(user)">more_vert</i>
 
 
       <!-- Dropdown for the options -->
