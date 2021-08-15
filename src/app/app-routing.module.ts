@@ -11,9 +11,12 @@ import {AuthGuard} from './services/Auth/auth.guard';
 import {LoginComponent} from './views/auth/login/login.component';
 import {RegisterComponent} from './views/auth/register/register.component';
 import {PageNotFoundComponent} from './views/page-not-found/page-not-found.component';
+import {TestingComponent} from './views/testing/testing.component';
 
 
 const routes: Routes = [
+  {path: '.well-known/acme-challenge/-B6uoJ_P0gc5Fkd7hxe2U9x560_wrYoZKxi7ftVT9lI',
+    component: TestingComponent},
   {path: '', component: HomeComponent},
   {path: 'resume', component: ResumeComponent},
   {path: 'aboutme', component: AboutMeComponent},
