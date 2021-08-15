@@ -1,27 +1,37 @@
-# RafWebsite
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.1.7.
+# <div align="center"> Hello, folks! <img src="https://raw.githubusercontent.com/MartinHeinz/MartinHeinz/master/wave.gif" width="30px"> </div>
 
-## Development server
+## <div align="center">Welcome to the  <img src="https://angular.io/assets/images/logos/angular/angular.svg" height="30px" align="center">ngular version of my Website </div>
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+<div align="center">
 
-## Code scaffolding
+### 🚀 Build and Deployment Status
+[![DEV BUILD](https://github.com/RafaelZasas/raf-website/actions/workflows/development.yml/badge.svg?branch=develop)](https://github.com/RafaelZasas/raf-website/actions/workflows/development.yml)
+[![DEPLOYMENT](https://github.com/RafaelZasas/raf-website/actions/workflows/deployment.yml/badge.svg?branch=master)](https://github.com/RafaelZasas/raf-website/actions/workflows/deployment.yml)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+### 📈 Project Stats
+![Code Climate issues](https://img.shields.io/codeclimate/issues/rafaelzasas/RafaelZasas?style=for-the-badge)
+![Lines of code](https://img.shields.io/tokei/lines/github/RafaelZasas/raf-website?style=for-the-badge)
+![GitHub contributors](https://img.shields.io/github/contributors/RafaelZasas/raf-website?style=for-the-badge)
+![GitHub issues](https://img.shields.io/github/issues/RafaelZasas/raf-website?style=for-the-badge)
 
-## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+### 💡 About 
 
-## Running unit tests
+<p style="font-weight: bold; color: dodgerblue">This is the Angular version of my <a href="https://rafaelzasas.com">Personal Website</a>. There is also a React version of my website 
+which is currently under development.</p>
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"  height="30px" align="center" > Repo  Stats
+![GitHub watchers](https://img.shields.io/github/watchers/RafaelZasas/raf-website?style=social)
+![GitHub Repo stars](https://img.shields.io/github/stars/rafaelzasas/raf-website?style=social)
+![GitHub forks](https://img.shields.io/github/forks/rafaelzasas/raf-website?style=social)
 
-## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+### 🍻 Connect With Me! 
+<a href='https://instagram.com/rafaelzasas' style="margin-right: 10px"><img src="https://image.flaticon.com/icons/png/512/2111/2111463.png" height="30px" alt="instagram"></a>
+<a href='https://twitter.com/rafaelzasas' style="margin-right: 10px"><img src="https://image.flaticon.com/icons/png/512/733/733579.png" height="30px" alt="twitter"></a>
+<a href='https://rafaelzasas.com' style="margin-right: 10px"><img src="https://image.flaticon.com/icons/png/512/977/977597.png" height="30px" alt="website"></a>
+<a href='https://linkedin.com/in/rafael-zasas'><img src="https://image.flaticon.com/icons/png/512/174/174857.png" height="30px" alt="linkedin"></a>
 
-## Further help
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+</div>
